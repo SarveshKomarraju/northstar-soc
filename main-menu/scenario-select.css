@@ -1,0 +1,1691 @@
+/* =========================================================
+   NORTHSTAR SOC — SCENARIO SELECT
+   ========================================================= */
+
+#scenario-select {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    overflow: hidden;
+
+    background:
+        radial-gradient(circle at 50% 20%,
+            rgba(34, 72, 110, 0.18),
+            transparent 45%),
+        #050b12;
+
+    color: #dce8f3;
+
+    font-family:
+        "Segoe UI",
+        Inter,
+        system-ui,
+        sans-serif;
+
+    opacity: 1;
+    visibility: visible;
+    transition:
+        opacity 0.35s ease,
+        visibility 0.35s ease;
+}
+
+#scenario-select.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
+
+.scenario-background {
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.018) 1px,
+            transparent 1px),
+        linear-gradient(90deg,
+            rgba(255, 255, 255, 0.018) 1px,
+            transparent 1px);
+
+    background-size: 50px 50px;
+
+    mask-image:
+        linear-gradient(to bottom,
+            black,
+            transparent 90%);
+
+    animation: scenarioGridMove 18s linear infinite;
+}
+
+@keyframes scenarioGridMove {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(50px);
+    }
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.scenario-header {
+    position: relative;
+    z-index: 5;
+
+    height: 125px;
+
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+
+    padding: 0 48px;
+
+    border-bottom: 1px solid rgba(120, 160, 190, 0.12);
+
+    background:
+        linear-gradient(180deg,
+            rgba(8, 18, 28, 0.92),
+            rgba(8, 18, 28, 0.72));
+
+    backdrop-filter: blur(14px);
+}
+
+.scenario-header-center {
+    text-align: center;
+}
+
+.scenario-eyebrow {
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: #71899e;
+    margin-bottom: 8px;
+}
+
+.scenario-header h1 {
+    margin: 0;
+
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: 6px;
+
+    color: #edf6ff;
+}
+
+.scenario-header p {
+    margin: 8px 0 0;
+
+    font-size: 12px;
+    color: #6e8294;
+}
+
+.scenario-back {
+    justify-self: start;
+
+    border: 1px solid rgba(120, 160, 190, 0.18);
+    background: rgba(10, 22, 33, 0.8);
+
+    color: #849bad;
+
+    padding: 10px 18px;
+
+    font-size: 11px;
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.scenario-back:hover {
+    color: #e5f2ff;
+    border-color: rgba(120, 180, 220, 0.45);
+    background: rgba(20, 40, 55, 0.8);
+}
+
+.scenario-classification {
+    justify-self: end;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 9px;
+    letter-spacing: 2px;
+
+    color: #667c8e;
+}
+
+.classification-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #67b5ff;
+
+    box-shadow:
+        0 0 8px rgba(103, 181, 255, 0.7);
+
+    animation: classificationPulse 2s ease-in-out infinite;
+}
+
+@keyframes classificationPulse {
+    50% {
+        opacity: 0.35;
+    }
+}
+
+
+/* =========================================================
+   CARD GRID
+   ========================================================= */
+
+.scenario-grid {
+    position: relative;
+    z-index: 4;
+
+    width: min(1420px, calc(100% - 80px));
+
+    margin: 38px auto 0;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 22px;
+
+    height: calc(100vh - 225px);
+    max-height: 680px;
+}
+
+
+/* =========================================================
+   BASE CARD
+   ========================================================= */
+
+.scenario-card {
+    position: relative;
+
+    min-width: 0;
+    min-height: 0;
+
+    overflow: hidden;
+
+    padding: 0;
+
+    border: 1px solid rgba(110, 145, 170, 0.17);
+
+    background: #08121c;
+
+    color: #dce8f3;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    isolation: isolate;
+
+    transition:
+        transform 0.3s cubic-bezier(.2, .8, .2, 1),
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.scenario-card:hover {
+    transform: translateY(-8px);
+
+    border-color: rgba(150, 195, 225, 0.42);
+
+    box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+.scenario-card::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(180deg,
+            transparent 45%,
+            rgba(3, 8, 13, 0.94) 72%,
+            #050a0f 100%);
+
+    z-index: 2;
+}
+
+
+/* =========================================================
+   VISUAL AREA
+   ========================================================= */
+
+.scenario-visual {
+    position: relative;
+
+    height: 56%;
+
+    overflow: hidden;
+
+    z-index: 1;
+}
+
+.scenario-content {
+    position: absolute;
+
+    left: 28px;
+    right: 28px;
+    bottom: 26px;
+
+    z-index: 5;
+}
+
+.scenario-number {
+    margin-bottom: 8px;
+
+    font-family: monospace;
+
+    font-size: 10px;
+    letter-spacing: 2px;
+
+    color: #60798c;
+}
+
+.scenario-title-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+.scenario-title-row h2 {
+    margin: 0;
+
+    font-size: clamp(25px, 2.4vw, 36px);
+
+    line-height: 0.96;
+
+    letter-spacing: 2px;
+
+    color: #eef7ff;
+}
+
+.scenario-arrow {
+    font-size: 25px;
+    color: #6c879b;
+
+    transition:
+        transform 0.3s ease,
+        color 0.3s ease;
+}
+
+.scenario-card:hover .scenario-arrow {
+    transform: translate(5px, -5px);
+    color: #dceeff;
+}
+
+.scenario-content p {
+    max-width: 450px;
+
+    margin: 17px 0;
+
+    font-size: 12px;
+    line-height: 1.65;
+
+    color: #7890a2;
+}
+
+.scenario-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    padding-top: 13px;
+
+    border-top: 1px solid rgba(120, 160, 185, 0.13);
+
+    font-family: monospace;
+
+    font-size: 8px;
+    letter-spacing: 1px;
+
+    color: #637b8d;
+}
+
+
+/* =========================================================
+   SCENARIO LOGO BADGE
+   ---------------------------------------------------
+   A small always-visible icon identifying the attack type,
+   independent of each card's larger animated illustration.
+   ========================================================= */
+
+.scenario-logo {
+    position: absolute;
+
+    left: 20px;
+    top: 18px;
+
+    z-index: 4;
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(4, 9, 15, 0.62);
+
+    backdrop-filter: blur(2px);
+}
+
+.scenario-logo svg {
+    width: 21px;
+    height: 21px;
+}
+
+
+/* =========================================================
+   REAL-WORLD EXAMPLE TRIGGER
+   ========================================================= */
+
+.scenario-info-trigger {
+    cursor: pointer;
+
+    padding: 2px 0;
+
+    transition: color 0.2s ease;
+}
+
+.scenario-info-trigger:hover,
+.scenario-info-trigger:focus-visible {
+    color: #eef7ff;
+
+    text-decoration: underline;
+}
+
+.scenario-info-trigger:focus-visible {
+    outline: 1px solid rgba(150, 195, 225, 0.5);
+    outline-offset: 3px;
+}
+
+.scenario-launch {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 16px;
+    padding-top: 14px;
+
+    border-top: 1px solid rgba(120, 160, 185, 0.13);
+
+    font-size: 10px;
+    font-weight: 600;
+
+    letter-spacing: 2px;
+
+    color: #9db3c5;
+}
+
+.scenario-launch span:last-child {
+    font-size: 18px;
+
+    transition: transform 0.25s ease;
+}
+
+.scenario-card:hover .scenario-launch span:last-child {
+    transform: translateX(7px);
+}
+
+
+/* =========================================================
+   LOCKED / COMING SOON CARDS
+   ---------------------------------------------------
+   Applied to scenarios that aren't wired up yet. The card
+   stays visible (so the roadmap is legible) but its visual
+   and content areas are desaturated/darkened and the launch
+   interaction is disabled in ScenarioSelect.js. The badge
+   itself sits outside the filtered elements so it stays
+   crisp and legible instead of graying out with the rest.
+   ========================================================= */
+
+.scenario-card.scenario-locked {
+    cursor: not-allowed;
+}
+
+.scenario-card.scenario-locked:hover {
+    transform: none;
+
+    border-color: rgba(110, 145, 170, 0.17);
+
+    box-shadow: none;
+}
+
+/*
+ * The card's animated illustration (network graph, ransom
+ * note, etc.) stays alive underneath — just dimmed and
+ * desaturated a touch — rather than being crushed flat with
+ * grayscale+brightness, which read as a muddy smear instead
+ * of a deliberate "locked" state.
+ */
+
+.scenario-card.scenario-locked .scenario-visual {
+    opacity: 0.3;
+
+    filter: saturate(0.65);
+}
+
+.scenario-card.scenario-locked .scenario-content h2 {
+    color: #aebbc7;
+}
+
+.scenario-card.scenario-locked .scenario-content p {
+    opacity: 0.7;
+}
+
+.scenario-card.scenario-locked .scenario-arrow {
+    opacity: 0;
+}
+
+.scenario-card.scenario-locked .scenario-launch {
+    color: #55697b;
+}
+
+.scenario-card.scenario-locked .scenario-launch span:last-child {
+    font-size: 14px;
+
+    transform: none !important;
+}
+
+
+/*
+ * Corner tag.
+ */
+
+.scenario-lock-badge {
+    position: absolute;
+
+    top: 18px;
+    right: 18px;
+
+    z-index: 7;
+
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 7px 14px;
+
+    border: 1px solid rgba(220, 232, 243, 0.45);
+    border-radius: 3px;
+
+    background: rgba(4, 9, 15, 0.85);
+    backdrop-filter: blur(3px);
+
+    font-family: monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+
+    color: #eef7ff;
+
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+}
+
+.scenario-lock-badge .scenario-lock-icon {
+    font-size: 11px;
+}
+
+
+/*
+ * Centered focal point over the (now-dimmed) illustration —
+ * a soft scrim plus a lock glyph with a slow animated sonar
+ * ping, so the card still reads as "alive" instead of just
+ * broken/dim. Sits as a sibling of .scenario-visual (not a
+ * child of it) so it isn't caught by that element's own
+ * opacity/filter above.
+ */
+
+.scenario-locked-overlay {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 56%;
+
+    z-index: 3;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        radial-gradient(circle at 50% 46%,
+            rgba(3, 8, 13, 0.25) 0%,
+            rgba(3, 8, 13, 0.72) 68%,
+            rgba(3, 8, 13, 0.88) 100%);
+
+    pointer-events: none;
+}
+
+/*
+ * Worm Outbreak only: its original illustration was a loose
+ * scatter of CSS-positioned dots/lines that never lined up
+ * with anything once foregrounded, so its overlay goes flat
+ * and near-opaque and is replaced with a proper diagram of
+ * its own below — rather than dimming something broken. The
+ * ransomware card's illustration (the ransom note) is a
+ * legible piece of UI even dimmed, so it keeps the plain
+ * translucent scrim + lock ring above and is left alone.
+ */
+
+.worm-card.scenario-locked .scenario-locked-overlay {
+    background: #060b11;
+}
+
+/*
+ * A small computer-network diagram — every line and node
+ * shares one SVG coordinate space, so they always meet
+ * exactly, unlike the old independently-positioned CSS dots.
+ * Worm Outbreak only.
+ */
+
+.scenario-locked-diagram {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 1;
+
+    color: rgba(158, 186, 210, 0.55);
+}
+
+.scenario-locked-line {
+    stroke-dasharray: 3 6;
+
+    opacity: 0.55;
+
+    animation: scenarioLineFlow 3.6s linear infinite;
+}
+
+@keyframes scenarioLineFlow {
+    to {
+        stroke-dashoffset: -18;
+    }
+}
+
+.scenario-locked-node {
+    transform-origin: center;
+    transform-box: fill-box;
+
+    animation: scenarioNodePulse 3.4s ease-in-out infinite;
+}
+
+.scenario-locked-node--b {
+    animation-delay: .5s;
+}
+
+.scenario-locked-node--c {
+    animation-delay: 1s;
+}
+
+.scenario-locked-node--d {
+    animation-delay: 1.6s;
+}
+
+@keyframes scenarioNodePulse {
+    0%, 100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.06);
+    }
+}
+
+.scenario-locked-ring {
+    position: relative;
+
+    z-index: 2;
+
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(220, 232, 243, 0.4);
+    background: rgba(4, 9, 15, 0.85);
+
+    font-size: 20px;
+
+    color: #dce8f3;
+
+    box-shadow: 0 0 22px rgba(0, 0, 0, 0.5);
+}
+
+.scenario-locked-ring::before,
+.scenario-locked-ring::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    border-radius: 50%;
+    border: 1px solid rgba(220, 232, 243, 0.3);
+
+    animation: scenarioLockPing 2.8s ease-out infinite;
+}
+
+.scenario-locked-ring::after {
+    animation-delay: 1.4s;
+}
+
+@keyframes scenarioLockPing {
+    0% {
+        transform: scale(1);
+        opacity: 0.55;
+    }
+
+    100% {
+        transform: scale(2.15);
+        opacity: 0;
+    }
+}
+
+
+/* =========================================================
+   CREDENTIAL THEFT
+   ========================================================= */
+
+.credential-card {
+    background:
+        radial-gradient(circle at 50% 20%,
+            rgba(42, 118, 170, 0.20),
+            transparent 55%),
+        #07131e;
+}
+
+.credential-card .scenario-logo {
+    border: 1px solid rgba(86, 166, 213, 0.4);
+    color: #79c3ec;
+
+    box-shadow: 0 0 16px rgba(86, 166, 213, 0.25);
+}
+
+.credential-card .scenario-info-trigger {
+    color: #6fb2e0;
+}
+
+.credential-glow {
+    position: absolute;
+
+    width: 280px;
+    height: 280px;
+
+    left: 50%;
+    top: 30%;
+
+    transform: translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background: rgba(38, 128, 190, 0.14);
+
+    filter: blur(50px);
+
+    animation: credentialGlow 4s ease-in-out infinite;
+}
+
+@keyframes credentialGlow {
+    50% {
+        transform: translate(-50%, -50%) scale(1.25);
+        opacity: 0.5;
+    }
+}
+
+.terminal-window {
+    position: absolute;
+
+    width: 70%;
+    height: 145px;
+
+    left: 15%;
+    top: 16%;
+
+    background: rgba(3, 10, 16, 0.85);
+
+    border: 1px solid rgba(75, 150, 195, 0.25);
+
+    box-shadow:
+        0 20px 45px rgba(0, 0, 0, 0.4);
+
+    transform: perspective(700px) rotateX(5deg);
+
+    animation: terminalFloat 5s ease-in-out infinite;
+}
+
+@keyframes terminalFloat {
+    50% {
+        transform:
+            perspective(700px) rotateX(5deg) translateY(-7px);
+    }
+}
+
+.terminal-top {
+    height: 22px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    padding-left: 8px;
+
+    border-bottom: 1px solid rgba(80, 130, 160, 0.15);
+}
+
+.terminal-top span {
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: #416071;
+}
+
+.terminal-lines {
+    padding: 13px;
+
+    font-family: monospace;
+
+    font-size: 8px;
+    line-height: 2;
+
+    color: #52778c;
+}
+
+.terminal-danger {
+    color: #c96b6b;
+}
+
+.terminal-cursor {
+    color: #79b6d8;
+
+    animation: cursorBlink 1s infinite;
+}
+
+@keyframes cursorBlink {
+    50% {
+        opacity: 0;
+    }
+}
+
+.credential-lock {
+    position: absolute;
+
+    right: 16%;
+    bottom: 20%;
+
+    font-size: 52px;
+
+    color: rgba(86, 166, 213, 0.18);
+
+    text-shadow:
+        0 0 30px rgba(86, 166, 213, 0.35);
+
+    animation: lockPulse 3s ease-in-out infinite;
+}
+
+@keyframes lockPulse {
+    50% {
+        transform: scale(1.08);
+        opacity: 0.6;
+    }
+}
+
+.floating-code {
+    position: absolute;
+
+    font-family: monospace;
+
+    font-size: 8px;
+
+    color: rgba(92, 160, 195, 0.55);
+
+    animation: codeFloat 6s ease-in-out infinite;
+}
+
+.code-1 {
+    left: 7%;
+    top: 20%;
+}
+
+.code-2 {
+    right: 8%;
+    top: 38%;
+
+    animation-delay: -2s;
+}
+
+.code-3 {
+    left: 12%;
+    bottom: 18%;
+
+    animation-delay: -4s;
+}
+
+@keyframes codeFloat {
+    50% {
+        transform: translateY(-14px);
+        opacity: 0.25;
+    }
+}
+
+
+/* =========================================================
+   RANSOMWARE
+   ========================================================= */
+
+.ransomware-card {
+    background:
+        radial-gradient(circle at 50% 35%,
+            rgba(150, 70, 42, 0.20),
+            transparent 55%),
+        #160d0b;
+}
+
+.ransomware-card .scenario-logo {
+    border: 1px solid rgba(212, 123, 94, 0.4);
+    color: #e29271;
+
+    box-shadow: 0 0 16px rgba(212, 123, 94, 0.25);
+}
+
+.ransomware-card .scenario-info-trigger {
+    color: #d4917a;
+}
+
+.ransomware-grid {
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        linear-gradient(rgba(150, 90, 60, 0.06) 1px,
+            transparent 1px),
+        linear-gradient(90deg,
+            rgba(150, 90, 60, 0.06) 1px,
+            transparent 1px);
+
+    background-size: 30px 30px;
+
+    animation: ransomwareGrid 8s linear infinite;
+}
+
+@keyframes ransomwareGrid {
+    from {
+        transform: translate(0, 0);
+    }
+
+    to {
+        transform: translate(30px, 30px);
+    }
+}
+
+.ransom-note {
+    position: absolute;
+
+    left: 50%;
+    top: 42%;
+
+    transform: translate(-50%, -50%) rotate(-2deg);
+
+    width: 185px;
+
+    padding: 20px;
+
+    background:
+        linear-gradient(145deg,
+            rgba(50, 26, 22, 0.96),
+            rgba(26, 13, 12, 0.96));
+
+    border: 1px solid rgba(194, 102, 65, 0.35);
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.5);
+
+    text-align: center;
+
+    animation: ransomFloat 4s ease-in-out infinite;
+}
+
+@keyframes ransomFloat {
+    50% {
+        transform:
+            translate(-50%, -50%) rotate(2deg) translateY(-8px);
+    }
+}
+
+.ransom-warning {
+    margin-bottom: 8px;
+
+    font-size: 30px;
+    font-weight: 800;
+
+    color: #d47b5e;
+}
+
+.ransom-text {
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    line-height: 1.5;
+
+    color: #e7c6ba;
+}
+
+.ransom-price {
+    margin-top: 13px;
+
+    padding-top: 10px;
+
+    border-top: 1px solid rgba(190, 100, 70, 0.2);
+
+    font-family: monospace;
+
+    font-size: 10px;
+
+    color: #bc806b;
+}
+
+.money-symbol {
+    position: absolute;
+
+    font-family: Georgia, serif;
+    font-weight: bold;
+
+    font-size: 65px;
+
+    color: rgba(181, 117, 72, 0.10);
+
+    animation: moneyDrift 7s ease-in-out infinite;
+}
+
+.money-1 {
+    left: 8%;
+    top: 15%;
+}
+
+.money-2 {
+    right: 9%;
+    top: 20%;
+
+    animation-delay: -2s;
+}
+
+.money-3 {
+    left: 15%;
+    bottom: 12%;
+
+    animation-delay: -4s;
+}
+
+.money-4 {
+    right: 17%;
+    bottom: 18%;
+
+    animation-delay: -6s;
+}
+
+@keyframes moneyDrift {
+    50% {
+        transform:
+            translateY(-20px) rotate(12deg);
+
+        opacity: 0.4;
+    }
+}
+
+.encrypted-files {
+    position: absolute;
+
+    left: 8%;
+    bottom: 10%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+
+    font-family: monospace;
+
+    font-size: 7px;
+
+    color: rgba(190, 130, 105, 0.42);
+}
+
+.encrypted-files span::before {
+    content: "🔒 ";
+}
+
+.ransom-scanline {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    height: 1px;
+
+    top: 0;
+
+    background: rgba(212, 102, 72, 0.5);
+
+    box-shadow:
+        0 0 15px rgba(212, 102, 72, 0.4);
+
+    animation: scanline 4s linear infinite;
+}
+
+@keyframes scanline {
+    from {
+        top: 0;
+    }
+
+    to {
+        top: 100%;
+    }
+}
+
+
+/* =========================================================
+   WORM OUTBREAK
+   ========================================================= */
+
+.worm-card {
+    background:
+        radial-gradient(circle at 50% 40%,
+            rgba(43, 137, 104, 0.18),
+            transparent 58%),
+        #061411;
+}
+
+.worm-card .scenario-logo {
+    border: 1px solid rgba(74, 169, 132, 0.4);
+    color: #6cc9a2;
+
+    box-shadow: 0 0 16px rgba(74, 169, 132, 0.25);
+}
+
+.worm-card .scenario-info-trigger {
+    color: #6cc9a2;
+}
+
+.network-grid {
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        linear-gradient(rgba(58, 151, 119, 0.08) 1px,
+            transparent 1px),
+        linear-gradient(90deg,
+            rgba(58, 151, 119, 0.08) 1px,
+            transparent 1px);
+
+    background-size: 40px 40px;
+
+    animation: networkGridMove 12s linear infinite;
+}
+
+@keyframes networkGridMove {
+    from {
+        transform: translate(0, 0);
+    }
+
+    to {
+        transform: translate(40px, 40px);
+    }
+}
+
+.network-node {
+    position: absolute;
+
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    background: #4aa984;
+
+    box-shadow:
+        0 0 12px rgba(74, 169, 132, 0.8);
+
+    animation: nodePulse 2.5s ease-in-out infinite;
+}
+
+.node-main {
+    left: 50%;
+    top: 42%;
+
+    width: 16px;
+    height: 16px;
+
+    transform: translate(-50%, -50%);
+
+    background: #c96e5f;
+    box-shadow:
+        0 0 20px rgba(201, 110, 95, 0.8);
+
+    z-index: 3;
+}
+
+.node-1 {
+    left: 22%;
+    top: 25%;
+}
+
+.node-2 {
+    left: 78%;
+    top: 24%;
+    animation-delay: -.5s;
+}
+
+.node-3 {
+    left: 17%;
+    top: 68%;
+    animation-delay: -1s;
+}
+
+.node-4 {
+    left: 82%;
+    top: 67%;
+    animation-delay: -1.5s;
+}
+
+.node-5 {
+    left: 37%;
+    top: 18%;
+    animation-delay: -2s;
+}
+
+.node-6 {
+    left: 66%;
+    top: 73%;
+    animation-delay: -.8s;
+}
+
+@keyframes nodePulse {
+    50% {
+        transform: scale(1.7);
+        opacity: 0.45;
+    }
+}
+
+.network-lines {
+    position: absolute;
+    inset: 0;
+}
+
+.line {
+    position: absolute;
+
+    height: 1px;
+
+    transform-origin: left center;
+
+    background:
+        linear-gradient(90deg,
+            rgba(70, 160, 125, 0.55),
+            rgba(70, 160, 125, 0.04));
+
+    box-shadow:
+        0 0 6px rgba(70, 160, 125, 0.25);
+}
+
+.line-1 {
+    width: 250px;
+    left: 24%;
+    top: 28%;
+
+    transform: rotate(24deg);
+}
+
+.line-2 {
+    width: 270px;
+    left: 50%;
+    top: 42%;
+
+    transform: rotate(-28deg);
+}
+
+.line-3 {
+    width: 220px;
+    left: 27%;
+    top: 69%;
+
+    transform: rotate(-30deg);
+}
+
+.line-4 {
+    width: 230px;
+    left: 50%;
+    top: 42%;
+
+    transform: rotate(34deg);
+}
+
+.line-5 {
+    width: 190px;
+    left: 37%;
+    top: 18%;
+
+    transform: rotate(55deg);
+}
+
+.infection-pulse {
+    position: absolute;
+
+    left: 50%;
+    top: 42%;
+
+    width: 30px;
+    height: 30px;
+
+    transform: translate(-50%, -50%);
+
+    border: 1px solid rgba(201, 110, 95, 0.7);
+
+    border-radius: 50%;
+
+    animation: infectionExpand 2.5s ease-out infinite;
+}
+
+@keyframes infectionExpand {
+    from {
+        width: 20px;
+        height: 20px;
+        opacity: 0.9;
+    }
+
+    to {
+        width: 230px;
+        height: 230px;
+        opacity: 0;
+    }
+}
+
+.worm-label {
+    position: absolute;
+
+    right: 7%;
+    top: 11%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+
+    font-family: monospace;
+
+    font-size: 7px;
+
+    color: rgba(92, 160, 133, 0.5);
+
+    letter-spacing: 1px;
+}
+
+.worm-label strong {
+    color: rgba(201, 110, 95, 0.75);
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.scenario-footer {
+    position: absolute;
+
+    left: 40px;
+    right: 40px;
+    bottom: 14px;
+
+    display: flex;
+    justify-content: space-between;
+
+    font-family: monospace;
+
+    font-size: 8px;
+
+    letter-spacing: 1.5px;
+
+    color: #405566;
+}
+
+
+/* =========================================================
+   REAL-WORLD EXAMPLE MODAL
+   ---------------------------------------------------
+   Shared overlay populated per-card by ScenarioSelect.js —
+   see SCENARIO_INFO there for the about/example copy and
+   the small trend-graph data behind each card's icon color.
+   ========================================================= */
+
+.scenario-info-modal {
+    position: fixed;
+    inset: 0;
+
+    z-index: 10001;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    background: rgba(3, 8, 13, 0.78);
+
+    backdrop-filter: blur(6px);
+}
+
+.scenario-info-modal.hidden {
+    display: none;
+}
+
+.scenario-info-box {
+    position: relative;
+
+    width: min(640px, 100%);
+    max-height: 88vh;
+
+    overflow-y: auto;
+
+    padding: 34px 34px 28px;
+
+    background: #08131e;
+
+    border: 1px solid rgba(120, 160, 190, 0.22);
+
+    box-shadow:
+        0 40px 110px rgba(0, 0, 0, 0.6);
+}
+
+.scenario-info-close {
+    position: absolute;
+
+    top: 14px;
+    right: 14px;
+
+    width: 30px;
+    height: 30px;
+
+    border: 1px solid rgba(120, 160, 190, 0.2);
+    background: rgba(255, 255, 255, 0.03);
+
+    color: #8ea0b2;
+
+    font-size: 16px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.scenario-info-close:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #eef7ff;
+}
+
+.scenario-info-header {
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+
+    margin-bottom: 22px;
+}
+
+.scenario-info-icon {
+    flex-shrink: 0;
+
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.scenario-info-icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.scenario-info-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+
+    color: #71899e;
+
+    margin-bottom: 6px;
+}
+
+.scenario-info-title {
+    margin: 0;
+
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+
+    color: #eef6ff;
+}
+
+.scenario-info-section {
+    margin-bottom: 22px;
+}
+
+.scenario-info-section h3 {
+    margin: 0 0 8px;
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+
+    color: #8fa2b8;
+
+    text-transform: uppercase;
+}
+
+.scenario-info-section p {
+    margin: 0;
+
+    font-size: 13px;
+    line-height: 1.7;
+
+    color: #b7c5d4;
+}
+
+.scenario-info-graph-section {
+    padding-top: 18px;
+
+    border-top: 1px solid rgba(120, 160, 185, 0.14);
+}
+
+.scenario-info-graph {
+    margin: 6px 0 10px;
+}
+
+.scenario-graph-svg {
+    width: 100%;
+    height: auto;
+
+    display: block;
+    overflow: visible;
+}
+
+.scenario-graph-gridline {
+    stroke: rgba(255, 255, 255, 0.06);
+    stroke-width: 1;
+}
+
+.scenario-graph-value {
+    font-family: monospace;
+    font-size: 9px;
+    fill: #d7e3ee;
+}
+
+.scenario-graph-label {
+    font-family: monospace;
+    font-size: 8px;
+    fill: #63788c;
+}
+
+.scenario-info-graph-caption {
+    font-size: 11.5px !important;
+    line-height: 1.6 !important;
+
+    color: #7890a2 !important;
+
+    font-style: italic;
+}
+
+.scenario-info-disclaimer {
+    margin: 4px 0 0;
+
+    padding-top: 16px;
+
+    border-top: 1px solid rgba(120, 160, 185, 0.1);
+
+    font-size: 10px;
+    letter-spacing: 0.3px;
+
+    color: #55697c;
+}
+
+@media (max-width: 600px) {
+
+    .scenario-info-box {
+        padding: 26px 20px 22px;
+    }
+
+    .scenario-info-header {
+        gap: 12px;
+    }
+
+    .scenario-info-icon {
+        width: 42px;
+        height: 42px;
+    }
+
+    .scenario-info-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .scenario-info-title {
+        font-size: 17px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+    .scenario-header {
+        padding: 0 25px;
+    }
+
+    .scenario-grid {
+        width: calc(100% - 40px);
+        gap: 12px;
+    }
+
+    .scenario-content {
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+    }
+
+    .scenario-content p {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 760px) {
+
+    .scenario-header {
+        height: 100px;
+        grid-template-columns: auto 1fr auto;
+    }
+
+    .scenario-header h1 {
+        font-size: 21px;
+        letter-spacing: 3px;
+    }
+
+    .scenario-header p {
+        display: none;
+    }
+
+    .scenario-meta {
+        flex-wrap: wrap;
+        row-gap: 6px;
+    }
+
+    .scenario-grid {
+        height: calc(100vh - 145px);
+        margin-top: 20px;
+
+        overflow-y: auto;
+
+        grid-template-columns: 1fr;
+    }
+
+    .scenario-card {
+        min-height: 430px;
+    }
+
+    .scenario-footer {
+        display: none;
+    }
+}

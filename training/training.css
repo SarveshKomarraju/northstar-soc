@@ -1,0 +1,1503 @@
+/* =========================================================
+   NORTHSTAR SOC — TRAINING
+   ---------------------------------------------------------
+   Visual language matches main-menu.css: dark panel (#0b1424),
+   blue-tinted borders, Segoe UI, the same eyebrow/label
+   convention, and the same [data-northstar-theme="light"]
+   override pattern for the light theme.
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   Screen shell
+   --------------------------------------------------------- */
+
+.northstar-training-screen {
+    position: fixed;
+    inset: 0;
+
+    z-index: 100000;
+
+    overflow-y: auto;
+
+    background: #060b16;
+
+    color: #dce7f2;
+
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.northstar-training-screen.hidden {
+    display: none;
+}
+
+.ns-training-hub.hidden,
+.ns-training-detail.hidden,
+.ns-training-practice.hidden {
+    display: none;
+}
+
+.ns-training-hub,
+.ns-training-detail,
+.ns-training-practice {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 48px min(6vw, 84px) 80px;
+}
+
+
+/* ---------------------------------------------------------
+   HUB — top bar
+   --------------------------------------------------------- */
+
+.ns-training-hub-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+.ns-training-eyebrow {
+    color: #6386a4;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+
+    margin-bottom: 8px;
+}
+
+.ns-training-hub-top h1 {
+    margin: 0 0 10px;
+
+    color: #eef5fb;
+
+    font-size: clamp(28px, 3.4vw, 40px);
+    letter-spacing: 1px;
+}
+
+.ns-training-hub-top p {
+    margin: 0;
+    max-width: 620px;
+
+    color: #8195a8;
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.ns-training-x {
+    flex-shrink: 0;
+
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+    border: 1px solid rgba(100, 150, 210, 0.25);
+    background: rgba(255, 255, 255, 0.03);
+    color: #b8c9d8;
+
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.ns-training-x:hover {
+    background: rgba(220, 90, 90, 0.12);
+    border-color: rgba(220, 90, 90, 0.4);
+    color: #f2b8b8;
+}
+
+
+/* ---------------------------------------------------------
+   HUB — progress
+   --------------------------------------------------------- */
+
+.ns-training-progress-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    max-width: 1180px;
+    margin: 28px auto 8px;
+}
+
+.ns-training-progress-track {
+    flex: 1;
+    height: 6px;
+
+    border-radius: 3px;
+    background: rgba(100, 150, 210, 0.12);
+    overflow: hidden;
+}
+
+.ns-training-progress-fill {
+    height: 100%;
+    width: 0%;
+
+    background: linear-gradient(90deg, #4fa8d8, #6fd6c9);
+
+    transition: width 0.4s ease;
+}
+
+.ns-training-progress-label {
+    flex-shrink: 0;
+
+    color: #6386a4;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+
+/* ---------------------------------------------------------
+   HUB — card grid
+   --------------------------------------------------------- */
+
+.ns-training-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+
+    max-width: 1180px;
+    margin: 28px auto 0;
+}
+
+.ns-training-card {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+
+    text-align: left;
+
+    padding: 20px 18px;
+
+    background: #0b1424;
+    border: 1px solid rgba(100, 150, 210, 0.18);
+    border-radius: 10px;
+
+    color: #dce7f2;
+    font-family: inherit;
+    cursor: pointer;
+
+    transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+
+.ns-training-card:hover {
+    border-color: var(--ns-accent, #6fb2e0);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+}
+
+.ns-training-card-done {
+    border-color: rgba(120, 200, 160, 0.35);
+}
+
+.ns-training-card-check {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+
+    width: 22px;
+    height: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    background: rgba(120, 200, 160, 0.18);
+    color: #8fd6ab;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.ns-training-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 40px;
+    height: 40px;
+
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--ns-accent, #6fb2e0) 16%, #0b1424);
+    color: var(--ns-accent, #6fb2e0);
+
+    font-size: 19px;
+}
+
+.ns-training-card-title {
+    color: #eef5fb;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.ns-training-card-tagline {
+    color: #8195a8;
+
+    font-size: 12.5px;
+    line-height: 1.5;
+
+    min-height: 34px;
+}
+
+.ns-training-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-top: 4px;
+}
+
+.ns-training-tier {
+    padding: 3px 8px;
+
+    border-radius: 20px;
+
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+}
+
+.ns-training-tier-quick {
+    background: rgba(111, 214, 201, 0.15);
+    color: #8fe0d2;
+}
+
+.ns-training-tier-standard {
+    background: rgba(111, 178, 224, 0.15);
+    color: #8ec4ea;
+}
+
+.ns-training-tier-deep {
+    background: rgba(231, 184, 106, 0.16);
+    color: #f0c98a;
+}
+
+.ns-training-card-time {
+    color: #64798d;
+
+    font-size: 11px;
+}
+
+
+/* ---------------------------------------------------------
+   Shared "back" button
+   --------------------------------------------------------- */
+
+.ns-training-back {
+    background: none;
+    border: none;
+
+    color: #6386a4;
+
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+
+    cursor: pointer;
+    padding: 0;
+
+    margin-bottom: 22px;
+
+    transition: color 0.15s;
+}
+
+.ns-training-back:hover {
+    color: #a9d4ea;
+}
+
+
+/* ---------------------------------------------------------
+   DETAIL view
+   --------------------------------------------------------- */
+
+.ns-training-detail-inner {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.ns-training-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    padding-bottom: 26px;
+    margin-bottom: 26px;
+
+    border-bottom: 1px solid rgba(100, 150, 210, 0.15);
+}
+
+.ns-training-detail-icon {
+    flex-shrink: 0;
+
+    width: 64px;
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--ns-accent, #6fb2e0) 16%, #0b1424);
+    color: var(--ns-accent, #6fb2e0);
+
+    font-size: 28px;
+}
+
+.ns-training-detail-eyebrow {
+    color: #6386a4;
+
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+
+    margin-bottom: 6px;
+}
+
+.ns-training-detail-header h2 {
+    margin: 0 0 6px;
+
+    color: #eef5fb;
+
+    font-size: 26px;
+}
+
+.ns-training-detail-tagline {
+    margin: 0;
+
+    color: #8195a8;
+
+    font-size: 14px;
+}
+
+.ns-training-detail-body h3 {
+    color: #b8c9d8;
+
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+
+    margin: 0 0 12px;
+}
+
+.ns-training-detail-body p {
+    color: #c3d3e2;
+
+    font-size: 14.5px;
+    line-height: 1.75;
+
+    margin: 0 0 16px;
+}
+
+.ns-training-skill-list {
+    list-style: none;
+    margin: 0 0 30px;
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ns-training-skill-list li {
+    position: relative;
+
+    padding-left: 20px;
+
+    color: #c3d3e2;
+
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+
+.ns-training-skill-list li::before {
+    content: "";
+
+    position: absolute;
+    left: 0;
+    top: 9px;
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+    background: var(--ns-accent, #6fb2e0);
+}
+
+.ns-training-detail-scenario {
+    padding: 22px 24px;
+
+    background: #0b1424;
+    border: 1px solid rgba(100, 150, 210, 0.2);
+    border-radius: 12px;
+}
+
+.ns-training-detail-scenario-label {
+    color: #6386a4;
+
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+
+    margin-bottom: 8px;
+}
+
+.ns-training-detail-scenario-title {
+    color: #eef5fb;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    margin-bottom: 10px;
+}
+
+.ns-training-detail-scenario p {
+    color: #a9bccd;
+
+    font-size: 13.5px;
+    line-height: 1.65;
+
+    margin: 0 0 18px;
+}
+
+.ns-training-start-btn {
+    padding: 13px 22px;
+
+    border: none;
+    border-radius: 8px;
+    background: var(--ns-accent, #6fb2e0);
+    color: #06121f;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: filter 0.15s, transform 0.15s;
+}
+
+.ns-training-start-btn:hover:not(:disabled) {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+.ns-training-start-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    filter: none;
+    transform: none;
+}
+
+.ns-training-locked-note {
+    margin: 12px 0 0;
+
+    color: #8ba0b5;
+
+    font-size: 12.5px;
+    line-height: 1.6;
+}
+
+.ns-training-locked-note.hidden {
+    display: none;
+}
+
+
+/* ---------------------------------------------------------
+   DETAIL — knowledge check (gates hands-on practice)
+   --------------------------------------------------------- */
+
+.ns-training-knowledge-check {
+    padding: 22px 24px;
+    margin-bottom: 22px;
+
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid rgba(100, 150, 210, 0.16);
+    border-radius: 12px;
+}
+
+.ns-training-knowledge-intro {
+    margin: 0 0 18px;
+
+    color: #a9bccd;
+
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+
+.ns-training-kc-question {
+    margin-bottom: 20px;
+}
+
+.ns-training-kc-question:last-child {
+    margin-bottom: 0;
+}
+
+.ns-training-kc-prompt {
+    color: #dce7f2;
+
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.55;
+
+    margin-bottom: 10px;
+}
+
+.ns-training-kc-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ns-training-kc-choice {
+    padding: 12px 14px;
+
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(100, 150, 210, 0.14);
+    border-radius: 8px;
+
+    color: #dce7f2;
+    font-family: inherit;
+    font-size: 13px;
+    text-align: left;
+    line-height: 1.5;
+
+    cursor: pointer;
+
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.ns-training-kc-choice:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(100, 150, 210, 0.35);
+}
+
+.ns-training-kc-choice:disabled {
+    cursor: default;
+}
+
+.ns-training-kc-choice-correct {
+    background: rgba(120, 200, 160, 0.14) !important;
+    border-color: rgba(120, 200, 160, 0.55) !important;
+}
+
+.ns-training-kc-choice-wrong {
+    background: rgba(220, 90, 90, 0.1) !important;
+    border-color: rgba(220, 90, 90, 0.4) !important;
+    opacity: 0.65;
+}
+
+.ns-training-kc-feedback {
+    margin-top: 8px;
+
+    font-size: 12.5px;
+    line-height: 1.5;
+}
+
+.ns-training-kc-feedback:empty {
+    margin: 0;
+}
+
+.ns-training-kc-feedback-success {
+    color: #8fd6ab;
+}
+
+.ns-training-kc-feedback-fail {
+    color: #e0a3a3;
+}
+
+
+/* ---------------------------------------------------------
+   PRACTICE — "what this looks like in game" step
+   --------------------------------------------------------- */
+
+.ns-training-ingame-frame {
+    position: relative;
+
+    margin-bottom: 18px;
+
+    background: #060b16;
+    border: 1px solid rgba(100, 150, 210, 0.3);
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+.ns-training-ingame-ribbon {
+    padding: 7px 14px;
+
+    background: rgba(100, 150, 210, 0.1);
+    border-bottom: 1px solid rgba(100, 150, 210, 0.2);
+
+    color: #6386a4;
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+}
+
+.ns-training-ingame-mockup {
+    padding: 18px;
+
+    max-height: 420px;
+    overflow: auto;
+
+    pointer-events: none;
+    user-select: none;
+}
+
+.ns-training-ingame-mockup * {
+    box-sizing: border-box;
+}
+
+/*
+ * SIEM bug fix: the real .siem-table is sized for the live
+ * ~900px-wide desktop window, and its DESCRIPTION column is a
+ * flexible `1fr` track. Reused unchanged in this narrower
+ * ~660px preview frame, that column shrinks to ~70px and
+ * .siem-table's own `overflow: hidden` then hard-clips
+ * whatever text doesn't fit, cutting words off mid-letter
+ * ("DESCRI", "SUCCE") instead of wrapping or scrolling.
+ * Scoped to the training mockup only (untouched elsewhere).
+ *
+ * Fix: give .siem-table itself real min-width (810px, matching
+ * the fixed column sum below) instead of letting it stay narrow
+ * and escaping via `overflow: visible`. An escaped-but-still-
+ * narrow-box approach measures fine (getBoundingClientRect looks
+ * correct) but Chromium doesn't reliably repaint content that
+ * pokes out past its own box once the *ancestor* scroll
+ * container (.ns-training-ingame-mockup) scrolls — the escaped
+ * cells go visually blank after scrolling right, which is worse
+ * than the original clipping bug. Giving .siem-table a genuine
+ * 810px-wide layout box means it's real scrollable content, so
+ * the mockup wrapper's existing `overflow: auto` scrolls it
+ * normally (and paints it) like any other wide element.
+ */
+.ns-training-ingame-mockup .siem-table {
+    min-width: 810px;
+}
+
+.ns-training-ingame-mockup .siem-table-header,
+.ns-training-ingame-mockup .siem-event-row {
+    grid-template-columns: 90px 150px 85px 135px 130px 220px;
+    min-width: 810px;
+}
+
+.ns-training-ingame-notes {
+    margin: 0 0 14px;
+    padding-left: 20px;
+
+    color: #a9bccd;
+
+    font-size: 13.5px;
+    line-height: 1.7;
+}
+
+.ns-training-ingame-notes li {
+    margin-bottom: 6px;
+}
+
+.ns-training-ingame-outro {
+    margin-bottom: 0;
+}
+
+
+/* ---------------------------------------------------------
+   PRACTICE view
+   --------------------------------------------------------- */
+
+.ns-training-practice-inner {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.ns-training-practice-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 4px;
+}
+
+.ns-training-practice-top .ns-training-back {
+    margin-bottom: 0;
+}
+
+.ns-training-practice-step-count {
+    color: #6386a4;
+
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.ns-training-step-dots {
+    display: flex;
+    gap: 6px;
+
+    margin: 18px 0 24px;
+}
+
+.ns-training-step-dot {
+    width: 26px;
+    height: 4px;
+    padding: 0;
+
+    border: none;
+    border-radius: 2px;
+    background: rgba(100, 150, 210, 0.15);
+
+    cursor: pointer;
+
+    transition: background 0.15s, opacity 0.15s, transform 0.15s;
+}
+
+.ns-training-step-dot:disabled {
+    cursor: not-allowed;
+}
+
+.ns-training-step-dot:not(:disabled):hover {
+    opacity: 0.85;
+    transform: scaleY(1.4);
+}
+
+.ns-training-step-dot-done {
+    background: var(--ns-accent, #6fb2e0);
+    opacity: 0.5;
+}
+
+.ns-training-step-dot-active {
+    background: var(--ns-accent, #6fb2e0);
+    opacity: 1;
+}
+
+.ns-training-step-dot-active:not(:disabled):hover {
+    transform: scaleY(1.4);
+}
+
+.ns-training-step-card {
+    padding: 28px 30px;
+
+    background: #0b1424;
+    border: 1px solid rgba(100, 150, 210, 0.2);
+    border-radius: 14px;
+}
+
+.ns-training-step-title {
+    color: #eef5fb;
+
+    font-size: 19px;
+    font-weight: 700;
+
+    margin-bottom: 14px;
+}
+
+.ns-training-step-body p {
+    color: #c3d3e2;
+
+    font-size: 14.5px;
+    line-height: 1.75;
+
+    margin: 0 0 14px;
+}
+
+.ns-training-step-body ul {
+    margin: 0 0 14px;
+    padding-left: 20px;
+
+    color: #c3d3e2;
+
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.ns-training-step-prompt {
+    color: #a9bccd;
+
+    font-size: 14.5px;
+    line-height: 1.7;
+
+    margin: 0 0 20px;
+}
+
+
+/* -- spot table -- */
+
+.ns-training-spot-table {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    margin-bottom: 6px;
+}
+
+.ns-training-spot-row {
+    display: grid;
+    grid-template-columns: repeat(var(--ns-cols, 3), 1fr);
+    gap: 12px;
+}
+
+.ns-training-spot-header {
+    padding: 0 14px;
+
+    color: #6386a4;
+
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+}
+
+.ns-training-spot-option {
+    align-items: center;
+
+    padding: 13px 14px;
+
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(100, 150, 210, 0.14);
+    border-radius: 8px;
+
+    color: #dce7f2;
+    font-family: inherit;
+    font-size: 13px;
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.ns-training-spot-option span:first-child {
+    color: #8eaecb;
+    font-variant-numeric: tabular-nums;
+}
+
+.ns-training-spot-option:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(100, 150, 210, 0.35);
+}
+
+.ns-training-spot-option:disabled {
+    cursor: default;
+}
+
+.ns-training-option-correct {
+    background: rgba(120, 200, 160, 0.14) !important;
+    border-color: rgba(120, 200, 160, 0.55) !important;
+}
+
+.ns-training-option-wrong {
+    background: rgba(220, 90, 90, 0.1) !important;
+    border-color: rgba(220, 90, 90, 0.4) !important;
+    opacity: 0.65;
+}
+
+
+/* -- quiz choices -- */
+
+.ns-training-quiz-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    margin-bottom: 6px;
+}
+
+.ns-training-quiz-choice {
+    padding: 14px 16px;
+
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(100, 150, 210, 0.14);
+    border-radius: 8px;
+
+    color: #dce7f2;
+    font-family: inherit;
+    font-size: 13.5px;
+    text-align: left;
+    line-height: 1.5;
+
+    cursor: pointer;
+
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.ns-training-quiz-choice:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(100, 150, 210, 0.35);
+}
+
+.ns-training-quiz-choice:disabled {
+    cursor: default;
+}
+
+
+/* -- type step -- */
+
+.ns-training-type-row {
+    display: flex;
+    gap: 10px;
+
+    margin-bottom: 6px;
+}
+
+.ns-training-type-input {
+    flex: 1;
+
+    padding: 12px 14px;
+
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(100, 150, 210, 0.25);
+    border-radius: 8px;
+
+    color: #eef5fb;
+    font-family: inherit;
+    font-size: 13.5px;
+}
+
+.ns-training-type-input:focus {
+    outline: none;
+    border-color: var(--ns-accent, #6fb2e0);
+}
+
+.ns-training-type-submit {
+    padding: 0 20px;
+
+    border: none;
+    border-radius: 8px;
+    background: var(--ns-accent, #6fb2e0);
+    color: #06121f;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+/* -- feedback -- */
+
+.ns-training-step-feedback:empty {
+    margin: 0;
+}
+
+.ns-training-step-feedback {
+    margin-top: 14px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ns-training-feedback-success {
+    padding: 12px 14px;
+
+    background: rgba(120, 200, 160, 0.1);
+    border-left: 3px solid #7bd4a3;
+    border-radius: 4px;
+
+    color: #b8e8cd;
+
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+
+.ns-training-feedback-fail {
+    padding: 12px 14px;
+
+    background: rgba(220, 90, 90, 0.08);
+    border-left: 3px solid #d97b7b;
+    border-radius: 4px;
+
+    color: #ecc0c0;
+
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+
+.ns-training-feedback-note {
+    padding: 0 14px;
+
+    color: #8ba0b5;
+
+    font-size: 12.5px;
+    line-height: 1.6;
+    font-style: italic;
+}
+
+.ns-training-hint {
+    padding: 0 14px;
+
+    color: #9db6cc;
+
+    font-size: 12.5px;
+    line-height: 1.6;
+}
+
+
+/* -- step footer -- */
+
+.ns-training-step-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 22px;
+}
+
+.ns-training-hint-btn {
+    background: none;
+    border: none;
+
+    color: #6386a4;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+    padding: 0;
+}
+
+.ns-training-hint-btn:hover:not(:disabled) {
+    color: #a9d4ea;
+}
+
+.ns-training-hint-btn:disabled {
+    color: #45566a;
+    cursor: default;
+}
+
+.ns-training-continue-btn {
+    padding: 11px 20px;
+
+    border: none;
+    border-radius: 8px;
+    background: var(--ns-accent, #6fb2e0);
+    color: #06121f;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: filter 0.15s, transform 0.15s;
+}
+
+.ns-training-continue-btn.hidden {
+    display: none;
+}
+
+.ns-training-continue-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+
+/* ---------------------------------------------------------
+   COMPLETION
+   --------------------------------------------------------- */
+
+.ns-training-complete {
+    text-align: center;
+
+    padding: 20px 10px 10px;
+}
+
+.ns-training-complete-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    background: rgba(120, 200, 160, 0.15);
+    color: #8fd6ab;
+
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.ns-training-complete-eyebrow {
+    color: #6386a4;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+
+    margin-bottom: 10px;
+}
+
+.ns-training-complete h2 {
+    margin: 0 0 14px;
+
+    color: #eef5fb;
+
+    font-size: 24px;
+}
+
+.ns-training-complete > p {
+    max-width: 460px;
+    margin: 0 auto 20px;
+
+    color: #a9bccd;
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.ns-training-complete-list {
+    text-align: left;
+    max-width: 440px;
+    margin: 0 auto 30px;
+}
+
+.ns-training-complete-list li {
+    padding-left: 0;
+
+    color: #b8e8cd;
+}
+
+.ns-training-complete-list li::before {
+    display: none;
+}
+
+.ns-training-complete-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+
+    flex-wrap: wrap;
+}
+
+.ns-training-back-hub-btn {
+    padding: 12px 20px;
+
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(100, 150, 210, 0.25);
+    border-radius: 8px;
+    color: #b8c9d8;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.ns-training-back-hub-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(100, 150, 210, 0.4);
+}
+
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+
+@media (max-width: 980px) {
+
+    .ns-training-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 640px) {
+
+    .ns-training-hub,
+    .ns-training-detail,
+    .ns-training-practice {
+        padding: 32px 20px 60px;
+    }
+
+    .ns-training-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ns-training-detail-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ns-training-spot-row {
+        grid-template-columns: 1fr;
+        gap: 2px;
+
+        padding: 10px 12px;
+    }
+
+    .ns-training-spot-header {
+        display: none;
+    }
+
+    .ns-training-type-row {
+        flex-direction: column;
+    }
+
+    .ns-training-step-footer {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+}
+
+
+/* =========================================================
+   LIGHT THEME
+   ========================================================= */
+
+[data-northstar-theme="light"] .northstar-training-screen {
+    background: #eef4fa;
+    color: #223447;
+}
+
+[data-northstar-theme="light"] .ns-training-eyebrow,
+[data-northstar-theme="light"] .ns-training-progress-label,
+[data-northstar-theme="light"] .ns-training-detail-eyebrow,
+[data-northstar-theme="light"] .ns-training-detail-scenario-label,
+[data-northstar-theme="light"] .ns-training-practice-step-count,
+[data-northstar-theme="light"] .ns-training-complete-eyebrow,
+[data-northstar-theme="light"] .ns-training-spot-header {
+    color: #4a7096;
+}
+
+[data-northstar-theme="light"] .ns-training-hub-top h1,
+[data-northstar-theme="light"] .ns-training-detail-header h2,
+[data-northstar-theme="light"] .ns-training-detail-scenario-title,
+[data-northstar-theme="light"] .ns-training-step-title,
+[data-northstar-theme="light"] .ns-training-card-title,
+[data-northstar-theme="light"] .ns-training-complete h2 {
+    color: #142236;
+}
+
+[data-northstar-theme="light"] .ns-training-hub-top p,
+[data-northstar-theme="light"] .ns-training-detail-tagline,
+[data-northstar-theme="light"] .ns-training-card-tagline,
+[data-northstar-theme="light"] .ns-training-complete > p {
+    color: #4f6072;
+}
+
+[data-northstar-theme="light"] .ns-training-x {
+    background: rgba(30, 60, 100, 0.05);
+    border-color: rgba(70, 120, 180, 0.25);
+    color: #45607a;
+}
+
+[data-northstar-theme="light"] .ns-training-x:hover {
+    background: rgba(200, 70, 70, 0.1);
+    border-color: rgba(200, 70, 70, 0.35);
+    color: #a03d3d;
+}
+
+[data-northstar-theme="light"] .ns-training-progress-track {
+    background: rgba(70, 120, 180, 0.12);
+}
+
+[data-northstar-theme="light"] .ns-training-card,
+[data-northstar-theme="light"] .ns-training-detail-scenario,
+[data-northstar-theme="light"] .ns-training-step-card {
+    background: #ffffff;
+    border-color: rgba(70, 120, 180, 0.22);
+    color: #223447;
+    box-shadow: 0 4px 18px rgba(30, 60, 100, 0.06);
+}
+
+[data-northstar-theme="light"] .ns-training-card:hover {
+    box-shadow: 0 10px 26px rgba(30, 60, 100, 0.14);
+}
+
+[data-northstar-theme="light"] .ns-training-card-icon,
+[data-northstar-theme="light"] .ns-training-detail-icon {
+    background: color-mix(in srgb, var(--ns-accent, #4a7096) 14%, #ffffff);
+}
+
+[data-northstar-theme="light"] .ns-training-card-time {
+    color: #7186a0;
+}
+
+[data-northstar-theme="light"] .ns-training-back {
+    color: #4a7096;
+}
+
+[data-northstar-theme="light"] .ns-training-back:hover {
+    color: #2c5a86;
+}
+
+[data-northstar-theme="light"] .ns-training-detail-body h3 {
+    color: #33506e;
+}
+
+[data-northstar-theme="light"] .ns-training-detail-body p,
+[data-northstar-theme="light"] .ns-training-skill-list li,
+[data-northstar-theme="light"] .ns-training-step-body p,
+[data-northstar-theme="light"] .ns-training-step-body ul,
+[data-northstar-theme="light"] .ns-training-step-prompt,
+[data-northstar-theme="light"] .ns-training-detail-scenario p {
+    color: #3c526a;
+}
+
+[data-northstar-theme="light"] .ns-training-start-btn,
+[data-northstar-theme="light"] .ns-training-continue-btn,
+[data-northstar-theme="light"] .ns-training-type-submit {
+    color: #ffffff;
+}
+
+[data-northstar-theme="light"] .ns-training-spot-option,
+[data-northstar-theme="light"] .ns-training-quiz-choice {
+    background: rgba(30, 60, 100, 0.02);
+    border-color: rgba(70, 120, 180, 0.18);
+    color: #223447;
+}
+
+[data-northstar-theme="light"] .ns-training-spot-option span:first-child {
+    color: #4a7096;
+}
+
+[data-northstar-theme="light"] .ns-training-spot-option:hover:not(:disabled),
+[data-northstar-theme="light"] .ns-training-quiz-choice:hover:not(:disabled) {
+    background: rgba(30, 60, 100, 0.05);
+    border-color: rgba(70, 120, 180, 0.4);
+}
+
+[data-northstar-theme="light"] .ns-training-option-correct {
+    background: rgba(60, 160, 110, 0.12) !important;
+    border-color: rgba(60, 160, 110, 0.5) !important;
+}
+
+[data-northstar-theme="light"] .ns-training-option-wrong {
+    background: rgba(200, 70, 70, 0.08) !important;
+    border-color: rgba(200, 70, 70, 0.35) !important;
+}
+
+[data-northstar-theme="light"] .ns-training-type-input {
+    background: #ffffff;
+    border-color: rgba(70, 120, 180, 0.3);
+    color: #223447;
+}
+
+[data-northstar-theme="light"] .ns-training-feedback-success {
+    background: rgba(60, 160, 110, 0.08);
+    border-left-color: #4fae7d;
+    color: #285a3f;
+}
+
+[data-northstar-theme="light"] .ns-training-feedback-fail {
+    background: rgba(200, 70, 70, 0.06);
+    border-left-color: #c85454;
+    color: #7a3131;
+}
+
+[data-northstar-theme="light"] .ns-training-feedback-note,
+[data-northstar-theme="light"] .ns-training-hint {
+    color: #5b7188;
+}
+
+[data-northstar-theme="light"] .ns-training-hint-btn {
+    color: #4a7096;
+}
+
+[data-northstar-theme="light"] .ns-training-hint-btn:disabled {
+    color: #a7b7c6;
+}
+
+[data-northstar-theme="light"] .ns-training-back-hub-btn {
+    background: rgba(30, 60, 100, 0.03);
+    border-color: rgba(70, 120, 180, 0.25);
+    color: #3c526a;
+}
+
+[data-northstar-theme="light"] .ns-training-back-hub-btn:hover {
+    background: rgba(30, 60, 100, 0.06);
+}
+
+[data-northstar-theme="light"] .ns-training-complete-list li {
+    color: #285a3f;
+}
+
+
+/* -- knowledge check / locked note / ingame frame -- */
+
+[data-northstar-theme="light"] .ns-training-locked-note {
+    color: #5b7188;
+}
+
+[data-northstar-theme="light"] .ns-training-knowledge-check {
+    background: rgba(30, 60, 100, 0.02);
+    border-color: rgba(70, 120, 180, 0.18);
+}
+
+[data-northstar-theme="light"] .ns-training-knowledge-intro {
+    color: #4f6072;
+}
+
+[data-northstar-theme="light"] .ns-training-kc-prompt {
+    color: #223447;
+}
+
+[data-northstar-theme="light"] .ns-training-kc-choice {
+    background: rgba(30, 60, 100, 0.02);
+    border-color: rgba(70, 120, 180, 0.18);
+    color: #223447;
+}
+
+[data-northstar-theme="light"] .ns-training-kc-choice:hover:not(:disabled) {
+    background: rgba(30, 60, 100, 0.05);
+    border-color: rgba(70, 120, 180, 0.4);
+}
+
+[data-northstar-theme="light"] .ns-training-kc-choice-correct {
+    background: rgba(60, 160, 110, 0.12) !important;
+    border-color: rgba(60, 160, 110, 0.5) !important;
+}
+
+[data-northstar-theme="light"] .ns-training-kc-choice-wrong {
+    background: rgba(200, 70, 70, 0.08) !important;
+    border-color: rgba(200, 70, 70, 0.35) !important;
+}
+
+[data-northstar-theme="light"] .ns-training-kc-feedback-success {
+    color: #2f7a53;
+}
+
+[data-northstar-theme="light"] .ns-training-kc-feedback-fail {
+    color: #a03d3d;
+}
+
+[data-northstar-theme="light"] .ns-training-ingame-frame {
+    background: #f4f8fc;
+    border-color: rgba(70, 120, 180, 0.3);
+}
+
+[data-northstar-theme="light"] .ns-training-ingame-ribbon {
+    background: rgba(70, 120, 180, 0.08);
+    border-bottom-color: rgba(70, 120, 180, 0.2);
+    color: #4a7096;
+}
+
+[data-northstar-theme="light"] .ns-training-ingame-notes {
+    color: #3c526a;
+}

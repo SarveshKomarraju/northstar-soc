@@ -1,0 +1,408 @@
+/* =========================================================
+   NORTHSTAR SOC — SCENARIO BRIEFING (INTRO)
+   File: main-menu/scenario-briefing.css
+
+   Full-screen, sits above the entire desktop window system —
+   the intro-side mirror of malware-sandbox/nightfall-ending.css.
+   Blue/cyan palette to match the Credential Theft scenario card
+   and its "AUTH SERVICE" terminal visual on Scenario Select,
+   rather than reusing Nightfall's purple (that stays reserved
+   for the attacker's own infrastructure).
+   ========================================================= */
+
+.sb-overlay {
+
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #04080f;
+
+}
+
+.sb-skip {
+
+    position: absolute;
+    top: 22px;
+    right: 26px;
+
+    padding: 8px 16px;
+
+    border: 1px solid #223449;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.03);
+
+    color: #6f89a6;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+
+    cursor: pointer;
+
+}
+
+.sb-skip:hover {
+
+    color: #bcd6f0;
+    border-color: #2f4f70;
+    background: rgba(60, 130, 200, 0.1);
+
+}
+
+
+/* =========================================================
+   PHASE 1 — INCOMING ALERT TERMINAL
+   ========================================================= */
+
+.sb-terminal {
+
+    width: min(640px, 88vw);
+
+    border: 1px solid #1c2c3f;
+    border-radius: 8px;
+    overflow: hidden;
+
+    background: #060d17;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+
+}
+
+.sb-terminal-titlebar {
+
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 9px 12px;
+
+    background: #0d1b2a;
+    border-bottom: 1px solid #1c2c3f55;
+
+}
+
+.sb-terminal-dot {
+
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+
+}
+
+.sb-terminal-dot-r { background: #ff5f57; }
+.sb-terminal-dot-y { background: #febc2e; }
+.sb-terminal-dot-g { background: #28c840; }
+
+.sb-terminal-titletext {
+
+    margin-left: 8px;
+
+    color: #5e83a6;
+    font-family: Consolas, monospace;
+    font-size: 11px;
+
+}
+
+.sb-terminal-body {
+
+    height: 200px;
+    overflow-y: auto;
+
+    padding: 16px 18px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+}
+
+.sb-terminal-line {
+
+    color: #5ec4ff;
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.5;
+
+    animation: sb-line-in 0.15s ease-out;
+
+}
+
+@keyframes sb-line-in {
+
+    from { opacity: 0; transform: translateY(3px); }
+    to { opacity: 1; transform: translateY(0); }
+
+}
+
+.sb-terminal-progress-track {
+
+    height: 4px;
+    margin: 0 18px 6px;
+
+    background: #10202f;
+    border-radius: 2px;
+    overflow: hidden;
+
+}
+
+.sb-terminal-progress-fill {
+
+    height: 100%;
+    width: 0%;
+
+    background: linear-gradient(90deg, #1e6fc4, #34c4e8);
+
+    transition: width 0.35s ease;
+
+}
+
+.sb-terminal-progress-label {
+
+    padding: 0 18px 14px;
+    text-align: right;
+
+    color: #4d7093;
+    font-family: Consolas, monospace;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+
+}
+
+
+/* =========================================================
+   PHASE 2 — THE BRIEFING (secure-call panel)
+   ========================================================= */
+
+.sb-call {
+
+    width: min(600px, 88vw);
+    max-height: 82vh;
+
+    display: flex;
+    flex-direction: column;
+
+    border: 1px solid #1c2c3f;
+    border-radius: 12px;
+    overflow: hidden;
+
+    background:
+        radial-gradient(circle at 10% 0%, #0e2748 0%, transparent 55%),
+        radial-gradient(circle at 90% 100%, #0a3a52 0%, transparent 50%),
+        linear-gradient(165deg, #060d17 0%, #081420 45%, #050b13 100%);
+
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+
+}
+
+.sb-call-header {
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    padding: 22px 26px;
+
+    border-bottom: 1px solid rgba(90, 160, 220, 0.16);
+
+}
+
+.sb-call-avatar {
+
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1e6fc4, #2fa8d8);
+
+    color: #eaf6ff;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+
+}
+
+.sb-call-who {
+    flex: 1;
+    min-width: 0;
+}
+
+.sb-call-name {
+
+    color: #eaf3fb;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+
+}
+
+.sb-call-title {
+
+    color: #6f93b8;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 11.5px;
+
+}
+
+.sb-call-secure {
+
+    flex-shrink: 0;
+
+    padding: 5px 11px;
+    border-radius: 999px;
+
+    background: rgba(52, 196, 232, 0.12);
+    border: 1px solid rgba(52, 196, 232, 0.28);
+
+    color: #6fdcff;
+    font-family: Consolas, monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+
+}
+
+.sb-call-body {
+
+    flex: 1;
+    min-height: 160px;
+    overflow-y: auto;
+
+    padding: 26px 28px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+}
+
+.sb-call-line {
+
+    margin: 0;
+
+    color: #cfdcea;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 14.5px;
+    line-height: 1.65;
+
+    animation: sb-line-fade 0.4s ease-out;
+
+}
+
+@keyframes sb-line-fade {
+
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+
+}
+
+.sb-requirements {
+
+    flex-shrink: 0;
+
+    margin: 0 28px 20px;
+    padding: 14px 16px;
+
+    border-radius: 8px;
+    border: 1px solid rgba(52, 196, 232, 0.25);
+    background: rgba(30, 111, 196, 0.08);
+
+}
+
+.sb-requirements-hidden {
+
+    display: none;
+
+}
+
+.sb-requirements-label {
+
+    color: #6fdcff;
+    font-family: Consolas, monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+
+    margin-bottom: 10px;
+
+}
+
+.sb-requirements-list {
+
+    margin: 0;
+    padding: 0 0 0 18px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    color: #cfdcea;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+
+}
+
+.sb-requirements-list li {
+
+    animation: sb-line-fade 0.4s ease-out;
+
+}
+
+.sb-begin-button {
+
+    flex-shrink: 0;
+    align-self: flex-end;
+
+    margin: 0 28px 26px;
+    padding: 14px 26px;
+
+    border: 1px solid #2f7dc4;
+    border-radius: 6px;
+
+    background: rgba(30, 111, 196, 0.18);
+    color: #6f93b8;
+
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+
+    cursor: not-allowed;
+    transition: background 0.25s ease, color 0.25s ease;
+
+}
+
+.sb-begin-button-ready {
+
+    background: linear-gradient(90deg, #1e6fc4, #2fa8d8);
+    color: #eaf6ff;
+
+    cursor: pointer;
+
+    box-shadow: 0 0 0 rgba(52, 196, 232, 0.45);
+    animation: sb-begin-pulse 1.8s ease-in-out infinite;
+
+}
+
+.sb-begin-button-ready:hover {
+
+    background: linear-gradient(90deg, #2680dd, #3cbce8);
+
+}
+
+@keyframes sb-begin-pulse {
+
+    0%, 100% { box-shadow: 0 0 0 0 rgba(52, 196, 232, 0.45); }
+    50% { box-shadow: 0 0 0 10px rgba(52, 196, 232, 0); }
+
+}

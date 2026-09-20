@@ -1,0 +1,2916 @@
+/* =========================================================
+   NORTHSTAR SOC — FILE EXPLORER
+   WINDOWS 11 STYLE SHELL
+   UI FIRST — CONTENT CAN BE WIRED LATER
+   ========================================================= */
+
+.northstar-files {
+    --fx-bg: #1c1c1c;
+    --fx-sidebar: #202020;
+    --fx-content: #1c1c1c;
+    --fx-toolbar: #202020;
+    --fx-hover: rgba(255, 255, 255, .055);
+    --fx-active: rgba(255, 255, 255, .085);
+    --fx-border: rgba(255, 255, 255, .075);
+
+    --fx-text: #f3f3f3;
+    --fx-text-soft: #d0d0d0;
+    --fx-muted: #999;
+    --fx-blue: #60cdff;
+
+    width: 100%;
+    height: 100%;
+    display: block;
+
+    background: var(--fx-bg);
+    color: var(--fx-text);
+
+    font-family:
+        "Segoe UI Variable",
+        "Segoe UI",
+        system-ui,
+        sans-serif;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   MAIN SHELL
+   ========================================================= */
+
+.fx-shell {
+    width: 100%;
+    height: 100%;
+
+    display: grid;
+    grid-template-rows:
+        48px 46px 1fr 28px;
+
+    overflow: hidden;
+
+    background: var(--fx-bg);
+}
+
+
+/* =========================================================
+   TOP WINDOW TOOLBAR
+   ========================================================= */
+
+.fx-topbar {
+    display: flex;
+    align-items: center;
+
+    padding: 0 14px;
+
+    background: var(--fx-toolbar);
+    border-bottom: 1px solid var(--fx-border);
+
+    gap: 6px;
+}
+
+
+/* navigation buttons */
+
+.fx-nav-button {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+    border-radius: 6px;
+
+    background: transparent;
+    color: var(--fx-text-soft);
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    transition:
+        background .12s ease,
+        color .12s ease;
+}
+
+.fx-nav-button:hover:not(:disabled) {
+    background: var(--fx-hover);
+    color: var(--fx-text);
+}
+
+.fx-nav-button:disabled {
+    color: #555;
+    cursor: default;
+}
+
+
+/* =========================================================
+   COMMAND BAR
+   ========================================================= */
+
+.fx-command-bar {
+    display: flex;
+    align-items: center;
+
+    gap: 4px;
+
+    padding: 0 16px;
+
+    background: var(--fx-bg);
+
+    border-bottom: 1px solid var(--fx-border);
+}
+
+.fx-command {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    height: 32px;
+
+    padding: 0 10px;
+
+    border: 0;
+    border-radius: 6px;
+
+    background: transparent;
+
+    color: var(--fx-text-soft);
+
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+.fx-command:hover {
+    background: var(--fx-hover);
+    color: var(--fx-text);
+}
+
+.fx-command-icon {
+    font-size: 15px;
+}
+
+.fx-command-separator {
+    width: 1px;
+    height: 20px;
+
+    margin: 0 5px;
+
+    background: var(--fx-border);
+}
+
+
+/* =========================================================
+   ADDRESS / SEARCH ROW
+   ========================================================= */
+
+.fx-address-bar {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 0 16px;
+
+    background: var(--fx-bg);
+
+    border-bottom: 1px solid var(--fx-border);
+}
+
+
+/*
+   Breadcrumb path
+*/
+
+.fx-path-field {
+    flex: 1;
+
+    min-width: 0;
+
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 0 10px;
+
+    border: 1px solid var(--fx-border);
+    border-radius: 6px;
+
+    background: #181818;
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
+}
+
+.fx-path-field::-webkit-scrollbar {
+    display: none;
+}
+
+.fx-path-icon {
+    color: var(--fx-text-soft);
+    font-size: 14px;
+}
+
+.fx-path-segment {
+    border: 0;
+
+    background: transparent;
+
+    color: var(--fx-text-soft);
+
+    padding: 4px 5px;
+
+    border-radius: 4px;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+}
+
+.fx-path-segment:hover {
+    background: var(--fx-hover);
+    color: var(--fx-text);
+}
+
+.fx-path-segment:last-child {
+    color: var(--fx-text);
+}
+
+.fx-path-sep {
+    color: #777;
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+.fx-search-field {
+    position: relative;
+
+    width: 230px;
+    height: 32px;
+}
+
+.fx-search-icon {
+    position: absolute;
+
+    left: 10px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: var(--fx-muted);
+
+    font-size: 14px;
+
+    pointer-events: none;
+}
+
+.fx-search-field input {
+    width: 100%;
+    height: 100%;
+
+    box-sizing: border-box;
+
+    padding: 0 10px 0 32px;
+
+    border: 1px solid var(--fx-border);
+    border-radius: 6px;
+
+    background: #181818;
+
+    color: var(--fx-text);
+
+    outline: none;
+
+    font-size: 12px;
+}
+
+.fx-search-field input::placeholder {
+    color: #777;
+}
+
+.fx-search-field input:focus {
+    border-color: rgba(96, 205, 255, .45);
+}
+
+
+/* =========================================================
+   BODY
+   ========================================================= */
+
+.fx-body {
+    min-height: 0;
+
+    display: grid;
+
+    grid-template-columns: 220px 1fr;
+
+    overflow: hidden;
+}
+
+/*
+ * The properties/details pane is the 3rd child of .fx-body.
+ * Without its own column it falls into an implicit grid row
+ * and renders below everything else instead of beside it.
+ */
+.fx-shell.fx-with-details .fx-body {
+    grid-template-columns: 220px 1fr 300px;
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.fx-sidebar {
+    min-width: 0;
+
+    background: var(--fx-sidebar);
+
+    border-right: 1px solid var(--fx-border);
+
+    padding: 12px 8px;
+
+    overflow-y: auto;
+
+    scrollbar-width: thin;
+}
+
+
+/* sidebar sections */
+
+.fx-sidebar-section {
+    margin-bottom: 18px;
+}
+
+.fx-sidebar-heading {
+    padding: 6px 10px 7px;
+
+    color: #888;
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+
+/* sidebar items */
+
+.fx-sidebar-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+.fx-sidebar-item {
+    width: 100%;
+
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 0 10px;
+
+    box-sizing: border-box;
+
+    border: 0;
+    border-radius: 6px;
+
+    background: transparent;
+
+    color: var(--fx-text-soft);
+
+    text-align: left;
+
+    cursor: pointer;
+
+    font-size: 12px;
+
+    transition: background .1s ease;
+}
+
+.fx-sidebar-item:hover {
+    background: var(--fx-hover);
+}
+
+.fx-sidebar-item.active {
+    background: var(--fx-active);
+    color: var(--fx-text);
+}
+
+.fx-sidebar-icon {
+    width: 20px;
+
+    display: flex;
+    justify-content: center;
+
+    font-size: 15px;
+}
+
+.fx-sidebar-label {
+    flex: 1;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* expandable arrows */
+
+.fx-sidebar-arrow {
+    color: #777;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
+
+.fx-main {
+    min-width: 0;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    background: var(--fx-content);
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   HOME PAGE
+   ========================================================= */
+
+.fx-home {
+    padding: 24px 28px;
+
+    overflow-y: auto;
+}
+
+
+/* page title */
+
+.fx-home-title {
+    margin-bottom: 22px;
+
+    font-size: 22px;
+
+    font-weight: 600;
+
+    color: var(--fx-text);
+}
+
+
+/* =========================================================
+   QUICK ACCESS
+   ========================================================= */
+
+.fx-section {
+    margin-bottom: 30px;
+}
+
+.fx-section-title {
+    display: flex;
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 12px;
+
+    font-size: 15px;
+
+    font-weight: 600;
+}
+
+.fx-section-action {
+    color: var(--fx-blue);
+
+    font-size: 11px;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   FOLDER CARDS
+   ========================================================= */
+
+.fx-folder-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(150px, 1fr));
+
+    gap: 8px;
+}
+
+.fx-folder-card {
+    min-height: 82px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 12px 14px;
+
+    box-sizing: border-box;
+
+    border: 1px solid transparent;
+
+    border-radius: 7px;
+
+    background: rgba(255, 255, 255, .025);
+
+    cursor: pointer;
+
+    transition:
+        background .12s ease,
+        border-color .12s ease;
+}
+
+.fx-folder-card:hover {
+    background: var(--fx-hover);
+
+    border-color: var(--fx-border);
+}
+
+.fx-folder-icon {
+    font-size: 27px;
+
+    flex-shrink: 0;
+}
+
+.fx-folder-info {
+    min-width: 0;
+}
+
+.fx-folder-name {
+    color: var(--fx-text);
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.fx-folder-meta {
+    margin-top: 3px;
+
+    color: var(--fx-muted);
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   RECENT FILES
+   ========================================================= */
+
+.fx-recent-list {
+    border: 1px solid var(--fx-border);
+
+    border-radius: 8px;
+
+    overflow: hidden;
+}
+
+.fx-recent-header,
+.fx-recent-row {
+    display: grid;
+
+    grid-template-columns:
+        minmax(220px, 2fr) 1fr 1fr 90px;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 0 14px;
+}
+
+.fx-recent-header {
+    height: 32px;
+
+    background: rgba(255, 255, 255, .025);
+
+    color: #777;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    border-bottom: 1px solid var(--fx-border);
+}
+
+.fx-recent-row {
+    min-height: 46px;
+
+    color: var(--fx-text-soft);
+
+    border-bottom: 1px solid var(--fx-border);
+
+    cursor: pointer;
+}
+
+.fx-recent-row:last-child {
+    border-bottom: 0;
+}
+
+.fx-recent-row:hover {
+    background: var(--fx-hover);
+}
+
+.fx-recent-name {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    min-width: 0;
+}
+
+.fx-recent-icon {
+    font-size: 17px;
+}
+
+.fx-recent-name-text {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.fx-recent-muted {
+    color: var(--fx-muted);
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   GALLERY
+   ========================================================= */
+
+.fx-gallery {
+    padding: 24px 28px;
+
+    overflow-y: auto;
+}
+
+.fx-gallery-header {
+    display: flex;
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+.fx-gallery-title {
+    font-size: 22px;
+
+    font-weight: 600;
+}
+
+.fx-gallery-controls {
+    display: flex;
+
+    gap: 5px;
+}
+
+.fx-gallery-button {
+    width: 32px;
+    height: 30px;
+
+    border: 1px solid var(--fx-border);
+
+    border-radius: 5px;
+
+    background: transparent;
+
+    color: var(--fx-text-soft);
+
+    cursor: pointer;
+}
+
+.fx-gallery-button:hover {
+    background: var(--fx-hover);
+}
+
+
+/* empty gallery */
+
+.fx-gallery-empty {
+    height: 300px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    color: var(--fx-muted);
+}
+
+.fx-gallery-empty-icon {
+    font-size: 48px;
+
+    margin-bottom: 14px;
+
+    opacity: .65;
+}
+
+.fx-gallery-empty-title {
+    color: var(--fx-text-soft);
+
+    font-size: 14px;
+
+    margin-bottom: 5px;
+}
+
+.fx-gallery-empty-description {
+    max-width: 360px;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   THIS PC
+   ========================================================= */
+
+.fx-this-pc {
+    padding: 24px 28px;
+
+    overflow-y: auto;
+}
+
+.fx-drive-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(300px, 1fr));
+
+    gap: 10px;
+}
+
+.fx-drive-card {
+    padding: 15px;
+
+    border: 1px solid var(--fx-border);
+
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, .025);
+
+    cursor: pointer;
+}
+
+.fx-drive-card:hover {
+    background: var(--fx-hover);
+}
+
+.fx-drive-top {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 12px;
+}
+
+.fx-drive-icon {
+    font-size: 29px;
+}
+
+.fx-drive-name {
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+.fx-drive-type {
+    margin-top: 2px;
+
+    color: var(--fx-muted);
+
+    font-size: 10px;
+}
+
+.fx-drive-bar {
+    height: 5px;
+
+    background: #343434;
+
+    border-radius: 4px;
+
+    overflow: hidden;
+}
+
+.fx-drive-fill {
+    height: 100%;
+
+    width: 0%;
+
+    background: var(--fx-blue);
+
+    border-radius: inherit;
+
+    transition: width .2s ease;
+}
+
+.fx-drive-storage {
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-top: 7px;
+
+    color: var(--fx-muted);
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   EMPTY FOLDER VIEW
+   ========================================================= */
+
+.fx-empty-folder {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    color: var(--fx-muted);
+
+    text-align: center;
+}
+
+.fx-empty-folder-icon {
+    margin-bottom: 12px;
+
+    font-size: 44px;
+
+    opacity: .55;
+}
+
+.fx-empty-folder-title {
+    margin-bottom: 5px;
+
+    color: var(--fx-text-soft);
+
+    font-size: 14px;
+}
+
+.fx-empty-folder-text {
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   FILE LIST — WHEN YOU ACTUALLY ADD FILES LATER
+   ========================================================= */
+
+.fx-list-header,
+.fx-row {
+    display: grid;
+
+    grid-template-columns:
+        minmax(220px, 2fr) 160px 130px 90px;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 0 16px;
+}
+
+.fx-list-header {
+    height: 34px;
+
+    border-bottom: 1px solid var(--fx-border);
+
+    color: #777;
+
+    font-size: 10px;
+
+    font-weight: 600;
+}
+
+.fx-list-body {
+    flex: 1;
+
+    overflow-y: auto;
+}
+
+.fx-row {
+    min-height: 40px;
+
+    border: 0;
+
+    border-bottom: 1px solid rgba(255, 255, 255, .035);
+
+    background: transparent;
+
+    color: var(--fx-text-soft);
+
+    cursor: pointer;
+
+    text-align: left;
+}
+
+.fx-row:hover {
+    background: var(--fx-hover);
+}
+
+.fx-row.selected {
+    background: var(--fx-active);
+}
+
+.fx-col-name {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    min-width: 0;
+}
+
+.fx-row-icon {
+    flex-shrink: 0;
+
+    font-size: 17px;
+}
+
+/*
+ * The filename itself needs to be its own flex item (not a
+ * bare text node) so it — and only it — can shrink and
+ * truncate with an ellipsis. Without this, a long filename
+ * next to a LOCKED/UNLOCKED/SUSPICIOUS badge pill would wrap
+ * onto a second line inside the row's fixed height, spilling
+ * down into the row below it instead of truncating cleanly.
+ * Mirrors the existing .fx-recent-name-text pattern.
+ */
+.fx-col-name-text {
+    min-width: 0;
+    flex: 1;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.fx-col-modified,
+.fx-col-type,
+.fx-col-size {
+    color: var(--fx-muted);
+
+    font-size: 11px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   STATUS BAR
+   ========================================================= */
+
+.fx-status-bar {
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+
+    padding: 0 14px;
+
+    background: #202020;
+
+    border-top: 1px solid var(--fx-border);
+
+    color: #777;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   SCROLLBARS
+   ========================================================= */
+
+.northstar-files ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.northstar-files ::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.northstar-files ::-webkit-scrollbar-thumb {
+    background: #454545;
+
+    border-radius: 8px;
+}
+
+.northstar-files ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .fx-body {
+        grid-template-columns: 190px 1fr;
+    }
+
+    .fx-search-field {
+        width: 180px;
+    }
+
+    .fx-folder-grid {
+        grid-template-columns:
+            repeat(auto-fill, minmax(130px, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+
+    .fx-sidebar {
+        display: none;
+    }
+
+    .fx-body {
+        grid-template-columns: 1fr;
+    }
+
+    .fx-shell.fx-with-details .fx-body {
+        grid-template-columns: 1fr;
+    }
+
+    .fx-command:nth-of-type(n+4) {
+        display: none;
+    }
+
+    .fx-search-field {
+        width: 150px;
+    }
+}
+
+/* =========================================================
+   NORTHSTAR FILE EXPLORER — WINDOWS SHELL UPGRADE
+   ========================================================= */
+
+
+/* =========================================================
+   TOOLBAR
+   ========================================================= */
+
+.fx-toolbar-divider {
+    width: 1px;
+    height: 22px;
+
+    margin: 0 7px;
+
+    background: var(--fx-border);
+}
+
+
+/* =========================================================
+   SIDEBAR SECTIONS
+   ========================================================= */
+
+.fx-sidebar-section {
+    margin-bottom: 18px;
+}
+
+.fx-sidebar-children {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.fx-sidebar-subitem {
+    height: 32px;
+
+    padding-left: 28px;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   ACTIVE SIDEBAR
+   ========================================================= */
+
+.fx-sidebar-item.active {
+    background: rgba(255, 255, 255, .09);
+
+    box-shadow:
+        inset 2px 0 0 var(--fx-blue);
+}
+
+.fx-sidebar-item.active .fx-sidebar-icon {
+    color: var(--fx-blue);
+}
+
+
+/* =========================================================
+   HOME
+   ========================================================= */
+
+.fx-home {
+    padding: 28px 32px;
+}
+
+.fx-home-title {
+    font-size: 24px;
+
+    font-weight: 600;
+
+    margin-bottom: 26px;
+}
+
+.fx-home-empty {
+    min-height: 90px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--fx-muted);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   QUICK ACCESS CARDS
+   ========================================================= */
+
+.fx-folder-grid {
+    grid-template-columns:
+        repeat(4, minmax(150px, 1fr));
+}
+
+.fx-folder-card {
+    min-height: 78px;
+
+    background: rgba(255, 255, 255, .035);
+
+    border: 1px solid rgba(255, 255, 255, .055);
+
+    text-align: left;
+}
+
+.fx-folder-card:hover {
+    background: rgba(255, 255, 255, .07);
+
+    border-color:
+        rgba(255, 255, 255, .10);
+}
+
+.fx-folder-icon {
+    font-size: 25px;
+}
+
+
+/* =========================================================
+   RECENT
+   ========================================================= */
+
+.fx-recent-list {
+    background: rgba(255, 255, 255, .015);
+}
+
+.fx-recent-row {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    background: transparent;
+
+    border: 0;
+
+    font-family: inherit;
+
+    text-align: left;
+}
+
+.fx-recent-row:hover {
+    background: rgba(255, 255, 255, .06);
+}
+
+.fx-recent-row:focus {
+    outline: none;
+
+    background: rgba(96, 205, 255, .08);
+}
+
+
+/* =========================================================
+   GALLERY
+   ========================================================= */
+
+.fx-gallery {
+    padding: 28px 32px;
+}
+
+.fx-gallery-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(150px, 1fr));
+
+    gap: 12px;
+}
+
+.fx-gallery-card {
+    min-height: 175px;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 8px;
+
+    border: 1px solid transparent;
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, .025);
+
+    color: var(--fx-text);
+
+    font-family: inherit;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.fx-gallery-card:hover {
+    background: rgba(255, 255, 255, .065);
+
+    border-color:
+        rgba(255, 255, 255, .09);
+}
+
+.fx-gallery-preview {
+    height: 115px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius: 6px;
+
+    background:
+        linear-gradient(135deg,
+            rgba(255, 255, 255, .06),
+            rgba(255, 255, 255, .025));
+
+    font-size: 42px;
+}
+
+.fx-gallery-preview img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.fx-gallery-name {
+    margin-top: 9px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    font-size: 12px;
+}
+
+.fx-gallery-meta {
+    margin-top: 3px;
+
+    color: var(--fx-muted);
+
+    font-size: 10px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   THIS PC
+   ========================================================= */
+
+.fx-this-pc {
+    padding: 28px 32px;
+}
+
+.fx-drive-grid {
+    grid-template-columns:
+        repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.fx-drive-card {
+    width: 100%;
+
+    font-family: inherit;
+
+    color: var(--fx-text);
+
+    text-align: left;
+
+    transition:
+        background .12s ease,
+        border-color .12s ease,
+        transform .08s ease;
+}
+
+.fx-drive-card:hover {
+    border-color:
+        rgba(255, 255, 255, .11);
+
+    transform: translateY(-1px);
+}
+
+.fx-drive-card:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   SIDEBAR — THIS PC (expand/collapse)
+   ========================================================= */
+
+.fx-sidebar-top {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+
+    margin-bottom: 18px;
+}
+
+.fx-sidebar-row {
+    display: flex;
+    align-items: center;
+
+    gap: 2px;
+}
+
+.fx-sidebar-row .fx-sidebar-item {
+    flex: 1;
+}
+
+.fx-sidebar-toggle {
+    width: 22px;
+    height: 34px;
+
+    flex: 0 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+    border-radius: 6px;
+
+    background: transparent;
+
+    color: var(--fx-muted);
+
+    cursor: pointer;
+
+    transition: background .1s ease;
+}
+
+.fx-sidebar-toggle:hover {
+    background: var(--fx-hover);
+}
+
+.fx-sidebar-toggle .fx-sidebar-arrow {
+    display: inline-block;
+
+    transition: transform .12s ease;
+}
+
+.fx-sidebar-toggle .fx-sidebar-arrow.expanded {
+    transform: rotate(90deg);
+}
+
+
+/* =========================================================
+   FILESYSTEM LIST
+   ========================================================= */
+
+.fx-row {
+    font-family: inherit;
+}
+
+.fx-row-folder {
+    color: var(--fx-text);
+}
+
+.fx-row-file {
+    color: var(--fx-text-soft);
+}
+
+.fx-row.selected {
+    background:
+        rgba(96, 205, 255, .10);
+
+    outline:
+        1px solid rgba(96, 205, 255, .15);
+}
+
+
+/* =========================================================
+   SCENARIO FILE ROWS (locked / unlocked / suspicious)
+   ========================================================= */
+
+.fx-row.fx-scenario-locked,
+.fx-recent-row.fx-scenario-locked {
+    background: rgba(230, 180, 80, .05);
+}
+
+.fx-row.fx-scenario-locked:hover,
+.fx-recent-row.fx-scenario-locked:hover {
+    background: rgba(230, 180, 80, .10);
+}
+
+.fx-row.fx-scenario-unlocked,
+.fx-recent-row.fx-scenario-unlocked {
+    background: rgba(110, 200, 150, .05);
+}
+
+.fx-row.fx-scenario-unlocked:hover,
+.fx-recent-row.fx-scenario-unlocked:hover {
+    background: rgba(110, 200, 150, .10);
+}
+
+.fx-row.fx-scenario-suspicious,
+.fx-recent-row.fx-scenario-suspicious {
+    background: rgba(230, 90, 90, .05);
+}
+
+.fx-row.fx-scenario-suspicious:hover,
+.fx-recent-row.fx-scenario-suspicious:hover {
+    background: rgba(230, 90, 90, .10);
+}
+
+.fx-badge-pill {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+
+    margin-left: 8px;
+    padding: 2px 7px;
+
+    border-radius: 4px;
+
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: .4px;
+
+    vertical-align: middle;
+}
+
+.fx-badge-locked {
+    background: rgba(230, 180, 80, .16);
+    color: #e8bd5a;
+}
+
+.fx-badge-unlocked {
+    background: rgba(110, 200, 150, .16);
+    color: #7bd4a3;
+}
+
+.fx-badge-suspicious {
+    background: rgba(230, 90, 90, .16);
+    color: #e88080;
+}
+
+
+/* =========================================================
+   ADDRESS BAR
+   ========================================================= */
+
+.fx-address-bar {
+    min-width: 0;
+}
+
+.fx-path-field {
+    box-shadow:
+        inset 0 1px 2px rgba(0, 0, 0, .18);
+}
+
+.fx-path-segment.current {
+    color: var(--fx-text);
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   SCROLLBAR — WINDOWS-LIKE
+   ========================================================= */
+
+.northstar-files ::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+
+.northstar-files ::-webkit-scrollbar-thumb {
+    background: #444;
+
+    border-radius: 10px;
+}
+
+.northstar-files ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+    .fx-folder-grid {
+        grid-template-columns:
+            repeat(2, minmax(150px, 1fr));
+    }
+
+    .fx-sidebar-subitem {
+        padding-left: 20px;
+    }
+}
+
+@media (max-width: 700px) {
+
+    .fx-folder-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .fx-command {
+        display: none;
+    }
+
+    .fx-sidebar {
+        width: 180px;
+    }
+}
+
+/* =========================================================
+   PASSWORD PROMPT
+   ========================================================= */
+
+.fx-password-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, .48);
+
+    backdrop-filter: blur(3px);
+
+    z-index: 1000;
+}
+
+.fx-password-dialog {
+    width: 360px;
+
+    box-sizing: border-box;
+
+    padding: 22px 24px 20px;
+
+    border: 1px solid rgba(255, 255, 255, .10);
+
+    border-radius: 10px;
+
+    background: #252525;
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, .45),
+        0 2px 8px rgba(0, 0, 0, .25);
+
+    color: var(--fx-text);
+
+    font-family:
+        "Segoe UI Variable",
+        "Segoe UI",
+        system-ui,
+        sans-serif;
+}
+
+
+/* =========================================================
+   PASSWORD DIALOG HEADER
+   ========================================================= */
+
+.fx-password-title {
+    margin: 0 0 7px;
+
+    color: var(--fx-text);
+
+    font-size: 16px;
+
+    font-weight: 600;
+}
+
+.fx-password-description {
+    margin-bottom: 18px;
+
+    color: var(--fx-muted);
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   PASSWORD INPUT
+   ========================================================= */
+
+.fx-password-field {
+    width: 100%;
+
+    height: 34px;
+
+    box-sizing: border-box;
+
+    padding: 0 10px;
+
+    border: 1px solid rgba(255, 255, 255, .12);
+
+    border-radius: 6px;
+
+    outline: none;
+
+    background: #181818;
+
+    color: var(--fx-text);
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    transition:
+        border-color .12s ease,
+        background .12s ease;
+}
+
+.fx-password-field::placeholder {
+    color: #666;
+}
+
+.fx-password-field:hover {
+    border-color: rgba(255, 255, 255, .18);
+}
+
+.fx-password-field:focus {
+    border-color: rgba(96, 205, 255, .55);
+
+    background: #1a1a1a;
+
+    box-shadow:
+        0 0 0 1px rgba(96, 205, 255, .12);
+}
+
+
+/* =========================================================
+   PASSWORD ERROR
+   ========================================================= */
+
+.fx-password-error {
+    min-height: 16px;
+
+    margin-top: 7px;
+
+    color: #ff6b6b;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   PASSWORD ACTIONS
+   ========================================================= */
+
+.fx-password-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 7px;
+
+    margin-top: 14px;
+}
+
+.fx-password-button {
+    height: 30px;
+
+    min-width: 72px;
+
+    padding: 0 13px;
+
+    border: 1px solid rgba(255, 255, 255, .10);
+
+    border-radius: 5px;
+
+    background: #303030;
+
+    color: var(--fx-text-soft);
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    cursor: pointer;
+
+    transition:
+        background .12s ease,
+        border-color .12s ease;
+}
+
+.fx-password-button:hover {
+    background: #3a3a3a;
+
+    border-color: rgba(255, 255, 255, .16);
+
+    color: var(--fx-text);
+}
+
+.fx-password-button.primary {
+    background: rgba(96, 205, 255, .14);
+
+    border-color: rgba(96, 205, 255, .28);
+
+    color: var(--fx-blue);
+}
+
+.fx-password-button.primary:hover {
+    background: rgba(96, 205, 255, .20);
+
+    border-color: rgba(96, 205, 255, .38);
+}
+
+
+/* =========================================================
+   PROPERTIES / DETAILS PANE
+   ========================================================= */
+
+.fx-properties {
+    position: relative;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 18px 16px 20px;
+
+    background: var(--fx-sidebar);
+    border-left: 1px solid var(--fx-border);
+
+    overflow-y: auto;
+
+    font-size: 12px;
+    color: var(--fx-text-soft);
+}
+
+.fx-properties-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    width: 26px;
+    height: 26px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+    border-radius: 6px;
+
+    background: transparent;
+    color: var(--fx-muted);
+
+    font-size: 16px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition: background .1s ease, color .1s ease;
+}
+
+.fx-properties-close:hover {
+    background: var(--fx-hover);
+    color: var(--fx-text);
+}
+
+.fx-properties-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 10px 22px 18px;
+
+    border-bottom: 1px solid var(--fx-border);
+    margin-bottom: 16px;
+
+    text-align: center;
+}
+
+.fx-properties-icon {
+    font-size: 38px;
+    line-height: 1;
+}
+
+.fx-properties-name {
+    font-size: 13px;
+    font-weight: 600;
+
+    color: var(--fx-text);
+
+    word-break: break-word;
+}
+
+.fx-risk-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 3px 10px;
+
+    border-radius: 4px;
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .5px;
+}
+
+.fx-risk-badge.low {
+    background: rgba(120, 150, 175, .15);
+    color: #9fb4c7;
+}
+
+.fx-risk-badge.medium {
+    background: rgba(230, 180, 80, .16);
+    color: #e8bd5a;
+}
+
+.fx-risk-badge.high {
+    background: rgba(230, 140, 80, .16);
+    color: #e6924f;
+}
+
+.fx-risk-badge.critical {
+    background: rgba(230, 90, 90, .18);
+    color: #e88080;
+}
+
+.fx-properties-status {
+    margin: 0 0 16px;
+    padding: 12px;
+
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, .025);
+}
+
+.fx-properties-status.locked {
+    border-color: rgba(230, 180, 80, .22);
+    background: rgba(230, 180, 80, .05);
+}
+
+.fx-properties-status.unlocked {
+    border-color: rgba(110, 200, 150, .22);
+    background: rgba(110, 200, 150, .05);
+}
+
+.fx-properties-status.suspicious {
+    border-color: rgba(230, 90, 90, .18);
+    background: rgba(230, 90, 90, .035);
+}
+
+.fx-properties-status-title {
+    font-size: 12px;
+    font-weight: 600;
+
+    color: var(--fx-text);
+
+    margin-bottom: 6px;
+}
+
+.fx-properties-status-text {
+    font-size: 12px;
+    line-height: 1.5;
+
+    color: var(--fx-text-soft);
+}
+
+.fx-properties-status-action {
+    margin-top: 8px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    color: var(--fx-blue);
+}
+
+.fx-properties-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.fx-prop-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+
+    gap: 14px;
+
+    padding: 8px 0;
+
+    border-bottom: 1px solid rgba(255, 255, 255, .05);
+
+    font-size: 11.5px;
+}
+
+.fx-prop-row:last-child {
+    border-bottom: 0;
+}
+
+.fx-prop-row > span:first-child {
+    flex: 0 0 auto;
+
+    color: var(--fx-muted);
+}
+
+.fx-prop-row > span:last-child {
+    color: var(--fx-text-soft);
+
+    text-align: right;
+}
+
+/*
+ * A full 64-character SHA-256 never fits comfortably next to
+ * its label on one line — cramming it in caused the wrapped
+ * hash to overflow this row's height and overlap the row
+ * below it. Stack label-above-value here instead, same as a
+ * real file-properties dialog would for a long hash.
+ */
+.fx-prop-row.fx-prop-row-hash {
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 6px;
+}
+
+.fx-prop-row.fx-prop-row-hash > span:last-child {
+    width: 100%;
+
+    text-align: left;
+}
+
+.fx-prop-row-hash .fx-prop-hash-value {
+    width: 100%;
+
+    justify-content: flex-start;
+}
+
+.fx-prop-row-hash .fx-prop-hash {
+    max-width: none;
+    flex: 1;
+
+    min-width: 0;
+}
+
+.fx-prop-mono {
+    font-family: Consolas, "Cascadia Mono", monospace;
+    font-size: 10.5px;
+
+    word-break: break-all;
+}
+
+.fx-prop-hash {
+    max-width: 165px;
+}
+
+.fx-properties-divider {
+    height: 1px;
+    margin: 18px 0 14px;
+
+    background: var(--fx-border);
+}
+
+.fx-properties-subheading {
+    margin-bottom: 10px;
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    color: var(--fx-muted);
+}
+
+.fx-sec-event {
+    padding: 10px;
+    margin-bottom: 10px;
+
+    border: 1px solid var(--fx-border);
+    border-radius: 7px;
+
+    background: rgba(255, 255, 255, .02);
+}
+
+.fx-sec-event-type {
+    font-family: Consolas, "Cascadia Mono", monospace;
+    font-size: 10px;
+    letter-spacing: .5px;
+
+    color: var(--fx-blue);
+
+    margin-bottom: 5px;
+}
+
+.fx-sec-event-message {
+    font-size: 11.5px;
+    line-height: 1.5;
+
+    color: var(--fx-text-soft);
+}
+
+.fx-sec-alert {
+    padding: 10px 10px 10px 12px;
+    margin-bottom: 8px;
+
+    border: 1px solid var(--fx-border);
+    border-left: 3px solid var(--fx-muted);
+    border-radius: 7px;
+
+    background: rgba(255, 255, 255, .02);
+}
+
+.fx-sec-alert.sev-critical {
+    border-left-color: #e65a5a;
+}
+
+.fx-sec-alert.sev-high {
+    border-left-color: #e6924f;
+}
+
+.fx-sec-alert.sev-medium {
+    border-left-color: #e8bd5a;
+}
+
+.fx-sec-alert.sev-low {
+    border-left-color: #7ba0c4;
+}
+
+.fx-sec-alert-top {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 6px;
+
+    font-family: Consolas, "Cascadia Mono", monospace;
+    font-size: 9.5px;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+
+    color: var(--fx-muted);
+}
+
+.fx-sec-alert-title {
+    font-size: 12px;
+    font-weight: 600;
+
+    color: var(--fx-text);
+
+    margin-bottom: 4px;
+}
+
+.fx-sec-alert-desc {
+    font-size: 11px;
+    line-height: 1.5;
+
+    color: var(--fx-text-soft);
+}
+
+.fx-sec-empty {
+    padding: 16px 4px;
+
+    text-align: center;
+
+    font-size: 11px;
+    color: var(--fx-muted);
+}
+
+
+/* =========================================================
+   CAPTURE PREVIEW (properties pane)
+   ---------------------------------------------------------
+   Thumbnail + View button for a screenshot/recording the
+   player captured themselves, shown in the properties pane
+   alongside the usual metadata.
+   ========================================================= */
+
+.fx-properties-capture {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    padding: 14px;
+    margin-bottom: 16px;
+
+    border: 1px solid var(--fx-border);
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, .03);
+}
+
+.fx-properties-capture-thumb {
+    width: 100%;
+    max-height: 140px;
+
+    object-fit: cover;
+
+    border-radius: 6px;
+
+    border: 1px solid var(--fx-border);
+}
+
+.fx-properties-capture-thumb.fx-properties-capture-video {
+    height: 100px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 28px;
+
+    background: rgba(255, 255, 255, .04);
+}
+
+.fx-properties-view-button {
+    width: 100%;
+
+    padding: 8px 0;
+
+    border: 1px solid rgba(77, 163, 255, .35);
+    border-radius: 6px;
+
+    background: rgba(77, 163, 255, .1);
+    color: var(--fx-blue);
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.fx-properties-view-button:hover {
+    background: rgba(77, 163, 255, .18);
+}
+
+
+/* =========================================================
+   MEDIA VIEWER (screenshots / recordings)
+   ---------------------------------------------------------
+   Lightbox for a captured image/video, opened by double-
+   clicking a capture file or the properties pane's View
+   button.
+   ========================================================= */
+
+.fx-media-overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 3000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    background: rgba(0, 0, 0, .72);
+    backdrop-filter: blur(3px);
+}
+
+.fx-media-modal {
+    width: min(720px, 94%);
+    max-height: 88%;
+
+    display: flex;
+    flex-direction: column;
+
+    border: 1px solid var(--fx-border);
+    border-radius: 10px;
+
+    background: var(--fx-sidebar);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .5);
+
+    overflow: hidden;
+}
+
+.fx-media-header {
+    min-height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 14px;
+
+    border-bottom: 1px solid var(--fx-border);
+}
+
+.fx-media-header h2 {
+    margin: 0;
+
+    font-size: 12.5px;
+    font-weight: 650;
+    color: var(--fx-text);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fx-media-close {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+    border-radius: 5px;
+
+    background: transparent;
+    color: var(--fx-text-soft);
+
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.fx-media-close:hover {
+    background: rgba(255, 255, 255, .08);
+    color: var(--fx-text);
+}
+
+.fx-media-body {
+    flex: 1;
+    min-height: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 16px;
+
+    background: rgba(0, 0, 0, .25);
+}
+
+.fx-media-image,
+.fx-media-video {
+    max-width: 100%;
+    max-height: 70vh;
+
+    border-radius: 4px;
+}
+
+
+/* =========================================================
+   STYLED ALERT
+   ---------------------------------------------------------
+   Replaces window.alert() for File Explorer messages (e.g.
+   "this file is locked") so it actually matches the rest of
+   the app instead of being an unstyled native browser dialog.
+   ========================================================= */
+
+.fx-alert-overlay {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, .55);
+    backdrop-filter: blur(2px);
+
+    z-index: 3000;
+
+    animation: fx-alert-fade-in .12s ease-out;
+}
+
+@keyframes fx-alert-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fx-alert-modal {
+    width: min(360px, calc(100% - 40px));
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+
+    padding: 28px 26px 22px;
+
+    background: var(--fx-sidebar);
+    border: 1px solid var(--fx-border);
+    border-radius: 12px;
+
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .45);
+
+    animation: fx-alert-pop .15s ease-out;
+}
+
+@keyframes fx-alert-pop {
+    from {
+        opacity: 0;
+        transform: translateY(6px) scale(.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.fx-alert-icon {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 14px;
+
+    font-size: 24px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, .06);
+}
+
+.fx-alert-modal.fx-alert-locked .fx-alert-icon {
+    background: rgba(240, 173, 78, .16);
+}
+
+.fx-alert-modal.fx-alert-suspicious .fx-alert-icon {
+    background: rgba(220, 80, 80, .16);
+}
+
+.fx-alert-modal.fx-alert-unlocked .fx-alert-icon {
+    background: rgba(90, 200, 130, .16);
+}
+
+.fx-alert-title {
+    font-size: 15px;
+    font-weight: 600;
+
+    color: var(--fx-text);
+
+    margin-bottom: 10px;
+
+    word-break: break-word;
+}
+
+.fx-alert-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    margin-bottom: 22px;
+}
+
+.fx-alert-body p {
+    margin: 0;
+
+    font-size: 12.5px;
+    line-height: 1.55;
+
+    color: var(--fx-text-soft);
+}
+
+.fx-alert-ok-button {
+    min-width: 96px;
+
+    padding: 9px 22px;
+
+    border: none;
+    border-radius: 7px;
+
+    background: var(--fx-blue);
+    color: #fff;
+
+    font-size: 12.5px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: filter .12s ease, transform .12s ease;
+}
+
+.fx-alert-ok-button:hover {
+    filter: brightness(1.1);
+}
+
+.fx-alert-ok-button:active {
+    transform: scale(.97);
+}
+
+.fx-alert-modal.fx-alert-locked .fx-alert-ok-button {
+    background: #f0ad4e;
+    color: #221a06;
+}
+
+.fx-alert-modal.fx-alert-suspicious .fx-alert-ok-button {
+    background: #dc5050;
+}
+
+
+/* =========================================================
+   LOCKED FILE INDICATOR
+   ========================================================= */
+
+.fx-row-locked {
+    color: var(--fx-text-soft);
+}
+
+.fx-row-locked .fx-row-icon {
+    opacity: .75;
+}
+
+.fx-lock-icon {
+    margin-left: auto;
+
+    color: #888;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   RESPONSIVE PASSWORD DIALOG
+   ========================================================= */
+
+@media (max-width: 500px) {
+
+    .fx-password-dialog {
+        width: calc(100% - 32px);
+
+        padding: 20px;
+    }
+}
+
+
+/* =========================================================
+   COPY-TO-CLIPBOARD BUTTON
+   ---------------------------------------------------------
+   Mirrors Mail's copy button — used next to the properties
+   pane's SHA-256 row and inside the file-investigation modal.
+   ========================================================= */
+
+.fx-prop-hash-value {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    justify-content: flex-end;
+}
+
+.fx-copy-button {
+    flex-shrink: 0;
+
+    width: 20px;
+    height: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--fx-border);
+    border-radius: 4px;
+
+    background: rgba(255, 255, 255, .04);
+    color: var(--fx-muted);
+
+    font-size: 10px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition: background .12s ease, color .12s ease;
+}
+
+.fx-copy-button:hover {
+    background: var(--fx-hover);
+    color: var(--fx-text-soft);
+}
+
+.fx-copy-button.copied {
+    border-color: rgba(90, 200, 130, .4);
+    background: rgba(90, 200, 130, .14);
+    color: #7fce9e;
+}
+
+
+/* =========================================================
+   COPY TOAST
+   ---------------------------------------------------------
+   Appended to document.body (not the Explorer's own
+   container) so it survives the innerHTML rebuild a render()
+   could trigger mid-toast.
+   ========================================================= */
+
+.fx-copy-toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+
+    z-index: 6000;
+
+    max-width: 320px;
+
+    padding: 10px 16px;
+
+    background: rgba(20, 22, 30, .96);
+    color: #e7e9ee;
+
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-left: 3px solid #4da3ff;
+    border-radius: 8px;
+
+    font-size: 12px;
+    line-height: 1.4;
+
+    box-shadow: 0 12px 32px rgba(0, 0, 0, .4);
+
+    opacity: 0;
+    transform: translateY(10px);
+
+    transition: opacity .2s ease, transform .2s ease;
+}
+
+.fx-copy-toast-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   FILE INVESTIGATION MODAL
+   ---------------------------------------------------------
+   Replaces the old inline-style-only version — now themed
+   with real CSS classes, plus a hash row (with copy) and an
+   "Open in Malware Sandbox" handoff button. Appended straight
+   to document.body, same as the styled alert / media viewer.
+   ========================================================= */
+
+.fx-investigate-overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 5000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, .62);
+    backdrop-filter: blur(4px);
+}
+
+.fx-investigate-modal {
+    width: min(720px, calc(100vw - 40px));
+    max-height: 80vh;
+
+    overflow: auto;
+
+    background: #0a1624;
+    color: #dce6f3;
+
+    border: 1px solid #192b40;
+    border-radius: 10px;
+
+    box-shadow: 0 20px 70px rgba(0, 0, 0, .5);
+
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.fx-investigate-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 14px 18px;
+
+    border-bottom: 1px solid #192b40;
+}
+
+.fx-investigate-title {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.fx-investigate-subtitle {
+    margin-top: 3px;
+
+    font-size: 11px;
+    opacity: .55;
+}
+
+.fx-investigate-close {
+    border: 0;
+    background: transparent;
+    color: #dce6f3;
+
+    font-size: 22px;
+    line-height: 1;
+
+    cursor: pointer;
+    opacity: .7;
+}
+
+.fx-investigate-close:hover {
+    opacity: 1;
+}
+
+.fx-investigate-body {
+    padding: 18px;
+}
+
+.fx-investigate-file {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 14px;
+}
+
+.fx-investigate-file-icon {
+    font-size: 30px;
+}
+
+.fx-investigate-file-name {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.fx-investigate-file-meta {
+    margin-top: 4px;
+
+    font-size: 12px;
+    opacity: .55;
+}
+
+.fx-investigate-hash-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 14px;
+    padding: 9px 12px;
+
+    border: 1px solid #192b40;
+    border-radius: 7px;
+
+    background: rgba(255, 255, 255, .02);
+}
+
+.fx-investigate-hash-label {
+    flex-shrink: 0;
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .6px;
+
+    color: #6e8299;
+}
+
+.fx-investigate-hash-value {
+    flex: 1;
+    min-width: 0;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    font-family: Consolas, "Cascadia Mono", monospace;
+    font-size: 10.5px;
+
+    color: #b9cbe0;
+}
+
+.fx-investigate-hash-row .fx-copy-button {
+    border-color: #263c55;
+    background: #0c1a2b;
+    color: #7e9ab5;
+}
+
+.fx-investigate-hash-row .fx-copy-button:hover {
+    background: #122941;
+    color: #a9bfd4;
+}
+
+.fx-investigate-block {
+    margin-bottom: 14px;
+    padding: 12px;
+
+    border: 1px solid #192b40;
+    border-radius: 7px;
+}
+
+.fx-investigate-block-label {
+    margin-bottom: 6px;
+
+    font-size: 11px;
+    opacity: .5;
+}
+
+.fx-investigate-pre {
+    margin: 0;
+
+    white-space: pre-wrap;
+
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 12px;
+    line-height: 1.6;
+
+    color: #b9cbe0;
+}
+
+.fx-investigate-next {
+    margin-bottom: 16px;
+
+    font-size: 12px;
+    line-height: 1.6;
+
+    opacity: .72;
+}
+
+.fx-investigate-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.fx-investigate-sandbox-button {
+    padding: 10px 16px;
+
+    border: 1px solid rgba(77, 163, 255, .35);
+    border-radius: 6px;
+
+    background: rgba(77, 163, 255, .14);
+    color: #8fc0ff;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: background .12s ease;
+}
+
+.fx-investigate-sandbox-button:hover {
+    background: rgba(77, 163, 255, .22);
+}
+
+
+/* =========================================================
+   RANSOMWARE (BLACKFROST) HOST VIEW — additive only.
+   Reuses the same restrained yellow/orange/red/green palette
+   already used above for locked/suspicious/unlocked files.
+   ========================================================= */
+
+.fx-ransomware-toggle {
+    color: #e0a064;
+}
+
+.fx-ransomware-toggle.active {
+    background: rgba(224, 160, 100, .16);
+    color: #e0a064;
+}
+
+.fx-ransomware-toggle.active:hover {
+    background: rgba(224, 160, 100, .22);
+}
+
+.fx-badge-ransom {
+    background: rgba(230, 90, 90, .16);
+    color: #e88080;
+}
+
+.fx-badge-ransom-targeted {
+    background: rgba(230, 180, 80, .16);
+    color: #e8bd5a;
+}
+
+.fx-badge-ransom-encrypting {
+    background: rgba(230, 180, 80, .2);
+    color: #e8bd5a;
+}
+
+.fx-badge-ransom-encrypted {
+    background: rgba(230, 90, 90, .18);
+    color: #e88080;
+}
+
+.fx-badge-ransom-recovering {
+    background: rgba(77, 163, 255, .16);
+    color: #4da3ff;
+}
+
+.fx-badge-ransom-recovered {
+    background: rgba(110, 200, 150, .16);
+    color: #7bd4a3;
+}
+
+.fx-properties-status.ransom {
+    border-color: rgba(230, 90, 90, .18);
+    background: rgba(230, 90, 90, .035);
+}
+
+.fx-properties-status.ransom-file.encrypted {
+    border-color: rgba(230, 90, 90, .18);
+    background: rgba(230, 90, 90, .035);
+}
+
+.fx-properties-status.ransom-file.recovered {
+    border-color: rgba(110, 200, 150, .22);
+    background: rgba(110, 200, 150, .05);
+}

@@ -1,0 +1,765 @@
+/* =========================================================
+   NORTHSTAR SOC — INCIDENT RESPONSE
+   Matches the design tokens used across Endpoints / Process
+   Tree / Files so this doesn't feel like a separate app.
+   ========================================================= */
+
+.northstar-incident {
+    --ir-bg: #0b111a;
+    --ir-panel: #101823;
+    --ir-panel-2: #121d2a;
+
+    --ir-border: rgba(148, 163, 184, 0.14);
+    --ir-border-strong: rgba(148, 163, 184, 0.22);
+
+    --ir-text: #e5edf7;
+    --ir-text-soft: #a9b7c8;
+    --ir-text-muted: #718197;
+
+    --ir-blue: #4da3ff;
+    --ir-blue-soft: rgba(77, 163, 255, 0.12);
+
+    --ir-green: #42c98b;
+    --ir-green-soft: rgba(66, 201, 139, 0.12);
+
+    --ir-yellow: #e7b85c;
+    --ir-yellow-soft: rgba(231, 184, 92, 0.12);
+
+    --ir-red: #e46b78;
+    --ir-red-soft: rgba(228, 107, 120, 0.12);
+
+    --ir-orange: #e0a064;
+    --ir-orange-soft: rgba(224, 160, 100, 0.14);
+
+    --ir-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    --ir-font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    background: var(--ir-bg);
+    color: var(--ir-text);
+    font-family: var(--ir-font);
+    font-size: 13px;
+}
+
+.ir-shell {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.ir-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 10px;
+    color: var(--ir-text-muted);
+    text-align: center;
+    padding: 40px;
+}
+
+.ir-empty-icon {
+    font-size: 30px;
+}
+
+.ir-empty-title {
+    color: var(--ir-text-soft);
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.ir-empty-body {
+    max-width: 380px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.ir-empty-inline {
+    padding: 24px;
+    color: var(--ir-text-muted);
+    font-size: 12px;
+    text-align: center;
+}
+
+
+/* =========================================================
+   TOP BAR
+   ========================================================= */
+
+.ir-topbar {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+
+    min-height: 62px;
+    padding: 0 18px;
+
+    background: var(--ir-panel);
+    border-bottom: 1px solid var(--ir-border);
+    flex-shrink: 0;
+}
+
+.ir-title-block {
+    min-width: 180px;
+}
+
+.ir-title {
+    font-family: var(--ir-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.ir-subtitle {
+    margin-top: 2px;
+    color: var(--ir-text-muted);
+    font-family: var(--ir-mono);
+    font-size: 9px;
+    letter-spacing: 0.5px;
+}
+
+.ir-severity-block {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ir-severity-badge {
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-family: var(--ir-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.sev-normal, .sev-info { background: rgba(148, 163, 184, 0.15); color: var(--ir-text-muted); }
+.sev-monitoring, .sev-low { background: var(--ir-blue-soft); color: var(--ir-blue); }
+.sev-suspicious, .sev-medium { background: var(--ir-yellow-soft); color: var(--ir-yellow); }
+.sev-high { background: var(--ir-orange-soft); color: var(--ir-orange); }
+.sev-critical { background: var(--ir-red-soft); color: var(--ir-red); }
+.sev-contained { background: var(--ir-blue-soft); color: var(--ir-blue); }
+.sev-recovering { background: var(--ir-yellow-soft); color: var(--ir-yellow); }
+.sev-resolved { background: var(--ir-green-soft); color: var(--ir-green); }
+
+.ir-elapsed {
+    color: var(--ir-text-soft);
+    font-family: var(--ir-mono);
+    font-size: 11px;
+}
+
+.ir-impact-meter {
+    flex: 1;
+    max-width: 320px;
+}
+
+.ir-impact-label {
+    color: var(--ir-text-muted);
+    font-family: var(--ir-mono);
+    font-size: 8px;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.ir-impact-track {
+    height: 6px;
+    border-radius: 4px;
+    background: rgba(148, 163, 184, 0.12);
+    overflow: hidden;
+}
+
+.ir-impact-fill {
+    height: 100%;
+    transition: width 0.4s ease;
+}
+
+.ir-impact-fill.none { background: var(--ir-text-muted); }
+.ir-impact-fill.low { background: var(--ir-yellow); }
+.ir-impact-fill.medium { background: var(--ir-orange); }
+.ir-impact-fill.high { background: var(--ir-red); }
+
+.ir-restart-button {
+    margin-left: auto;
+    padding: 7px 12px;
+    border: 1px solid var(--ir-border-strong);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--ir-text-soft);
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.ir-restart-button:hover {
+    background: rgba(148, 163, 184, 0.08);
+}
+
+
+/* =========================================================
+   TABS
+   ========================================================= */
+
+.ir-tabs {
+    display: flex;
+    gap: 2px;
+    padding: 0 14px;
+    background: var(--ir-panel);
+    border-bottom: 1px solid var(--ir-border);
+    overflow-x: auto;
+    flex-shrink: 0;
+}
+
+.ir-tab {
+    padding: 11px 14px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    color: var(--ir-text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.ir-tab:hover {
+    color: var(--ir-text-soft);
+}
+
+.ir-tab.active {
+    color: var(--ir-text);
+    border-bottom-color: var(--ir-blue);
+}
+
+
+/* =========================================================
+   BODY / SHARED LAYOUT
+   ========================================================= */
+
+.ir-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 18px 22px;
+}
+
+.ir-grid {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.ir-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ir-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+@media (max-width: 900px) {
+    .ir-grid-2, .ir-grid-3 { grid-template-columns: 1fr; }
+}
+
+.ir-card {
+    padding: 16px 18px;
+    border: 1px solid var(--ir-border);
+    border-radius: 8px;
+    background: var(--ir-panel-2);
+    margin-bottom: 14px;
+}
+
+.ir-card h2 {
+    margin: 0 0 12px 0;
+    color: var(--ir-text-muted);
+    font-family: var(--ir-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.ir-info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--ir-border);
+    font-size: 12px;
+}
+
+.ir-info-row:last-child { border-bottom: none; }
+
+.ir-info-label { color: var(--ir-text-muted); }
+
+.ir-info-value {
+    color: var(--ir-text);
+    font-family: var(--ir-mono);
+    text-align: right;
+}
+
+.ir-check-pass { color: var(--ir-green); }
+.ir-check-fail { color: var(--ir-text-muted); }
+
+.ir-note {
+    color: var(--ir-text-muted);
+    font-size: 11.5px;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+.ir-link-button {
+    margin-top: 6px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--ir-blue);
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.ir-link-button:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   FEEDBACK BANNER
+   ========================================================= */
+
+.ir-feedback-slot:empty { display: none; }
+
+.ir-feedback {
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 14px;
+    font-size: 12px;
+}
+
+.ir-feedback.success {
+    background: var(--ir-green-soft);
+    color: var(--ir-green);
+    border: 1px solid rgba(66, 201, 139, 0.3);
+}
+
+.ir-feedback.error {
+    background: var(--ir-red-soft);
+    color: var(--ir-red);
+    border: 1px solid rgba(228, 107, 120, 0.3);
+}
+
+
+/* =========================================================
+   OBJECTIVES SUMMARY (Overview)
+   ========================================================= */
+
+.ir-objective-summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11.5px;
+    color: var(--ir-text-soft);
+    margin-top: 8px;
+}
+
+.ir-objective-summary-count {
+    font-family: var(--ir-mono);
+    color: var(--ir-text-muted);
+}
+
+.ir-progress-track {
+    height: 5px;
+    border-radius: 3px;
+    background: rgba(148, 163, 184, 0.12);
+    margin: 4px 0 2px 0;
+    overflow: hidden;
+}
+
+.ir-progress-fill {
+    height: 100%;
+    background: var(--ir-blue);
+}
+
+
+/* =========================================================
+   EVIDENCE QUICK BUTTONS
+   ========================================================= */
+
+.ir-evidence-quick-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.ir-evidence-quick-button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 7px 11px;
+    margin-top: 6px;
+
+    border: 1px solid var(--ir-border-strong);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--ir-text);
+    font-size: 11px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.ir-evidence-quick-row .ir-evidence-quick-button {
+    width: auto;
+}
+
+.ir-evidence-quick-button:hover:not(:disabled) {
+    background: rgba(148, 163, 184, 0.08);
+}
+
+.ir-evidence-quick-button.collected {
+    color: var(--ir-green);
+    border-color: rgba(66, 201, 139, 0.3);
+    cursor: default;
+}
+
+.ir-evidence-quick-button:disabled {
+    opacity: 0.85;
+}
+
+
+/* =========================================================
+   TIMELINE
+   ========================================================= */
+
+.ir-timeline {
+    display: flex;
+    flex-direction: column;
+}
+
+.ir-timeline-row {
+    display: grid;
+    grid-template-columns: 78px 14px 1fr;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--ir-border);
+}
+
+.ir-timeline-row:last-child { border-bottom: none; }
+
+.ir-timeline-time {
+    color: var(--ir-text-muted);
+    font-family: var(--ir-mono);
+    font-size: 10px;
+    padding-top: 2px;
+}
+
+.ir-timeline-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-top: 5px;
+    background: var(--ir-text-muted);
+}
+
+.ir-timeline-dot.sev-high { background: var(--ir-orange); }
+.ir-timeline-dot.sev-critical { background: var(--ir-red); }
+.ir-timeline-dot.sev-medium { background: var(--ir-yellow); }
+.ir-timeline-dot.sev-low, .ir-timeline-dot.sev-info { background: var(--ir-text-muted); }
+
+.ir-timeline-type {
+    font-family: var(--ir-mono);
+    font-size: 10.5px;
+    color: var(--ir-blue);
+}
+
+.ir-timeline-message {
+    font-size: 12px;
+    color: var(--ir-text-soft);
+    margin-top: 2px;
+}
+
+.ir-timeline-meta {
+    font-size: 10.5px;
+    color: var(--ir-text-muted);
+    margin-top: 3px;
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.ir-action-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.ir-action-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    padding: 14px 16px;
+    border: 1px solid var(--ir-border);
+    border-radius: 8px;
+    background: var(--ir-panel-2);
+}
+
+.ir-action-card.done {
+    border-color: rgba(66, 201, 139, 0.25);
+}
+
+.ir-action-card-main {
+    flex: 1;
+}
+
+.ir-action-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+}
+
+.ir-action-title {
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.ir-action-done-badge {
+    color: var(--ir-green);
+    font-size: 10px;
+    font-family: var(--ir-mono);
+}
+
+.ir-action-description {
+    color: var(--ir-text-soft);
+    font-size: 11.5px;
+    line-height: 1.5;
+    max-width: 560px;
+}
+
+.ir-action-reason {
+    color: var(--ir-text-muted);
+    font-size: 10.5px;
+    margin-top: 6px;
+    font-style: italic;
+}
+
+.ir-action-button {
+    flex-shrink: 0;
+    padding: 9px 16px;
+    border: 1px solid rgba(228, 107, 120, 0.4);
+    border-radius: 6px;
+    background: var(--ir-red-soft);
+    color: var(--ir-red);
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.ir-action-button:hover:not(:disabled) {
+    background: rgba(228, 107, 120, 0.22);
+}
+
+.ir-action-button.primary {
+    border-color: rgba(77, 163, 255, 0.4);
+    background: var(--ir-blue-soft);
+    color: var(--ir-blue);
+}
+
+.ir-action-button.primary:hover:not(:disabled) {
+    background: rgba(77, 163, 255, 0.22);
+}
+
+.ir-action-button.done {
+    border-color: rgba(66, 201, 139, 0.35);
+    background: var(--ir-green-soft);
+    color: var(--ir-green);
+    cursor: default;
+}
+
+.ir-action-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   AUDIT LOG
+   ========================================================= */
+
+.ir-audit-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+.ir-audit-row {
+    display: grid;
+    grid-template-columns: 70px 150px 1fr;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--ir-border);
+    font-size: 11px;
+}
+
+.ir-audit-row:last-child { border-bottom: none; }
+
+.ir-audit-time {
+    color: var(--ir-text-muted);
+    font-family: var(--ir-mono);
+    font-size: 10px;
+}
+
+.ir-audit-action {
+    color: var(--ir-blue);
+    font-family: var(--ir-mono);
+    font-size: 10px;
+}
+
+.ir-audit-description {
+    color: var(--ir-text-soft);
+}
+
+
+/* =========================================================
+   CHECKLISTS (Recovery / Objectives)
+   ========================================================= */
+
+.ir-checklist-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--ir-border);
+    font-size: 12.5px;
+}
+
+.ir-checklist-row:last-child { border-bottom: none; }
+
+
+/* =========================================================
+   EVIDENCE LIST
+   ========================================================= */
+
+.ir-evidence-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ir-evidence-row {
+    display: grid;
+    grid-template-columns: 110px 1fr 2fr 70px;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--ir-border);
+    font-size: 11.5px;
+    align-items: center;
+}
+
+.ir-evidence-row:last-child { border-bottom: none; }
+
+.ir-evidence-kind {
+    font-family: var(--ir-mono);
+    color: var(--ir-blue);
+    font-size: 10px;
+}
+
+.ir-evidence-label {
+    color: var(--ir-text);
+    font-weight: 600;
+}
+
+.ir-evidence-desc {
+    color: var(--ir-text-soft);
+}
+
+.ir-evidence-id {
+    color: var(--ir-text-muted);
+    font-family: var(--ir-mono);
+    font-size: 10px;
+    text-align: right;
+}
+
+
+/* =========================================================
+   MITRE
+   ========================================================= */
+
+.ir-mitre-table {
+    display: flex;
+    flex-direction: column;
+}
+
+.ir-mitre-row {
+    display: grid;
+    grid-template-columns: 140px 220px 1fr;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--ir-border);
+    font-size: 12px;
+}
+
+.ir-mitre-row:last-child { border-bottom: none; }
+
+.ir-mitre-tactic {
+    color: var(--ir-text-muted);
+    font-family: var(--ir-mono);
+    font-size: 10.5px;
+}
+
+.ir-mitre-technique {
+    color: var(--ir-blue);
+    font-weight: 600;
+}
+
+.ir-mitre-evidence {
+    color: var(--ir-text-soft);
+}
+
+
+/* =========================================================
+   REPORT
+   ========================================================= */
+
+.ir-report-card {
+    text-align: left;
+}
+
+.ir-report-rating {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--ir-border);
+}
+
+.ir-report-score {
+    font-size: 34px;
+    font-weight: 800;
+    font-family: var(--ir-mono);
+    color: var(--ir-blue);
+}
+
+.ir-report-rating-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ir-text-soft);
+    letter-spacing: 0.5px;
+}
+
+.ir-training-note {
+    margin: 0;
+    color: var(--ir-text-soft);
+    font-size: 12.5px;
+    line-height: 1.7;
+}

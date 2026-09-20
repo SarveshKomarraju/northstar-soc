@@ -1,0 +1,276 @@
+/* =========================================================
+   NORTHSTAR SOC — CAPTURE TOOL STYLES
+   File: capture/capture.css
+
+   Snip overlay, recording indicator, and toast notifications
+   for CaptureTool.js. Kept self-contained and namespaced with
+   an "ns-" prefix (Northstar) since this UI floats above
+   every app window rather than living inside one.
+   ========================================================= */
+
+/* =========================================================
+   SNIP OVERLAY
+   ========================================================= */
+
+.ns-snip-overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 6000;
+
+    cursor: crosshair;
+
+    background: rgba(8, 10, 16, .35);
+}
+
+.ns-snip-selection {
+    position: fixed;
+
+    border: 1.5px dashed #4da3ff;
+    background: rgba(77, 163, 255, .12);
+
+    box-shadow: 0 0 0 4000px rgba(8, 10, 16, .35);
+
+    pointer-events: none;
+}
+
+.ns-snip-hint {
+    position: fixed;
+    top: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    padding: 8px 18px;
+
+    background: rgba(20, 22, 30, .92);
+    color: #e7e9ee;
+
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 999px;
+
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: .01em;
+
+    pointer-events: none;
+
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+}
+
+
+/* =========================================================
+   RECORDING INDICATOR
+   ========================================================= */
+
+.ns-recording-indicator {
+    position: fixed;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    z-index: 6000;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 8px 16px 8px 12px;
+
+    background: rgba(20, 22, 30, .95);
+    color: #e7e9ee;
+
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 999px;
+
+    font-size: 12.5px;
+    font-weight: 500;
+
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .4);
+}
+
+.ns-recording-dot {
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    background: #e5484d;
+
+    animation: ns-recording-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes ns-recording-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .35; }
+}
+
+.ns-recording-time {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+}
+
+.ns-recording-stop {
+    padding: 4px 12px;
+
+    border: 1px solid rgba(229, 72, 77, .5);
+    border-radius: 999px;
+
+    background: rgba(229, 72, 77, .16);
+    color: #ff9aa0;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .02em;
+
+    cursor: pointer;
+}
+
+.ns-recording-stop:hover {
+    background: rgba(229, 72, 77, .28);
+}
+
+
+/* =========================================================
+   ON-SCREEN TOOLBAR
+   ---------------------------------------------------------
+   Persistent Screenshot / Record buttons, since a shortcut
+   alone isn't discoverable — matches the "start/stop button"
+   the recording control needs.
+   ========================================================= */
+
+.ns-capture-toolbar {
+    position: fixed;
+    left: 18px;
+
+    /*
+     * Sits just above the taskbar instead of on top of it —
+     * bottom:18px used to land right on top of the Start
+     * button/search box in the taskbar's bottom-left corner.
+     */
+    bottom: calc(var(--northstar-taskbar-height, 58px) + 14px);
+
+    z-index: 5500;
+
+    display: flex;
+    gap: 6px;
+
+    padding: 6px;
+
+    background: rgba(20, 22, 30, .82);
+
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: 12px;
+
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+
+    backdrop-filter: blur(6px);
+}
+
+.ns-capture-toolbar-btn {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid transparent;
+    border-radius: 8px;
+
+    background: transparent;
+    color: #e7e9ee;
+
+    font-size: 15px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition: background .12s ease, border-color .12s ease;
+}
+
+.ns-capture-toolbar-btn:hover {
+    background: rgba(255, 255, 255, .08);
+    border-color: rgba(255, 255, 255, .12);
+}
+
+.ns-capture-toolbar-btn-active {
+    background: rgba(229, 72, 77, .18);
+    border-color: rgba(229, 72, 77, .45);
+    color: #ff9aa0;
+}
+
+.ns-capture-toolbar-btn-active:hover {
+    background: rgba(229, 72, 77, .26);
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+.ns-capture-toast {
+    position: fixed;
+
+    /* Same reasoning as .ns-capture-toolbar — clear the taskbar/system tray instead of sitting on top of it. */
+    bottom: calc(var(--northstar-taskbar-height, 58px) + 14px);
+    right: 24px;
+
+    z-index: 6000;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    max-width: 320px;
+
+    padding: 12px 16px;
+
+    background: rgba(20, 22, 30, .96);
+    color: #e7e9ee;
+
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-left: 3px solid #4da3ff;
+    border-radius: 10px;
+
+    font-size: 12.5px;
+    line-height: 1.4;
+
+    box-shadow: 0 12px 32px rgba(0, 0, 0, .4);
+
+    opacity: 0;
+    transform: translateY(10px);
+
+    transition: opacity .2s ease, transform .2s ease;
+}
+
+.ns-capture-toast-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ns-capture-toast-error {
+    border-left-color: #e5484d;
+}
+
+.ns-capture-toast-icon {
+    flex-shrink: 0;
+
+    font-size: 16px;
+}
+
+.ns-capture-toast-thumb {
+    flex-shrink: 0;
+
+    width: 40px;
+    height: 40px;
+
+    object-fit: cover;
+
+    border-radius: 6px;
+
+    border: 1px solid rgba(255, 255, 255, .16);
+}
+
+.ns-capture-toast-text {
+    color: #d3d7de;
+}

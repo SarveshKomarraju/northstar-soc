@@ -1,0 +1,1821 @@
+/* =========================================================
+   NORTHSTAR SOC — ATTACK EXPERIENCE SCREEN
+   ---------------------------------------------------------
+   The reusable 2-panel replay screen (Attacker POV / Victim-
+   SOC POV) plus a shared timeline + caption bar, shared by all
+   10 "Experience Other Attacks" simulations. One stylesheet,
+   data-driven content — no per-attack CSS.
+
+   v3 (animation): each panel is one continuously-flowing
+   column (.nsae-stream). Plain event lines (.nsae-feed-card)
+   and "big" widgets (.nsae-widget) are appended to it in
+   chronological order and never absolutely positioned on top
+   of each other — this is what prevents things like a
+   "Connected to Wi-Fi" success message and a follow-up SOC
+   alert from visually overlapping; they simply stack. A small
+   animated cursor (.nsae-cursor) is created inside a widget
+   card the moment something needs to click inside it.
+
+   Same dark-navy SOC aesthetic as main-menu.css / freeplay.css.
+   The Attacker POV panel is intentionally darker/more hostile
+   (near-black) in both themes; the Victim/SOC panel follows the
+   normal NORTHSTAR analyst palette and theme.
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   Screen shell
+   --------------------------------------------------------- */
+
+.nsae-screen {
+    position: fixed;
+    inset: 0;
+
+    z-index: 100001;
+
+    display: flex;
+
+    background: #05090f;
+    color: #dce7f2;
+
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.nsae-screen.hidden {
+    display: none;
+}
+
+.nsae-inner {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+
+    max-width: 1440px;
+    margin: 0 auto;
+    width: 100%;
+
+    padding: 22px min(4vw, 48px) 20px;
+}
+
+
+/* ---------------------------------------------------------
+   Top bar
+   --------------------------------------------------------- */
+
+.nsae-topbar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+
+    border-bottom: 1px solid rgba(100, 150, 210, 0.16);
+}
+
+.nsae-back {
+    flex-shrink: 0;
+
+    padding: 9px 14px;
+
+    border: 1px solid rgba(100, 150, 210, 0.3);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    color: #b8c9d8;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+
+    cursor: pointer;
+
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.nsae-back:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(100, 150, 210, 0.5);
+}
+
+.nsae-title-block {
+    flex: 1;
+    min-width: 200px;
+}
+
+.nsae-eyebrow {
+    color: var(--nsae-accent, #6fb2e0);
+
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 2px;
+
+    margin-bottom: 4px;
+}
+
+.nsae-title-block h2 {
+    margin: 0;
+
+    color: #eef5fb;
+
+    font-size: clamp(20px, 2.2vw, 26px);
+    letter-spacing: 0.3px;
+}
+
+.nsae-meta {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.nsae-meta-pill {
+    padding: 5px 12px;
+
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(100, 150, 210, 0.2);
+    color: #a8bccf;
+
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.nsae-mitre-pill {
+    color: #8ea6bc;
+
+    font-family: "Cascadia Code", "Consolas", monospace;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.nsae-mitre-pill[hidden] {
+    display: none;
+}
+
+
+/* ---------------------------------------------------------
+   Timeline
+   --------------------------------------------------------- */
+
+.nsae-timeline-bar {
+    display: flex;
+    align-items: flex-start;
+
+    padding: 6px 4px 18px;
+    margin-bottom: 6px;
+
+    overflow-x: auto;
+}
+
+.nsae-timeline-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+
+    min-width: 76px;
+}
+
+.nsae-timeline-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+
+    background: #101a29;
+    border: 2px solid rgba(100, 150, 210, 0.3);
+
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.nsae-timeline-label {
+    color: #64798d;
+
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.nsae-timeline-stage-done .nsae-timeline-dot {
+    background: var(--nsae-accent, #6fb2e0);
+    border-color: var(--nsae-accent, #6fb2e0);
+}
+
+.nsae-timeline-stage-done .nsae-timeline-label {
+    color: #a8bccf;
+}
+
+.nsae-timeline-stage-active .nsae-timeline-dot {
+    background: var(--nsae-accent, #6fb2e0);
+    border-color: var(--nsae-accent, #6fb2e0);
+    box-shadow: 0 0 0 5px rgba(111, 178, 224, 0.28);
+}
+
+.nsae-timeline-stage-active .nsae-timeline-label {
+    color: #eef5fb;
+}
+
+.nsae-timeline-connector {
+    flex: 1;
+    height: 2px;
+    margin-top: 6px;
+
+    background: rgba(100, 150, 210, 0.16);
+
+    transition: background 0.2s;
+}
+
+.nsae-timeline-connector-done {
+    background: var(--nsae-accent, #6fb2e0);
+}
+
+
+/* ---------------------------------------------------------
+   Panels (attacker | victim)
+   --------------------------------------------------------- */
+
+.nsae-panels {
+    flex: 1;
+    min-height: 0;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+
+    margin-bottom: 14px;
+}
+
+.nsae-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.nsae-panel header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 12px 16px;
+
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.nsae-panel-sub {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    opacity: 0.7;
+    text-transform: none;
+}
+
+.nsae-panel-time {
+    margin-left: auto;
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.6;
+}
+
+.nsae-panel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.nsae-panel-dot-attacker {
+    background: #d97b7b;
+    box-shadow: 0 0 0 3px rgba(217, 123, 123, 0.18);
+}
+
+.nsae-panel-dot-victim {
+    background: #7bd4a3;
+    box-shadow: 0 0 0 3px rgba(123, 212, 163, 0.18);
+}
+
+/* The one continuously-flowing column per panel. Everything —
+   plain lines and "big" widgets alike — gets appended here in
+   chronological order, so nothing is ever stacked on top of
+   anything else. */
+
+.nsae-stream {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    padding: 14px 16px;
+
+    scroll-behavior: smooth;
+}
+
+
+/* Attacker POV — intentionally hostile/dark, unaffected by theme */
+
+.nsae-panel-attacker {
+    background: #0a0605;
+    border: 1px solid rgba(217, 123, 123, 0.2);
+}
+
+.nsae-panel-attacker header {
+    background: rgba(217, 123, 123, 0.07);
+    color: #f0b9b9;
+}
+
+/* Attacker-side feed cards read as a hostile console */
+
+.nsae-panel-attacker .nsae-feed-card {
+    background: rgba(217, 123, 123, 0.06);
+    border-color: rgba(217, 123, 123, 0.16);
+}
+
+.nsae-panel-attacker .nsae-feed-text {
+    color: #e0b3b3;
+}
+
+.nsae-panel-attacker .nsae-feed-card-alert {
+    background: rgba(217, 123, 123, 0.14);
+}
+
+
+/* ---------------------------------------------------------
+   Entrance animation — used by every new line/widget/row
+   appended to a stream, so new content visibly arrives
+   instead of popping in.
+   --------------------------------------------------------- */
+
+.nsae-enter {
+    animation: nsae-enter-anim 0.42s cubic-bezier(0.2, 1, 0.4, 1) both;
+}
+
+@keyframes nsae-enter-anim {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ---------------------------------------------------------
+   Feed lines (event/alert cards) — used on both sides
+   --------------------------------------------------------- */
+
+.nsae-feed-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    flex-shrink: 0;
+
+    padding: 10px 12px;
+
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+}
+
+.nsae-feed-icon {
+    flex-shrink: 0;
+
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.nsae-feed-text {
+    color: #c3d3e2;
+
+    font-size: 12.5px;
+    line-height: 1.5;
+}
+
+.nsae-feed-card-alert {
+    background: rgba(220, 90, 90, 0.1);
+    border-color: rgba(220, 90, 90, 0.28);
+}
+
+.nsae-feed-card-alert .nsae-feed-text {
+    color: #f2b8b8;
+    font-weight: 700;
+}
+
+.nsae-feed-card-good {
+    background: rgba(123, 212, 163, 0.1);
+    border-color: rgba(123, 212, 163, 0.28);
+}
+
+.nsae-feed-card-good .nsae-feed-text {
+    color: #bdeed3;
+    font-weight: 700;
+}
+
+
+/* ---------------------------------------------------------
+   Widget card shell — every "big" widget (Wi-Fi, browser,
+   capture feed, hash table, diagram, USB) is wrapped in this
+   so it reads as one distinct card in the flowing stream, and
+   so it can host a relatively-positioned animated cursor.
+   --------------------------------------------------------- */
+
+.nsae-widget {
+    position: relative;
+    flex-shrink: 0;
+
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+
+    padding: 14px;
+}
+
+
+/* ---------------------------------------------------------
+   Animated cursor + click ripple
+   --------------------------------------------------------- */
+
+.nsae-cursor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+
+    color: var(--nsae-accent, #6fb2e0);
+    font-size: 15px;
+    line-height: 1;
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition: transform 0.55s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.25s;
+
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.6));
+}
+
+.nsae-cursor-visible {
+    opacity: 1;
+}
+
+.nsae-click-ring {
+    position: absolute;
+    z-index: 4;
+
+    width: 14px;
+    height: 14px;
+    margin-left: -7px;
+    margin-top: -7px;
+
+    border-radius: 50%;
+    border: 2px solid var(--nsae-accent, #6fb2e0);
+
+    pointer-events: none;
+
+    animation: nsae-click-pulse 0.5s ease-out forwards;
+}
+
+@keyframes nsae-click-pulse {
+    from {
+        transform: scale(0.4);
+        opacity: 1;
+    }
+    to {
+        transform: scale(2.2);
+        opacity: 0;
+    }
+}
+
+.nsae-clicked {
+    animation: nsae-clicked-flash 0.4s ease-out;
+}
+
+@keyframes nsae-clicked-flash {
+    0% { filter: brightness(1.6); }
+    100% { filter: brightness(1); }
+}
+
+
+/* Typing caret */
+
+.nsae-caret {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    margin-left: 1px;
+    vertical-align: -2px;
+
+    background: var(--nsae-accent, #6fb2e0);
+
+    animation: nsae-blink 1s steps(1) infinite;
+}
+
+@keyframes nsae-blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+}
+
+
+/* ---------------------------------------------------------
+   Widget: wifi (network picker)
+   --------------------------------------------------------- */
+
+.nsae-wifi-title {
+    color: #6386a4;
+
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+
+    margin-bottom: 10px;
+}
+
+.nsae-wifi-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nsae-wifi-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 10px 12px;
+
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.nsae-wifi-bars {
+    font-family: monospace;
+    font-size: 12px;
+    letter-spacing: -1px;
+    color: #7bd4a3;
+}
+
+.nsae-wifi-name {
+    flex: 1;
+
+    color: #c3d3e2;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.nsae-wifi-item-rogue .nsae-wifi-bars {
+    color: #d97b7b;
+}
+
+.nsae-wifi-item-active {
+    border-color: var(--nsae-accent, #6fb2e0);
+    background: rgba(111, 178, 224, 0.06);
+}
+
+.nsae-wifi-status {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: #e7b86a;
+}
+
+.nsae-wifi-status-ok {
+    color: #7bd4a3;
+}
+
+
+/* ---------------------------------------------------------
+   Widget: browser (fake browser + pages)
+   --------------------------------------------------------- */
+
+.nsae-browser {
+    padding: 0;
+    overflow: hidden;
+
+    background: #0e1826;
+}
+
+.nsae-browser-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 8px 12px;
+
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.nsae-browser-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.nsae-browser-url {
+    margin-left: 8px;
+
+    padding: 3px 10px;
+
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+
+    color: #a8bccf;
+
+    font-size: 10.5px;
+    font-family: "Cascadia Code", "Consolas", monospace;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    transition: color 0.2s;
+}
+
+.nsae-browser-url-insecure {
+    color: #e7b86a;
+}
+
+.nsae-browser-page {
+    padding: 18px 16px;
+}
+
+.nsae-page-heading {
+    color: #eef5fb;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    margin-bottom: 12px;
+}
+
+.nsae-field {
+    margin-bottom: 10px;
+}
+
+.nsae-field label {
+    display: block;
+
+    color: #6386a4;
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+
+    margin-bottom: 4px;
+}
+
+.nsae-field-value {
+    min-height: 16px;
+
+    padding: 7px 10px;
+
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+
+    color: #dce7f2;
+
+    font-size: 12.5px;
+    font-family: "Cascadia Code", "Consolas", monospace;
+}
+
+.nsae-page-btn {
+    display: inline-block;
+    margin-top: 6px;
+
+    padding: 8px 20px;
+
+    background: var(--nsae-accent, #6fb2e0);
+    border-radius: 6px;
+
+    color: #06121f;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    transition: transform 0.15s;
+}
+
+.nsae-page-btn-active {
+    transform: scale(0.96);
+    filter: brightness(1.1);
+}
+
+.nsae-page-status {
+    margin-top: 12px;
+
+    font-size: 12.5px;
+    font-weight: 700;
+
+    min-height: 16px;
+}
+
+.nsae-page-status-good {
+    color: #7bd4a3;
+}
+
+.nsae-page-status-alert {
+    color: #f2b8b8;
+}
+
+.nsae-page-searchbar {
+    padding: 8px 12px;
+    margin-bottom: 12px;
+
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 6px;
+
+    color: #a8bccf;
+
+    font-size: 12px;
+    font-family: "Cascadia Code", "Consolas", monospace;
+
+    overflow-wrap: anywhere;
+    min-height: 16px;
+}
+
+.nsae-page-banner {
+    padding: 8px 12px;
+    margin-bottom: 12px;
+
+    background: rgba(220, 90, 90, 0.14);
+    border: 1px solid rgba(220, 90, 90, 0.3);
+    border-radius: 6px;
+
+    color: #f2b8b8;
+
+    font-size: 11.5px;
+    font-weight: 700;
+}
+
+.nsae-page-results {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.nsae-page-result {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    padding: 8px 10px;
+
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+
+    font-size: 12px;
+}
+
+.nsae-page-result-title {
+    color: #dce7f2;
+    font-weight: 600;
+}
+
+.nsae-page-result-meta {
+    color: #6386a4;
+
+    font-family: "Cascadia Code", "Consolas", monospace;
+    font-size: 11px;
+}
+
+.nsae-page-results-leaked .nsae-page-result {
+    background: rgba(220, 90, 90, 0.1);
+    border: 1px solid rgba(220, 90, 90, 0.24);
+}
+
+.nsae-page-results-leaked .nsae-page-result-title {
+    color: #f2b8b8;
+}
+
+.nsae-page-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    padding: 8px 0;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nsae-page-row-label {
+    color: #6386a4;
+    font-size: 11.5px;
+}
+
+.nsae-page-row-value {
+    color: #dce7f2;
+    font-weight: 700;
+    font-size: 12.5px;
+}
+
+.nsae-page-row-value-alert {
+    color: #f2b8b8;
+}
+
+
+/* ---------------------------------------------------------
+   Widget: credential-capture
+   --------------------------------------------------------- */
+
+.nsae-capture-title {
+    color: #8a6a6a;
+
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+
+    margin-bottom: 10px;
+}
+
+.nsae-capture-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.nsae-capture-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 8px 10px;
+
+    border-radius: 6px;
+    border-left: 3px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+
+    font-size: 12px;
+}
+
+.nsae-capture-primary {
+    color: #e0b3b3;
+    font-weight: 700;
+    font-family: "Cascadia Code", "Consolas", monospace;
+}
+
+.nsae-capture-secondary {
+    flex: 1;
+
+    color: #b98d8d;
+
+    font-family: "Cascadia Code", "Consolas", monospace;
+    font-size: 11px;
+}
+
+.nsae-capture-badge {
+    flex-shrink: 0;
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+}
+
+.nsae-capture-row-captured,
+.nsae-capture-row-success {
+    border-left-color: #7bd4a3;
+}
+
+.nsae-capture-row-captured .nsae-capture-badge,
+.nsae-capture-row-success .nsae-capture-badge {
+    color: #7bd4a3;
+}
+
+.nsae-capture-row-fail {
+    border-left-color: #d97b7b;
+    opacity: 0.7;
+}
+
+.nsae-capture-row-fail .nsae-capture-badge {
+    color: #d97b7b;
+}
+
+
+/* ---------------------------------------------------------
+   Widget: hash-table
+   --------------------------------------------------------- */
+
+.nsae-hashtable {
+    font-family: "Cascadia Code", "Consolas", monospace;
+    position: relative;
+    overflow: hidden;
+}
+
+.nsae-hashtable-head {
+    display: flex;
+    justify-content: space-between;
+
+    color: #6386a4;
+
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+
+    margin-bottom: 8px;
+}
+
+.nsae-hashtable-row {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 6px 0;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+    font-size: 11.5px;
+}
+
+.nsae-hash {
+    color: #b98d8d;
+}
+
+.nsae-pass {
+    color: #8a6a6a;
+}
+
+.nsae-hashtable-row-revealed .nsae-pass {
+    color: #7bd4a3;
+    font-weight: 700;
+}
+
+.nsae-hashtable-scanning {
+    margin-top: 8px;
+
+    color: #6386a4;
+
+    font-size: 10.5px;
+    font-style: italic;
+}
+
+.nsae-hashtable-scanning-active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 22px;
+
+    background: linear-gradient(
+        180deg,
+        rgba(111, 178, 224, 0) 0%,
+        rgba(111, 178, 224, 0.22) 50%,
+        rgba(111, 178, 224, 0) 100%
+    );
+
+    pointer-events: none;
+
+    animation: nsae-hash-sweep 1.2s linear infinite;
+}
+
+@keyframes nsae-hash-sweep {
+    0% { top: 24px; }
+    100% { top: 100%; }
+}
+
+
+/* ---------------------------------------------------------
+   Widget: diagram (nodes + animated edges)
+   --------------------------------------------------------- */
+
+.nsae-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+
+    padding: 4px 4px 22px;
+}
+
+.nsae-diagram-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+
+    min-width: 84px;
+}
+
+.nsae-diagram-icon {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+    font-size: 20px;
+
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nsae-diagram-node-attacker .nsae-diagram-icon {
+    background: rgba(217, 123, 123, 0.14);
+    border-color: rgba(217, 123, 123, 0.4);
+}
+
+.nsae-diagram-node-victim .nsae-diagram-icon {
+    background: rgba(111, 178, 224, 0.14);
+    border-color: rgba(111, 178, 224, 0.4);
+}
+
+.nsae-diagram-node-legit .nsae-diagram-icon {
+    background: rgba(123, 212, 163, 0.14);
+    border-color: rgba(123, 212, 163, 0.4);
+}
+
+.nsae-diagram-label {
+    color: #a8bccf;
+
+    font-size: 10px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.3;
+
+    max-width: 96px;
+}
+
+.nsae-diagram-edge {
+    position: relative;
+
+    flex: 1;
+    min-width: 30px;
+    height: 2px;
+
+    background: rgba(255, 255, 255, 0.14);
+
+    margin-bottom: 26px;
+
+    transition: background 0.3s;
+}
+
+.nsae-diagram-edge-animated {
+    background: var(--nsae-accent, #6fb2e0);
+}
+
+.nsae-diagram-packet {
+    position: absolute;
+    top: 50%;
+    left: 0;
+
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+
+    background: var(--nsae-accent, #6fb2e0);
+    box-shadow: 0 0 6px var(--nsae-accent, #6fb2e0);
+
+    transform: translateY(-50%);
+
+    animation: nsae-packet-travel 1.6s linear infinite;
+}
+
+@keyframes nsae-packet-travel {
+    0% { left: 0%; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { left: 100%; opacity: 0; }
+}
+
+.nsae-diagram-edge-label {
+    position: absolute;
+    left: 50%;
+    top: -18px;
+    transform: translateX(-50%);
+
+    white-space: nowrap;
+
+    color: #8195a8;
+
+    font-size: 9.5px;
+    font-family: "Cascadia Code", "Consolas", monospace;
+}
+
+
+/* ---------------------------------------------------------
+   Widget: usb (removable-drive interaction)
+   --------------------------------------------------------- */
+
+.nsae-usb {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    padding: 16px 12px;
+
+    text-align: center;
+}
+
+.nsae-usb-icon {
+    font-size: 30px;
+    opacity: 0.35;
+    cursor: default;
+
+    transition: opacity 0.2s;
+}
+
+.nsae-usb-icon-connected {
+    opacity: 1;
+}
+
+.nsae-usb-status {
+    color: #a8bccf;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.nsae-usb-window {
+    position: relative;
+    width: 100%;
+    max-width: 240px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.nsae-usb-window-bar {
+    padding: 6px 10px;
+
+    background: rgba(255, 255, 255, 0.05);
+
+    color: #8195a8;
+
+    font-size: 10px;
+    font-weight: 700;
+    text-align: left;
+}
+
+.nsae-usb-file {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 12px 10px;
+
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.nsae-usb-file-icon {
+    font-size: 18px;
+}
+
+.nsae-usb-file-name {
+    color: #dce7f2;
+
+    font-size: 11px;
+    text-align: left;
+    word-break: break-word;
+}
+
+.nsae-usb-running {
+    padding: 6px 10px 10px;
+
+    color: #e7b86a;
+
+    font-size: 10.5px;
+    font-weight: 700;
+    text-align: left;
+}
+
+
+/* Victim / SOC POV — normal NORTHSTAR analyst palette */
+
+.nsae-panel-victim {
+    background: #0b1424;
+    border: 1px solid rgba(100, 150, 210, 0.2);
+}
+
+.nsae-panel-victim header {
+    background: rgba(123, 212, 163, 0.05);
+    color: #eef5fb;
+}
+
+
+/* ---------------------------------------------------------
+   Caption bar (shared "WHAT'S HAPPENING" line)
+   --------------------------------------------------------- */
+
+.nsae-caption-bar {
+    padding: 14px 18px;
+    margin-bottom: 14px;
+
+    background: #0b1424;
+    border: 1px solid rgba(100, 150, 210, 0.2);
+    border-radius: 10px;
+}
+
+.nsae-caption-label {
+    color: var(--nsae-accent, #6fb2e0);
+
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+
+    margin-bottom: 6px;
+}
+
+.nsae-caption-text {
+    color: #eef5fb;
+
+    font-size: 13.5px;
+    font-weight: 600;
+    line-height: 1.6;
+
+    transition: opacity 0.15s;
+}
+
+
+/* ---------------------------------------------------------
+   Controls
+   --------------------------------------------------------- */
+
+.nsae-controls {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.nsae-ctrl-btn {
+    padding: 10px 18px;
+
+    border: 1px solid rgba(100, 150, 210, 0.3);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    color: #dce7f2;
+
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+
+    cursor: pointer;
+
+    transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+
+.nsae-ctrl-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-1px);
+}
+
+.nsae-ctrl-btn-primary {
+    background: var(--nsae-accent, #6fb2e0);
+    border-color: var(--nsae-accent, #6fb2e0);
+    color: #06121f;
+}
+
+.nsae-ctrl-btn-primary:hover {
+    filter: brightness(1.08);
+}
+
+.nsae-progress {
+    flex: 1;
+    min-width: 120px;
+    height: 6px;
+
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.08);
+
+    overflow: hidden;
+}
+
+.nsae-progress-fill {
+    height: 100%;
+    width: 0%;
+
+    background: var(--nsae-accent, #6fb2e0);
+
+    transition: width 0.25s linear;
+}
+
+.nsae-speed-group {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+
+    padding: 3px;
+
+    border: 1px solid rgba(100, 150, 210, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.nsae-speed-btn {
+    padding: 6px 10px;
+
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #8195a8;
+
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+
+    cursor: pointer;
+
+    transition: background 0.15s, color 0.15s;
+}
+
+.nsae-speed-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #c3d3e2;
+}
+
+.nsae-speed-btn-active {
+    background: var(--nsae-accent, #6fb2e0);
+    color: #06121f;
+}
+
+.nsae-speed-btn-active:hover {
+    background: var(--nsae-accent, #6fb2e0);
+    color: #06121f;
+}
+
+
+/* ---------------------------------------------------------
+   Completion overlay
+   --------------------------------------------------------- */
+
+.nsae-complete-overlay {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 32px 16px;
+    overflow-y: auto;
+
+    background: rgba(3, 6, 12, 0.86);
+    backdrop-filter: blur(2px);
+}
+
+.nsae-complete-overlay.hidden {
+    display: none;
+}
+
+.nsae-complete-card {
+    width: 100%;
+    max-width: 720px;
+
+    background: #0b1424;
+    border: 1px solid rgba(100, 150, 210, 0.25);
+    border-radius: 14px;
+
+    padding: 32px 36px 28px;
+
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+
+.nsae-complete-eyebrow {
+    color: var(--nsae-accent, #6fb2e0);
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+
+    margin-bottom: 6px;
+}
+
+.nsae-complete-card h2 {
+    margin: 0 0 20px;
+
+    color: #eef5fb;
+
+    font-size: 22px;
+}
+
+.nsae-complete-block {
+    margin-bottom: 18px;
+}
+
+.nsae-complete-block-label {
+    color: #6386a4;
+
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+
+    margin-bottom: 6px;
+}
+
+.nsae-complete-block p {
+    margin: 0;
+
+    color: #c3d3e2;
+
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+
+.nsae-complete-block ul {
+    margin: 0;
+    padding-left: 18px;
+
+    color: #c3d3e2;
+
+    font-size: 12.5px;
+    line-height: 1.65;
+}
+
+.nsae-complete-block li {
+    margin-bottom: 4px;
+}
+
+.nsae-complete-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.nsae-complete-divider {
+    height: 1px;
+
+    margin: 8px 0 20px;
+
+    background: rgba(100, 150, 210, 0.16);
+}
+
+.nsae-complete-stats-label {
+    color: #6386a4;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.6px;
+
+    margin-bottom: 14px;
+}
+
+.nsae-complete-stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+
+    margin-bottom: 26px;
+}
+
+.nsae-stat {
+    padding: 12px 8px;
+
+    text-align: center;
+
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(100, 150, 210, 0.16);
+    border-radius: 10px;
+}
+
+.nsae-stat-value {
+    color: #eef5fb;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    margin-bottom: 4px;
+
+    word-break: break-word;
+}
+
+.nsae-stat-label {
+    color: #6386a4;
+
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+}
+
+.nsae-complete-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+
+@media (max-width: 980px) {
+
+    .nsae-panels {
+        grid-template-columns: 1fr;
+    }
+
+    .nsae-complete-columns {
+        grid-template-columns: 1fr;
+    }
+
+    .nsae-complete-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 640px) {
+
+    .nsae-inner {
+        padding: 16px 14px 14px;
+    }
+
+    .nsae-topbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nsae-diagram {
+        flex-wrap: wrap;
+    }
+
+}
+
+
+/* =========================================================
+   LIGHT THEME
+   ---------------------------------------------------------
+   Only the shell and the Victim/SOC panel adapt — the Attacker
+   POV panel stays dark/hostile in both themes by design.
+   ========================================================= */
+
+[data-northstar-theme="light"] .nsae-screen {
+    background: #eef4fa;
+    color: #223447;
+}
+
+[data-northstar-theme="light"] .nsae-topbar {
+    border-bottom-color: rgba(70, 120, 180, 0.18);
+}
+
+[data-northstar-theme="light"] .nsae-back {
+    background: rgba(30, 60, 100, 0.04);
+    border-color: rgba(70, 120, 180, 0.28);
+    color: #45607a;
+}
+
+[data-northstar-theme="light"] .nsae-back:hover {
+    background: rgba(30, 60, 100, 0.08);
+}
+
+[data-northstar-theme="light"] .nsae-title-block h2 {
+    color: #142236;
+}
+
+[data-northstar-theme="light"] .nsae-meta-pill {
+    background: rgba(30, 60, 100, 0.05);
+    border-color: rgba(70, 120, 180, 0.22);
+    color: #3c526a;
+}
+
+[data-northstar-theme="light"] .nsae-mitre-pill {
+    color: #4f6a82;
+}
+
+[data-northstar-theme="light"] .nsae-timeline-label {
+    color: #7891a6;
+}
+
+[data-northstar-theme="light"] .nsae-timeline-stage-done .nsae-timeline-label,
+[data-northstar-theme="light"] .nsae-timeline-stage-active .nsae-timeline-label {
+    color: #142236;
+}
+
+[data-northstar-theme="light"] .nsae-timeline-connector {
+    background: rgba(70, 120, 180, 0.18);
+}
+
+[data-northstar-theme="light"] .nsae-panel-victim {
+    background: #ffffff;
+    border-color: rgba(70, 120, 180, 0.22);
+    box-shadow: 0 4px 18px rgba(30, 60, 100, 0.06);
+}
+
+[data-northstar-theme="light"] .nsae-panel-victim header {
+    color: #142236;
+    border-bottom-color: rgba(30, 60, 100, 0.08);
+}
+
+[data-northstar-theme="light"] .nsae-panel-victim .nsae-widget {
+    background: rgba(30, 60, 100, 0.02);
+    border-color: rgba(30, 60, 100, 0.1);
+}
+
+[data-northstar-theme="light"] .nsae-panel-victim .nsae-feed-card {
+    background: rgba(30, 60, 100, 0.03);
+    border-color: rgba(30, 60, 100, 0.08);
+}
+
+[data-northstar-theme="light"] .nsae-panel-victim .nsae-feed-text {
+    color: #35506a;
+}
+
+[data-northstar-theme="light"] .nsae-panel-victim .nsae-feed-card-alert {
+    background: rgba(200, 70, 70, 0.08);
+    border-color: rgba(200, 70, 70, 0.24);
+}
+
+[data-northstar-theme="light"] .nsae-panel-victim .nsae-feed-card-alert .nsae-feed-text {
+    color: #9a3232;
+}
+
+[data-northstar-theme="light"] .nsae-panel-victim .nsae-feed-card-good {
+    background: rgba(40, 150, 100, 0.08);
+    border-color: rgba(40, 150, 100, 0.24);
+}
+
+[data-northstar-theme="light"] .nsae-panel-victim .nsae-feed-card-good .nsae-feed-text {
+    color: #1f6e4a;
+}
+
+[data-northstar-theme="light"] .nsae-panel-victim .nsae-wifi-item {
+    background: #ffffff;
+    border-color: rgba(30, 60, 100, 0.1);
+}
+
+[data-northstar-theme="light"] .nsae-panel-victim .nsae-wifi-name {
+    color: #223447;
+}
+
+[data-northstar-theme="light"] .nsae-panel-victim .nsae-browser {
+    background: #ffffff;
+    border-color: rgba(30, 60, 100, 0.14);
+}
+
+[data-northstar-theme="light"] .nsae-panel-victim .nsae-browser-bar {
+    background: rgba(30, 60, 100, 0.04);
+}
+
+[data-northstar-theme="light"] .nsae-panel-victim .nsae-page-heading {
+    color: #142236;
+}
+
+[data-northstar-theme="light"] .nsae-panel-victim .nsae-page-row-label {
+    color: #4f6072;
+}
+
+[data-northstar-theme="light"] .nsae-panel-victim .nsae-page-row-value {
+    color: #142236;
+}
+
+[data-northstar-theme="light"] .nsae-panel-victim .nsae-usb-status {
+    color: #3c526a;
+}
+
+[data-northstar-theme="light"] .nsae-panel-victim .nsae-diagram-label {
+    color: #4f6072;
+}
+
+[data-northstar-theme="light"] .nsae-caption-bar {
+    background: #ffffff;
+    border-color: rgba(70, 120, 180, 0.2);
+}
+
+[data-northstar-theme="light"] .nsae-caption-text {
+    color: #142236;
+}
+
+[data-northstar-theme="light"] .nsae-ctrl-btn {
+    background: rgba(30, 60, 100, 0.03);
+    border-color: rgba(70, 120, 180, 0.3);
+    color: #223447;
+}
+
+[data-northstar-theme="light"] .nsae-ctrl-btn:hover {
+    background: rgba(30, 60, 100, 0.07);
+}
+
+[data-northstar-theme="light"] .nsae-progress {
+    background: rgba(30, 60, 100, 0.1);
+}
+
+[data-northstar-theme="light"] .nsae-speed-group {
+    background: rgba(30, 60, 100, 0.03);
+    border-color: rgba(70, 120, 180, 0.22);
+}
+
+[data-northstar-theme="light"] .nsae-speed-btn {
+    color: #5a7288;
+}
+
+[data-northstar-theme="light"] .nsae-speed-btn:hover {
+    background: rgba(30, 60, 100, 0.06);
+    color: #223447;
+}
+
+[data-northstar-theme="light"] .nsae-complete-card {
+    background: #ffffff;
+    border-color: rgba(70, 120, 180, 0.22);
+    box-shadow: 0 30px 80px rgba(30, 60, 100, 0.18);
+}
+
+[data-northstar-theme="light"] .nsae-complete-card h2 {
+    color: #142236;
+}
+
+[data-northstar-theme="light"] .nsae-complete-block p,
+[data-northstar-theme="light"] .nsae-complete-block ul {
+    color: #35506a;
+}
+
+[data-northstar-theme="light"] .nsae-complete-divider {
+    background: rgba(70, 120, 180, 0.16);
+}
+
+[data-northstar-theme="light"] .nsae-stat {
+    background: rgba(30, 60, 100, 0.03);
+    border-color: rgba(70, 120, 180, 0.18);
+}
+
+[data-northstar-theme="light"] .nsae-stat-value {
+    color: #142236;
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ---------------------------------------------------------
+   Disables/shortens the purely decorative motion in this
+   screen for users who have asked the OS for less of it —
+   cursor glide, click ripples/flashes, new-content slide-in,
+   the typing caret blink, and the two looping "still going"
+   keyframes (rainbow-table sweep, diagram packet travel).
+   Nothing here is load-bearing: state changes (a hash row
+   revealing, a wifi item connecting, progress-bar width,
+   etc.) still happen instantly, just without the animation.
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .nsae-cursor {
+        transition: none;
+    }
+
+    .nsae-click-ring {
+        animation: none;
+        display: none;
+    }
+
+    .nsae-clicked {
+        animation: none;
+    }
+
+    .nsae-caret {
+        animation: none;
+        opacity: 1;
+    }
+
+    .nsae-enter {
+        animation: none;
+    }
+
+    .nsae-hashtable-scanning-active::after {
+        animation: none;
+        display: none;
+    }
+
+    .nsae-diagram-packet {
+        animation: none;
+        left: 50% !important;
+    }
+
+    .nsae-timeline-dot,
+    .nsae-timeline-connector,
+    .nsae-wifi-item,
+    .nsae-browser-url,
+    .nsae-page-btn,
+    .nsae-progress-fill,
+    .nsae-ctrl-btn,
+    .nsae-speed-btn,
+    .nsae-diagram-edge {
+        transition: none;
+    }
+
+}

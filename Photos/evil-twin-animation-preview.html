@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evil Twin — Animation Preview</title>
+<style>
+
+    :root {
+        --accent: #6fb2e0;
+        --bg: #05090f;
+        --panel: #0b1424;
+        --text: #dce7f2;
+        --dim: #6386a4;
+        --dim2: #8195a8;
+        --good: #7bd4a3;
+        --bad: #d97b7b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Segoe UI", Arial, sans-serif;
+        padding: 24px 12px;
+    }
+
+    .wrap {
+        width: 100%;
+        max-width: 960px;
+    }
+
+    .head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 6px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .eyebrow {
+        color: var(--dim);
+        font-size: 10.5px;
+        font-weight: 700;
+        letter-spacing: 2px;
+    }
+
+    h1 {
+        margin: 4px 0 2px;
+        font-size: 22px;
+        letter-spacing: 0.3px;
+    }
+
+    .note {
+        color: var(--dim2);
+        font-size: 12px;
+        margin: 0 0 16px;
+    }
+
+    /* Timeline */
+
+    .timeline {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 14px;
+        padding: 4px 2px 0;
+    }
+
+    .stage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        min-width: 70px;
+    }
+
+    .stage-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #101a29;
+        border: 2px solid rgba(111,178,224,0.3);
+        transition: background .3s, border-color .3s, box-shadow .3s;
+    }
+
+    .stage.done .stage-dot,
+    .stage.active .stage-dot {
+        background: var(--accent);
+        border-color: var(--accent);
+    }
+
+    .stage.active .stage-dot {
+        box-shadow: 0 0 0 5px rgba(111,178,224,0.25);
+    }
+
+    .stage-label {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        color: #4a6579;
+        white-space: nowrap;
+    }
+
+    .stage.done .stage-label,
+    .stage.active .stage-label {
+        color: #a8bccf;
+    }
+
+    .connector {
+        flex: 1;
+        height: 2px;
+        margin-top: 5px;
+        background: rgba(111,178,224,0.15);
+        transition: background .3s;
+    }
+
+    .connector.done {
+        background: var(--accent);
+    }
+
+    /* Panels */
+
+    .panels {
+        display: grid;
+        grid-template-columns: 1fr 1.15fr;
+        gap: 14px;
+        margin-bottom: 12px;
+    }
+
+    .panel {
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .panel header {
+        padding: 10px 14px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+    }
+
+    .attacker { background: #0a0605; border: 1px solid rgba(217,123,123,0.22); }
+    .attacker header { background: rgba(217,123,123,0.08); color: #f0b9b9; }
+    .attacker .dot { background: var(--bad); box-shadow: 0 0 0 3px rgba(217,123,123,0.18); }
+
+    .victim { background: var(--panel); border: 1px solid rgba(111,178,224,0.2); }
+    .victim header { background: rgba(123,212,163,0.05); color: #eef5fb; }
+    .victim .dot { background: var(--good); box-shadow: 0 0 0 3px rgba(123,212,163,0.18); }
+
+    .stage-body {
+        flex: 1;
+        min-height: 300px;
+        padding: 16px;
+        position: relative;
+    }
+
+    /* Attacker feed */
+
+    #attackerFeed {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .a-line {
+        display: flex;
+        gap: 9px;
+        padding: 9px 10px;
+        background: rgba(217,123,123,0.06);
+        border: 1px solid rgba(217,123,123,0.15);
+        border-radius: 8px;
+        font-size: 12px;
+        color: #e0b3b3;
+        opacity: 0;
+        transform: translateY(6px);
+        animation: rise .45s ease forwards;
+    }
+
+    @keyframes rise {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    #captureBox {
+        margin-top: 14px;
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 10px;
+        padding: 12px;
+        display: none;
+    }
+
+    #captureBox.show { display: block; }
+
+    .capture-title {
+        color: #8a6a6a;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+    }
+
+    .capture-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 10px;
+        border-left: 3px solid var(--good);
+        border-radius: 6px;
+        background: rgba(123,212,163,0.08);
+        font-size: 12px;
+        opacity: 0;
+        transform: scale(0.92);
+    }
+
+    .capture-row.flash {
+        animation: capture-in .5s cubic-bezier(.2,1.4,.4,1) forwards, capture-glow 1.1s ease-out .5s;
+    }
+
+    @keyframes capture-in {
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes capture-glow {
+        0% { box-shadow: 0 0 0 0 rgba(123,212,163,0.55); }
+        100% { box-shadow: 0 0 0 14px rgba(123,212,163,0); }
+    }
+
+    .capture-user {
+        font-family: "Cascadia Code", Consolas, monospace;
+        font-weight: 700;
+        color: #e0b3b3;
+    }
+
+    .capture-pass {
+        flex: 1;
+        font-family: "Cascadia Code", Consolas, monospace;
+        font-size: 11px;
+        color: #b98d8d;
+    }
+
+    .capture-badge {
+        font-size: 9.5px;
+        font-weight: 700;
+        color: var(--good);
+        letter-spacing: 0.4px;
+    }
+
+    /* Victim stage */
+
+    #victimStage {
+        min-height: 300px;
+    }
+
+    /* Wifi widget */
+
+    .wifi-box {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(111,178,224,0.14);
+        border-radius: 10px;
+        padding: 14px;
+    }
+
+    .wifi-title {
+        color: var(--dim);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+    }
+
+    .wifi-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 11px 12px;
+        margin-bottom: 8px;
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 8px;
+        opacity: 0;
+        transform: translateY(-6px);
+        transition: border-color .3s, background .3s;
+    }
+
+    .wifi-item.in {
+        animation: rise .5s ease forwards;
+    }
+
+    .wifi-item.targeted {
+        border-color: var(--accent);
+        background: rgba(111,178,224,0.07);
+    }
+
+    .bars {
+        font-family: monospace;
+        font-size: 13px;
+        letter-spacing: -1px;
+        color: var(--good);
+    }
+
+    .wifi-item.rogue .bars {
+        color: var(--bad);
+    }
+
+    .wifi-name {
+        flex: 1;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .wifi-status {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: .4px;
+        color: #e7b86a;
+    }
+
+    .wifi-status.ok { color: var(--good); }
+
+    /* Browser window */
+
+    .browser {
+        border: 1px solid rgba(111,178,224,0.2);
+        border-radius: 10px;
+        overflow: hidden;
+        background: #0e1826;
+        opacity: 0;
+        transform: scale(.94) translateY(6px);
+        transition: opacity .5s ease, transform .5s cubic-bezier(.2,1,.3,1);
+    }
+
+    .browser.in {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+
+    .browser-bar {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        background: rgba(255,255,255,0.04);
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .bdot {
+        width: 8px; height: 8px; border-radius: 50%;
+        background: rgba(255,255,255,0.14);
+    }
+
+    .burl {
+        margin-left: 8px;
+        padding: 3px 10px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 20px;
+        color: #e7b86a;
+        font-size: 10px;
+        font-family: Consolas, monospace;
+    }
+
+    .bpage {
+        padding: 20px 20px 22px;
+    }
+
+    .bheading {
+        font-size: 14.5px;
+        font-weight: 700;
+        color: #eef5fb;
+        margin-bottom: 16px;
+    }
+
+    .field {
+        margin-bottom: 14px;
+        position: relative;
+    }
+
+    .field label {
+        display: block;
+        color: var(--dim);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: .4px;
+        margin-bottom: 5px;
+    }
+
+    .field-box {
+        padding: 9px 11px;
+        min-height: 16px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.09);
+        border-radius: 6px;
+        font-family: Consolas, monospace;
+        font-size: 13px;
+        transition: border-color .2s, box-shadow .2s;
+    }
+
+    .field-box.focused {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(111,178,224,0.15);
+    }
+
+    .caret {
+        display: inline-block;
+        width: 2px;
+        height: 13px;
+        background: var(--accent);
+        margin-left: 1px;
+        vertical-align: -2px;
+        animation: blink 1s steps(1) infinite;
+    }
+
+    @keyframes blink {
+        50% { opacity: 0; }
+    }
+
+    .signin-btn {
+        display: inline-block;
+        margin-top: 4px;
+        padding: 9px 22px;
+        background: var(--accent);
+        color: #06121f;
+        border-radius: 6px;
+        font-size: 12.5px;
+        font-weight: 700;
+        cursor: default;
+        transition: transform .12s;
+        position: relative;
+    }
+
+    .signin-btn.pressed {
+        transform: scale(.94);
+        filter: brightness(1.1);
+    }
+
+    .status-msg {
+        margin-top: 14px;
+        font-size: 12.5px;
+        font-weight: 700;
+        display: none;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .status-msg.show { display: flex; }
+
+    .status-msg.loading { color: #e7b86a; }
+    .status-msg.success { color: var(--good); }
+
+    .spinner {
+        width: 12px; height: 12px;
+        border-radius: 50%;
+        border: 2px solid rgba(231,184,106,0.3);
+        border-top-color: #e7b86a;
+        animation: spin .7s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Cursor */
+
+    #cursor {
+        position: absolute;
+        top: 0; left: 0;
+        width: 20px;
+        height: 20px;
+        pointer-events: none;
+        z-index: 50;
+        transform: translate(-9999px,-9999px);
+        transition: transform .55s cubic-bezier(.4,0,.2,1);
+        filter: drop-shadow(0 2px 3px rgba(0,0,0,.5));
+    }
+
+    #cursor svg { display: block; }
+
+    .click-ring {
+        position: absolute;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        border: 2px solid var(--accent);
+        transform: translate(-50%,-50%) scale(0.3);
+        opacity: 0;
+        pointer-events: none;
+        z-index: 49;
+    }
+
+    .click-ring.go {
+        animation: click-pulse .5s ease-out forwards;
+    }
+
+    @keyframes click-pulse {
+        0% { transform: translate(-50%,-50%) scale(0.3); opacity: .9; }
+        100% { transform: translate(-50%,-50%) scale(1.6); opacity: 0; }
+    }
+
+    /* Alert toast */
+
+    #alertToast {
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        padding: 10px 12px;
+        border-radius: 8px;
+        background: rgba(220,90,90,0.12);
+        border: 1px solid rgba(220,90,90,0.35);
+        color: #f2b8b8;
+        font-size: 11.5px;
+        font-weight: 700;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity .4s ease, transform .4s ease;
+    }
+
+    #alertToast.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Caption bar */
+
+    .caption {
+        padding: 13px 16px;
+        margin-bottom: 12px;
+        background: var(--panel);
+        border: 1px solid rgba(111,178,224,0.2);
+        border-radius: 10px;
+        min-height: 20px;
+    }
+
+    .caption-label {
+        color: var(--accent);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.1px;
+        margin-bottom: 4px;
+    }
+
+    .caption-text {
+        font-size: 13px;
+        line-height: 1.5;
+        color: #c3d3e2;
+        transition: opacity .2s ease;
+    }
+
+    /* Controls */
+
+    .controls {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    button.ctrl {
+        padding: 9px 18px;
+        border: 1px solid rgba(111,178,224,0.3);
+        border-radius: 8px;
+        background: rgba(255,255,255,0.03);
+        color: var(--text);
+        font-family: inherit;
+        font-size: 12.5px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    button.ctrl:hover { background: rgba(255,255,255,0.06); }
+
+    button.ctrl.primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #06121f;
+    }
+
+    button.ctrl:disabled {
+        opacity: .4;
+        cursor: default;
+    }
+
+    .banner {
+        margin-top: 16px;
+        padding: 10px 14px;
+        background: rgba(111,178,224,0.06);
+        border: 1px solid rgba(111,178,224,0.18);
+        border-radius: 8px;
+        color: #8fa9c2;
+        font-size: 11.5px;
+        line-height: 1.55;
+    }
+
+    @media (max-width: 720px) {
+        .panels { grid-template-columns: 1fr; }
+    }
+
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+    <div class="head">
+        <div>
+            <div class="eyebrow">ATTACK SIMULATION — PREVIEW</div>
+            <h1>Evil Twin</h1>
+        </div>
+    </div>
+    <p class="note">This is a preview build of just this one attack, to check the direction before doing the other 9. All names, credentials and networks are fictional.</p>
+
+    <div class="timeline" id="timeline"></div>
+
+    <div class="panels">
+
+        <section class="panel attacker">
+            <header><span class="dot"></span> ATTACKER POV <span style="margin-left:auto;opacity:.6;font-weight:600;font-size:10px;">ROGUE AP CONSOLE</span></header>
+            <div class="stage-body">
+                <div id="attackerFeed"></div>
+                <div id="captureBox">
+                    <div class="capture-title">CAPTURED CREDENTIALS</div>
+                    <div id="captureRows"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel victim">
+            <header><span class="dot"></span> VICTIM / SOC POV <span style="margin-left:auto;opacity:.6;font-weight:600;font-size:10px;">EMPLOYEE LAPTOP</span></header>
+            <div class="stage-body" id="victimStage">
+
+                <div class="wifi-box" id="wifiBox">
+                    <div class="wifi-title">Wi-Fi Networks</div>
+                    <div id="wifiList"></div>
+                </div>
+
+                <div class="browser" id="browser" style="display:none;">
+                    <div class="browser-bar">
+                        <span class="bdot"></span><span class="bdot"></span><span class="bdot"></span>
+                        <span class="burl">⚠ corplogin.northstar-corp.example</span>
+                    </div>
+                    <div class="bpage">
+                        <div class="bheading">CorpNet Wi-Fi Sign-In</div>
+                        <div class="field">
+                            <label>Employee ID</label>
+                            <div class="field-box" id="userField"></div>
+                        </div>
+                        <div class="field">
+                            <label>Password</label>
+                            <div class="field-box" id="passField"></div>
+                        </div>
+                        <div class="signin-btn" id="signinBtn">Sign In</div>
+                        <div class="status-msg loading" id="loadingMsg"><span class="spinner"></span> Connecting…</div>
+                        <div class="status-msg success" id="successMsg">✓ Connected to Wi-Fi</div>
+                    </div>
+                </div>
+
+                <div id="cursor">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <path d="M2 1 L2 17 L6.2 13.4 L8.7 18.6 L11 17.5 L8.5 12.3 L14 12 Z"
+                              fill="#eef5fb" stroke="#0b1424" stroke-width="1"/>
+                    </svg>
+                </div>
+
+                <div id="alertToast">⚠ SOC ALERT — Rogue access point suspected (duplicate SSID)</div>
+
+            </div>
+        </section>
+
+    </div>
+
+    <div class="caption">
+        <div class="caption-label">WHAT'S HAPPENING</div>
+        <div class="caption-text" id="captionText">Press PLAY to run the simulation.</div>
+    </div>
+
+    <div class="controls">
+        <button class="ctrl" id="restartBtn">⟲ RESTART</button>
+        <button class="ctrl primary" id="playBtn">▶ PLAY</button>
+    </div>
+
+    <div class="banner">
+        Preview note: this build focuses on the victim-side interaction (Wi-Fi → browser → typing → submit) and the synced capture on the attacker's side. PLAY / PAUSE / NEXT STEP controls will come back once this is wired into the full game — this demo just proves out the animation.
+    </div>
+
+</div>
+
+<script>
+(function () {
+
+    "use strict";
+
+    const STAGES = ["RECON", "INITIAL ACTION", "EXPLOITATION", "ACCESS", "ACTIVITY", "DETECTION"];
+
+    const timelineEl = document.getElementById("timeline");
+    STAGES.forEach((s, i) => {
+        const stage = document.createElement("div");
+        stage.className = "stage";
+        stage.id = "stage-" + i;
+        stage.innerHTML = '<div class="stage-dot"></div><div class="stage-label">' + s + "</div>";
+        timelineEl.appendChild(stage);
+        if (i < STAGES.length - 1) {
+            const c = document.createElement("div");
+            c.className = "connector";
+            c.id = "conn-" + i;
+            timelineEl.appendChild(c);
+        }
+    });
+
+    function setStage(index) {
+        STAGES.forEach((_, i) => {
+            const el = document.getElementById("stage-" + i);
+            el.classList.remove("active", "done");
+            if (i < index) el.classList.add("done");
+            else if (i === index) el.classList.add("active");
+        });
+        for (let i = 0; i < STAGES.length - 1; i++) {
+            document.getElementById("conn-" + i).classList.toggle("done", i < index);
+        }
+    }
+
+    const cursor = document.getElementById("cursor");
+    const stageArea = document.getElementById("victimStage");
+
+    function moveCursorTo(targetEl, offsetX, offsetY) {
+        const stageRect = stageArea.getBoundingClientRect();
+        const targetRect = targetEl.getBoundingClientRect();
+        const x = targetRect.left - stageRect.left + (offsetX !== undefined ? offsetX : targetRect.width / 2);
+        const y = targetRect.top - stageRect.top + (offsetY !== undefined ? offsetY : targetRect.height / 2);
+        cursor.style.transform = "translate(" + x + "px," + y + "px)";
+    }
+
+    function clickRing(x, y) {
+        const ring = document.createElement("div");
+        ring.className = "click-ring";
+        ring.style.left = x + "px";
+        ring.style.top = y + "px";
+        stageArea.appendChild(ring);
+        requestAnimationFrame(() => ring.classList.add("go"));
+        setTimeout(() => ring.remove(), 600);
+    }
+
+    function clickAt(targetEl) {
+        const stageRect = stageArea.getBoundingClientRect();
+        const r = targetEl.getBoundingClientRect();
+        const x = r.left - stageRect.left + r.width / 2;
+        const y = r.top - stageRect.top + r.height / 2;
+        clickRing(x, y);
+    }
+
+    let cancelled = false;
+    const pendingTimeouts = [];
+
+    function sleep(ms) {
+        return new Promise(resolve => {
+            const id = setTimeout(() => {
+                if (!cancelled) resolve();
+            }, ms);
+            pendingTimeouts.push(id);
+        });
+    }
+
+    function clearAllTimers() {
+        pendingTimeouts.forEach(id => clearTimeout(id));
+        pendingTimeouts.length = 0;
+    }
+
+    function setCaption(side, text) {
+        const el = document.getElementById("captionText");
+        el.style.opacity = 0;
+        setTimeout(() => {
+            el.textContent = text;
+            el.style.opacity = 1;
+        }, 120);
+        const t = setTimeout(() => {}, 130);
+        pendingTimeouts.push(t);
+    }
+
+    function addAttackerLine(icon, text) {
+        const feed = document.getElementById("attackerFeed");
+        const line = document.createElement("div");
+        line.className = "a-line";
+        line.innerHTML = "<span>" + icon + "</span><span>" + text + "</span>";
+        feed.appendChild(line);
+        feed.scrollTop = feed.scrollHeight;
+    }
+
+    async function typeInto(el, text, speed) {
+        el.classList.add("focused");
+        el.innerHTML = '<span class="caret"></span>';
+        for (let i = 0; i < text.length; i++) {
+            if (cancelled) return;
+            const shown = text.slice(0, i + 1);
+            el.innerHTML = shown + '<span class="caret"></span>';
+            await sleep(speed);
+        }
+    }
+
+    async function typeMaskedInto(el, count, speed) {
+        el.classList.add("focused");
+        el.innerHTML = '<span class="caret"></span>';
+        for (let i = 0; i < count; i++) {
+            if (cancelled) return;
+            el.innerHTML = "•".repeat(i + 1) + '<span class="caret"></span>';
+            await sleep(speed);
+        }
+    }
+
+    function resetAll() {
+
+        cancelled = true;
+        clearAllTimers();
+        cancelled = false;
+
+        setStage(0);
+
+        document.getElementById("attackerFeed").innerHTML = "";
+        document.getElementById("captureBox").classList.remove("show");
+        document.getElementById("captureRows").innerHTML = "";
+
+        const wifiList = document.getElementById("wifiList");
+        wifiList.innerHTML = "";
+        document.getElementById("wifiBox").style.display = "";
+
+        const browser = document.getElementById("browser");
+        browser.style.display = "none";
+        browser.classList.remove("in");
+
+        const userField = document.getElementById("userField");
+        const passField = document.getElementById("passField");
+        userField.innerHTML = "";
+        userField.classList.remove("focused");
+        passField.innerHTML = "";
+        passField.classList.remove("focused");
+
+        document.getElementById("signinBtn").classList.remove("pressed");
+        document.getElementById("loadingMsg").classList.remove("show");
+        document.getElementById("successMsg").classList.remove("show");
+        document.getElementById("alertToast").classList.remove("show");
+
+        cursor.style.transform = "translate(-9999px,-9999px)";
+
+        document.getElementById("captionText").style.opacity = 1;
+        document.getElementById("captionText").textContent = "Press PLAY to run the simulation.";
+
+        document.querySelectorAll(".click-ring").forEach(r => r.remove());
+
+    }
+
+    function addWifiItem(name, bars, rogue) {
+        const wifiList = document.getElementById("wifiList");
+        const item = document.createElement("div");
+        item.className = "wifi-item" + (rogue ? " rogue" : "");
+        item.innerHTML =
+            '<span class="bars">' + "▂▄▆█".slice(0, bars) + "</span>" +
+            '<span class="wifi-name">' + name + "</span>" +
+            '<span class="wifi-status" style="display:none;"></span>';
+        wifiList.appendChild(item);
+        requestAnimationFrame(() => item.classList.add("in"));
+        return item;
+    }
+
+    async function playSequence() {
+
+        const playBtn = document.getElementById("playBtn");
+        playBtn.disabled = true;
+        playBtn.textContent = "▶ PLAYING…";
+
+        setStage(0);
+        setCaption("victim", "The employee's laptop is connected to the real, trusted office Wi-Fi.");
+        const legit = addWifiItem("CorpNet-Guest", 3, false);
+        legit.querySelector(".wifi-status").style.display = "";
+        legit.querySelector(".wifi-status").textContent = "Connected";
+        legit.querySelector(".wifi-status").classList.add("ok");
+        legit.classList.add("targeted");
+
+        await sleep(1800);
+        if (cancelled) return;
+
+        setStage(1);
+        setCaption("victim", "An attacker stands up a fake network with the exact same name — and a stronger signal.");
+        addAttackerLine("📡", "Rogue access point broadcasting as \"CorpNet-Guest\"");
+        legit.classList.remove("targeted");
+        const rogue = addWifiItem("CorpNet-Guest", 4, true);
+
+        await sleep(1600);
+        if (cancelled) return;
+
+        setStage(2);
+        setCaption("victim", "The laptop is about to auto-reconnect to the stronger, fake signal.");
+        moveCursorTo(rogue, 20, 20);
+        await sleep(700);
+        if (cancelled) return;
+
+        clickAt(rogue);
+        rogue.classList.add("targeted");
+        const rogueStatus = rogue.querySelector(".wifi-status");
+        rogueStatus.style.display = "";
+        rogueStatus.textContent = "Connecting…";
+        addAttackerLine("🔗", "Client device probing rogue AP…");
+
+        await sleep(1400);
+        if (cancelled) return;
+
+        rogueStatus.textContent = "Connected";
+        rogueStatus.classList.add("ok");
+        addAttackerLine("✅", "Client associated to rogue AP — traffic now relayed through us");
+
+        await sleep(900);
+        if (cancelled) return;
+
+        setStage(3);
+        setCaption("victim", "A Wi-Fi sign-in page pops up. It looks completely routine.");
+        document.getElementById("wifiBox").style.display = "none";
+        cursor.style.transform = "translate(-9999px,-9999px)";
+
+        const browser = document.getElementById("browser");
+        browser.style.display = "";
+        requestAnimationFrame(() => browser.classList.add("in"));
+
+        await sleep(1000);
+        if (cancelled) return;
+
+        const userField = document.getElementById("userField");
+        const passField = document.getElementById("passField");
+        const signinBtn = document.getElementById("signinBtn");
+
+        moveCursorTo(userField, 14, 14);
+        await sleep(600);
+        if (cancelled) return;
+        clickAt(userField);
+        setCaption("victim", "The employee clicks into the Employee ID field and types their real username.");
+
+        await typeInto(userField, "jsmith", 90);
+        if (cancelled) return;
+
+        await sleep(400);
+        moveCursorTo(passField, 14, 14);
+        await sleep(600);
+        if (cancelled) return;
+        clickAt(passField);
+        setCaption("victim", "…then their real password, right into the fake page.");
+
+        await typeMaskedInto(passField, 9, 85);
+        if (cancelled) return;
+
+        await sleep(500);
+        moveCursorTo(signinBtn, 40, 16);
+        await sleep(600);
+        if (cancelled) return;
+
+        setStage(4);
+        clickAt(signinBtn);
+        signinBtn.classList.add("pressed");
+        setCaption("attacker", "The moment Sign In is pressed, the credentials arrive on the attacker's screen in real time.");
+
+        // Synced capture — fires at the exact instant of submit
+        document.getElementById("captureBox").classList.add("show");
+        const row = document.createElement("div");
+        row.className = "capture-row";
+        row.innerHTML =
+            '<span class="capture-user">jsmith</span>' +
+            '<span class="capture-pass">Sunshine!42 (synthetic)</span>' +
+            '<span class="capture-badge">✓ CAPTURED</span>';
+        document.getElementById("captureRows").appendChild(row);
+        requestAnimationFrame(() => row.classList.add("flash"));
+
+        await sleep(300);
+        signinBtn.classList.remove("pressed");
+
+        const loadingMsg = document.getElementById("loadingMsg");
+        loadingMsg.classList.add("show");
+
+        await sleep(1300);
+        if (cancelled) return;
+
+        loadingMsg.classList.remove("show");
+        document.getElementById("successMsg").classList.add("show");
+        setCaption("victim", "The sign-in appears to succeed. Nothing looks wrong — the employee keeps browsing normally.");
+        addAttackerLine("💾", "Credentials logged (1 set, synthetic)");
+
+        await sleep(2200);
+        if (cancelled) return;
+
+        setStage(5);
+        setCaption("attacker", "Meanwhile, the SOC's monitoring notices the duplicate network and opens an investigation.");
+        document.getElementById("alertToast").classList.add("show");
+
+        await sleep(2600);
+        if (cancelled) return;
+
+        playBtn.disabled = false;
+        playBtn.textContent = "▶ PLAY";
+
+    }
+
+    document.getElementById("playBtn").addEventListener("click", () => {
+        resetAll();
+        setTimeout(playSequence, 50);
+    });
+
+    document.getElementById("restartBtn").addEventListener("click", () => {
+        const playBtn = document.getElementById("playBtn");
+        playBtn.disabled = false;
+        playBtn.textContent = "▶ PLAY";
+        resetAll();
+    });
+
+    resetAll();
+
+})();
+</script>
+
+</body>
+</html>

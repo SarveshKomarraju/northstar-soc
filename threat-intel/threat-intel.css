@@ -1,0 +1,1834 @@
+/* =========================================================
+   NORTHSTAR SOC — THREAT INTELLIGENCE
+   File: threat-intel/threat-intel.css
+   ========================================================= */
+
+
+.nti-app {
+
+    --nti-bg:
+        #07101c;
+
+    --nti-panel:
+        #0a1624;
+
+    --nti-panel-2:
+        #0c1929;
+
+    --nti-header:
+        #0b1727;
+
+    --nti-border:
+        #192b40;
+
+    --nti-border-light:
+        #233b55;
+
+    --nti-blue:
+        #79a9e8;
+
+    --nti-blue-soft:
+        #6fa4d9;
+
+    --nti-muted:
+        #60748c;
+
+    --nti-text:
+        #d8e4f0;
+
+    --nti-green:
+        #69d99a;
+
+    --nti-red:
+        #e66e70;
+
+    --nti-orange:
+        #e3a461;
+
+    --nti-yellow:
+        #d8c36c;
+
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    min-height:
+        0;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    overflow:
+        hidden;
+
+    background:
+        var(--nti-bg);
+
+    color:
+        var(--nti-text);
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    box-sizing:
+        border-box;
+
+}
+
+
+.nti-app *,
+.nti-app *::before,
+.nti-app *::after {
+
+    box-sizing:
+        border-box;
+
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.nti-header {
+
+    min-height:
+        68px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    padding:
+        0 22px;
+
+    background:
+        var(--nti-header);
+
+    border-bottom:
+        1px solid var(--nti-border);
+
+}
+
+
+.nti-header-left {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        13px;
+
+}
+
+
+.nti-brand-mark {
+
+    width:
+        38px;
+
+    height:
+        38px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border:
+        1px solid #31506f;
+
+    background:
+        #0d2033;
+
+    color:
+        var(--nti-blue);
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        1px;
+
+}
+
+
+.nti-title {
+
+    font-size:
+        15px;
+
+    font-weight:
+        600;
+
+    letter-spacing:
+        1.1px;
+
+}
+
+
+.nti-subtitle {
+
+    margin-top:
+        3px;
+
+    color:
+        var(--nti-muted);
+
+    font-size:
+        9px;
+
+    letter-spacing:
+        1.4px;
+
+}
+
+
+.nti-header-status {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+
+    color:
+        var(--nti-muted);
+
+    font-size:
+        9px;
+
+    letter-spacing:
+        1px;
+
+}
+
+
+.nti-status-dot {
+
+    width:
+        7px;
+
+    height:
+        7px;
+
+    border-radius:
+        50%;
+
+    background:
+        var(--nti-green);
+
+    box-shadow:
+        0 0 8px rgba(105, 217, 154, .35);
+
+}
+
+
+/* =========================================================
+   QUERY PANEL
+   ========================================================= */
+
+.nti-query-panel {
+
+    padding:
+        19px 22px 15px;
+
+    border-bottom:
+        1px solid var(--nti-border);
+
+    background:
+        #081421;
+
+}
+
+
+.nti-query-heading {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        flex-start;
+
+    margin-bottom:
+        13px;
+
+}
+
+
+.nti-section-label {
+
+    color:
+        var(--nti-blue-soft);
+
+    font-size:
+        9px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        1.4px;
+
+}
+
+
+.nti-query-description {
+
+    margin-top:
+        5px;
+
+    color:
+        var(--nti-muted);
+
+    font-size:
+        11px;
+
+}
+
+
+.nti-query-counter {
+
+    color:
+        var(--nti-muted);
+
+    font-size:
+        8px;
+
+    letter-spacing:
+        1px;
+
+}
+
+
+.nti-query-counter strong {
+
+    margin-left:
+        7px;
+
+    color:
+        var(--nti-text);
+
+    font-size:
+        12px;
+
+}
+
+
+.nti-query-row {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        minmax(250px, 1fr) 145px 190px;
+
+    gap:
+        8px;
+
+}
+
+
+.nti-input-wrapper {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    min-width:
+        0;
+
+    border:
+        1px solid var(--nti-border-light);
+
+    background:
+        #06101b;
+
+}
+
+
+.nti-input-prefix {
+
+    padding:
+        0 11px;
+
+    color:
+        var(--nti-blue-soft);
+
+    font-size:
+        9px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        1px;
+
+}
+
+
+.nti-query-input {
+
+    width:
+        100%;
+
+    min-width:
+        0;
+
+    height:
+        39px;
+
+    border:
+        0;
+
+    outline:
+        0;
+
+    background:
+        transparent;
+
+    color:
+        var(--nti-text);
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size:
+        12px;
+
+}
+
+
+.nti-query-input::placeholder {
+
+    color:
+        #40556d;
+
+}
+
+
+.nti-type-select {
+
+    height:
+        39px;
+
+    border:
+        1px solid var(--nti-border-light);
+
+    outline:
+        none;
+
+    background:
+        #0a1827;
+
+    color:
+        #9db2c8;
+
+    padding:
+        0 10px;
+
+    font-size:
+        9px;
+
+    font-weight:
+        600;
+
+    letter-spacing:
+        .7px;
+
+}
+
+
+.nti-query-button {
+
+    height:
+        39px;
+
+    border:
+        1px solid #355a7f;
+
+    background:
+        #10263c;
+
+    color:
+        #a9c8e7;
+
+    cursor:
+        pointer;
+
+    font-size:
+        9px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        .8px;
+
+    transition:
+        .15s ease;
+
+}
+
+
+.nti-query-button:hover {
+
+    background:
+        #16324d;
+
+    border-color:
+        #4a759e;
+
+}
+
+
+.nti-query-button:active {
+
+    transform:
+        translateY(1px);
+
+}
+
+
+.nti-query-note {
+
+    margin-top:
+        9px;
+
+    color:
+        #4d637a;
+
+    font-size:
+        9px;
+
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.nti-main {
+
+    flex:
+        1;
+
+    min-height:
+        0;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        minmax(0, 1fr) 250px;
+
+    gap:
+        10px;
+
+    padding:
+        10px 22px;
+
+    overflow:
+        hidden;
+
+}
+
+
+.nti-result-panel {
+
+    min-width:
+        0;
+
+    min-height:
+        0;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    border:
+        1px solid var(--nti-border);
+
+    background:
+        var(--nti-panel);
+
+    overflow:
+        hidden;
+
+}
+
+
+.nti-result-header {
+
+    min-height:
+        65px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    padding:
+        0 17px;
+
+    border-bottom:
+        1px solid var(--nti-border);
+
+    background:
+        var(--nti-panel-2);
+
+}
+
+
+.nti-result-indicator {
+
+    margin-top:
+        5px;
+
+    color:
+        var(--nti-text);
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size:
+        12px;
+
+    word-break:
+        break-all;
+
+}
+
+
+.nti-result-badge {
+
+    padding:
+        6px 9px;
+
+    border:
+        1px solid #314960;
+
+    color:
+        var(--nti-muted);
+
+    font-size:
+        8px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        .8px;
+
+}
+
+
+.nti-badge-neutral {
+
+    color:
+        var(--nti-muted);
+
+}
+
+
+.nti-malicious {
+
+    color:
+        var(--nti-red) !important;
+
+}
+
+
+.nti-suspicious {
+
+    color:
+        var(--nti-orange) !important;
+
+}
+
+
+.nti-benign {
+
+    color:
+        var(--nti-green) !important;
+
+}
+
+
+.nti-neutral {
+
+    color:
+        var(--nti-muted) !important;
+
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.nti-empty-state {
+
+    flex:
+        1;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    flex-direction:
+        column;
+
+    gap:
+        8px;
+
+    padding:
+        30px;
+
+    text-align:
+        center;
+
+}
+
+
+.nti-empty-icon {
+
+    width:
+        46px;
+
+    height:
+        46px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border:
+        1px solid var(--nti-border-light);
+
+    color:
+        #526b84;
+
+    font-size:
+        19px;
+
+}
+
+
+.nti-empty-title {
+
+    color:
+        #8196ab;
+
+    font-size:
+        10px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        1.1px;
+
+}
+
+
+.nti-empty-text {
+
+    color:
+        #4b6178;
+
+    font-size:
+        10px;
+
+}
+
+
+/* =========================================================
+   RESULT CONTENT
+   ========================================================= */
+
+.nti-result-content {
+
+    display:
+        none;
+
+    flex:
+        1;
+
+    min-height:
+        0;
+
+    overflow:
+        auto;
+
+    padding:
+        14px;
+
+}
+
+
+.nti-overview-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap:
+        7px;
+
+}
+
+
+.nti-overview-card {
+
+    min-height:
+        65px;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    justify-content:
+        center;
+
+    padding:
+        10px;
+
+    border:
+        1px solid var(--nti-border);
+
+    background:
+        #091724;
+
+}
+
+
+.nti-overview-card span {
+
+    color:
+        #50657b;
+
+    font-size:
+        8px;
+
+    letter-spacing:
+        .9px;
+
+}
+
+
+.nti-overview-card strong {
+
+    margin-top:
+        7px;
+
+    color:
+        #b8c9d9;
+
+    font-size:
+        10px;
+
+    letter-spacing:
+        .4px;
+
+}
+
+
+/* =========================================================
+   DETAILS
+   ========================================================= */
+
+.nti-detail-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:
+        9px;
+
+    margin-top:
+        9px;
+
+}
+
+
+.nti-detail-section {
+
+    border:
+        1px solid var(--nti-border);
+
+    background:
+        #091724;
+
+    padding:
+        12px;
+
+}
+
+
+.nti-detail-heading {
+
+    color:
+        var(--nti-blue-soft);
+
+    font-size:
+        8px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        1.1px;
+
+    margin-bottom:
+        9px;
+
+}
+
+
+.nti-detail-row {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    gap:
+        12px;
+
+    padding:
+        7px 0;
+
+    border-bottom:
+        1px solid rgba(25, 43, 64, .65);
+
+}
+
+
+.nti-detail-row:last-child {
+
+    border-bottom:
+        0;
+
+}
+
+
+.nti-detail-row span {
+
+    color:
+        #50657b;
+
+    font-size:
+        8px;
+
+}
+
+
+.nti-detail-row strong {
+
+    color:
+        #a9bbcc;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size:
+        9px;
+
+    text-align:
+        right;
+
+}
+
+
+.nti-tags-heading {
+
+    margin-top:
+        16px;
+
+}
+
+
+.nti-tag-list {
+
+    display:
+        flex;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        5px;
+
+}
+
+
+.nti-tag {
+
+    padding:
+        5px 7px;
+
+    border:
+        1px solid #233b55;
+
+    background:
+        #0b1b2b;
+
+    color:
+        #7890a8;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size:
+        8px;
+
+}
+
+
+.nti-tag-empty {
+
+    color:
+        #43586e;
+
+    font-size:
+        8px;
+
+}
+
+
+/* =========================================================
+   NOTES
+   ========================================================= */
+
+.nti-notes-panel {
+
+    margin-top:
+        9px;
+
+    padding:
+        12px;
+
+    border:
+        1px solid var(--nti-border);
+
+    background:
+        #091724;
+
+}
+
+
+.nti-notes {
+
+    color:
+        #8ca1b5;
+
+    font-size:
+        10px;
+
+    line-height:
+        1.6;
+
+}
+
+
+/* =========================================================
+   RELATED
+   ========================================================= */
+
+.nti-related-panel {
+
+    margin-top:
+        9px;
+
+    padding:
+        12px;
+
+    border:
+        1px solid var(--nti-border);
+
+    background:
+        #091724;
+
+}
+
+
+.nti-related-list {
+
+    display:
+        flex;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        6px;
+
+}
+
+
+.nti-related-indicator {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        6px;
+
+    padding:
+        6px 8px;
+
+    border:
+        1px solid #29445e;
+
+    background:
+        #0a1b2b;
+
+    color:
+        #7e9bb7;
+
+    cursor:
+        pointer;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size:
+        8px;
+
+}
+
+
+.nti-related-indicator:hover {
+
+    border-color:
+        #466986;
+
+    color:
+        #a8c2da;
+
+}
+
+
+.nti-related-indicator span {
+
+    color:
+        var(--nti-blue-soft);
+
+}
+
+
+.nti-related-empty {
+
+    color:
+        #43586e;
+
+    font-size:
+        8px;
+
+}
+
+
+/* =========================================================
+   NO MATCH
+   ========================================================= */
+
+.nti-no-match {
+
+    flex:
+        1;
+
+    display:
+        none;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    flex-direction:
+        column;
+
+    gap:
+        8px;
+
+    text-align:
+        center;
+
+}
+
+
+.nti-no-match-icon {
+
+    width:
+        44px;
+
+    height:
+        44px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border:
+        1px solid #3a4653;
+
+    color:
+        #738292;
+
+    font-size:
+        19px;
+
+}
+
+
+.nti-no-match-title {
+
+    color:
+        #8b99a8;
+
+    font-size:
+        10px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        1px;
+
+}
+
+
+.nti-no-match-text {
+
+    color:
+        #506174;
+
+    font-size:
+        10px;
+
+}
+
+
+.nti-no-match-code {
+
+    margin-top:
+        5px;
+
+    padding:
+        5px 8px;
+
+    border:
+        1px solid #27394c;
+
+    color:
+        #52677d;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size:
+        8px;
+
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.nti-sidebar {
+
+    min-width:
+        0;
+
+    min-height:
+        0;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        10px;
+
+}
+
+
+.nti-side-card {
+
+    border:
+        1px solid var(--nti-border);
+
+    background:
+        var(--nti-panel);
+
+    padding:
+        12px;
+
+}
+
+
+.nti-side-heading {
+
+    padding-bottom:
+        9px;
+
+    margin-bottom:
+        5px;
+
+    border-bottom:
+        1px solid var(--nti-border);
+
+    color:
+        var(--nti-blue-soft);
+
+    font-size:
+        8px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        1.1px;
+
+}
+
+
+.nti-context-row {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    padding:
+        7px 0;
+
+    border-bottom:
+        1px solid rgba(25, 43, 64, .6);
+
+}
+
+
+.nti-context-row:last-child {
+
+    border-bottom:
+        0;
+
+}
+
+
+.nti-context-row span {
+
+    color:
+        #50657b;
+
+    font-size:
+        8px;
+
+}
+
+
+.nti-context-row strong {
+
+    color:
+        #8499ad;
+
+    font-size:
+        8px;
+
+    text-align:
+        right;
+
+}
+
+
+.nti-good {
+
+    color:
+        var(--nti-green) !important;
+
+}
+
+
+/* =========================================================
+   HISTORY
+   ========================================================= */
+
+.nti-history-card {
+
+    flex:
+        1;
+
+    min-height:
+        0;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+}
+
+
+.nti-history {
+
+    flex:
+        1;
+
+    min-height:
+        80px;
+
+    overflow:
+        auto;
+
+}
+
+
+.nti-history-empty {
+
+    padding:
+        20px 5px;
+
+    color:
+        #465b70;
+
+    font-size:
+        9px;
+
+    text-align:
+        center;
+
+}
+
+
+.nti-history-item {
+
+    width:
+        100%;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        8px;
+
+    padding:
+        8px 0;
+
+    border:
+        0;
+
+    border-bottom:
+        1px solid rgba(25, 43, 64, .6);
+
+    background:
+        transparent;
+
+    color:
+        #8298ad;
+
+    cursor:
+        pointer;
+
+    text-align:
+        left;
+
+}
+
+
+.nti-history-item:hover {
+
+    background:
+        rgba(121, 169, 232, .035);
+
+}
+
+
+.nti-history-item strong {
+
+    display:
+        block;
+
+    max-width:
+        130px;
+
+    overflow:
+        hidden;
+
+    text-overflow:
+        ellipsis;
+
+    white-space:
+        nowrap;
+
+    color:
+        #91a6ba;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size:
+        8px;
+
+}
+
+
+.nti-history-item small {
+
+    display:
+        block;
+
+    margin-top:
+        3px;
+
+    color:
+        #455a70;
+
+    font-size:
+        7px;
+
+}
+
+
+.nti-history-item>span {
+
+    font-size:
+        7px;
+
+    font-weight:
+        700;
+
+}
+
+
+.nti-clear-history {
+
+    height:
+        27px;
+
+    margin-top:
+        8px;
+
+    border:
+        1px solid #263d53;
+
+    background:
+        #0b1927;
+
+    color:
+        #61778d;
+
+    cursor:
+        pointer;
+
+    font-size:
+        7px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        .8px;
+
+}
+
+
+.nti-clear-history:hover {
+
+    color:
+        #91a7bc;
+
+    border-color:
+        #3c5870;
+
+}
+
+
+/* =========================================================
+   SCOPE
+   ========================================================= */
+
+.nti-scope-item {
+
+    display:
+        flex;
+
+    gap:
+        8px;
+
+    padding:
+        7px 0;
+
+    color:
+        #61778d;
+
+    font-size:
+        8px;
+
+    line-height:
+        1.45;
+
+}
+
+
+.nti-scope-item span {
+
+    color:
+        #45617b;
+
+    font-family:
+        Consolas,
+        monospace;
+
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.nti-footer {
+
+    min-height:
+        27px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    padding:
+        0 22px;
+
+    border-top:
+        1px solid var(--nti-border);
+
+    background:
+        #08131f;
+
+    color:
+        #40556b;
+
+    font-size:
+        7px;
+
+    letter-spacing:
+        .8px;
+
+}
+
+
+/* =========================================================
+   SCROLLBARS
+   ========================================================= */
+
+.nti-app ::-webkit-scrollbar {
+
+    width:
+        6px;
+
+    height:
+        6px;
+
+}
+
+
+.nti-app ::-webkit-scrollbar-track {
+
+    background:
+        #07111d;
+
+}
+
+
+.nti-app ::-webkit-scrollbar-thumb {
+
+    background:
+        #1b3045;
+
+}
+
+
+.nti-app ::-webkit-scrollbar-thumb:hover {
+
+    background:
+        #28445e;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+    .nti-query-row {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .nti-main {
+
+        grid-template-columns:
+            1fr;
+
+        overflow:
+            auto;
+
+    }
+
+
+    .nti-sidebar {
+
+        display:
+            grid;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .nti-history-card {
+
+        min-height:
+            220px;
+
+    }
+
+}
+
+
+@media (max-width: 620px) {
+
+    .nti-header-status {
+
+        display:
+            none;
+
+    }
+
+
+    .nti-overview-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .nti-detail-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .nti-sidebar {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .nti-footer span:nth-child(2) {
+
+        display:
+            none;
+
+    }
+
+}

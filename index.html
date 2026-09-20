@@ -1,0 +1,1991 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NORTHSTAR SOC COMMAND CENTER</title>
+
+
+    <!-- =====================================================
+         MAIN STYLES
+         ===================================================== -->
+
+    <link rel="stylesheet" href="style.css">
+
+
+    <!-- =====================================================
+         NETWORK APP
+         ===================================================== -->
+
+    <link rel="stylesheet" href="css/network.css">
+
+
+    <!-- =====================================================
+         ALERTS / SIEM
+         ===================================================== -->
+
+    <link rel="stylesheet" href="css/alerts.css">
+
+
+    <!-- =====================================================
+         ATTACK MAP
+         ===================================================== -->
+
+    <link rel="stylesheet" href="css/attack-map.css">
+
+
+    <!-- =====================================================
+         MAIL APP
+         ===================================================== -->
+
+    <link rel="stylesheet" href="mail/mail.css">
+    <link rel="stylesheet" href="mail/report-clearance.css">
+
+
+    <!-- =====================================================
+         ENDPOINTS
+         ===================================================== -->
+
+    <link rel="stylesheet" href="./endpoints/endpoints.css">
+
+
+    <!-- =====================================================
+         VPN
+         ===================================================== -->
+
+    <link rel="stylesheet" href="./vpn/vpn.css">
+
+
+    <!-- =====================================================
+         FILE EXPLORER
+         ===================================================== -->
+
+    <link rel="stylesheet" href="./files/files.css">
+
+
+    <!-- =====================================================
+         IR PLAYBOOK
+         ===================================================== -->
+
+    <link rel="stylesheet" href="./playbook/playbook.css">
+
+
+    <!-- =====================================================
+         PASSWORD CRACKER
+         ===================================================== -->
+
+    <link rel="stylesheet" href="./password-cracker/password-cracker.css">
+
+
+    <!-- =====================================================
+         THREAT INTEL
+         ===================================================== -->
+
+    <link rel="stylesheet" href="./threat-intel/threat-intel.css">
+
+
+    <!-- =====================================================
+         IAM
+         ===================================================== -->
+
+    <link rel="stylesheet" href="./iam/iam.css">
+
+
+    <!-- =====================================================
+         MALWARE SANDBOX
+         ===================================================== -->
+
+    <link rel="stylesheet" href="./malware-sandbox/malware-sandbox.css">
+    <link rel="stylesheet" href="./malware-sandbox/nightfall-ending.css">
+
+
+    <!-- =====================================================
+         NORTHSTAR MAIN MENU
+         ===================================================== -->
+
+    <link rel="stylesheet" href="./main-menu/main-menu.css">
+    <link rel="stylesheet" href="./main-menu/scenario-briefing.css">
+
+
+    <!-- =====================================================
+         SCENARIO SELECT
+         ===================================================== -->
+
+    <link rel="stylesheet" href="./main-menu/scenario-select.css">
+
+
+    <!-- =====================================================
+         TRAINING
+         ===================================================== -->
+
+    <link rel="stylesheet" href="./training/training.css">
+
+
+    <!-- =====================================================
+         FREE PLAY / EXPERIENCE OTHER ATTACKS
+         ===================================================== -->
+
+    <link rel="stylesheet" href="./freeplay/freeplay.css">
+    <link rel="stylesheet" href="./freeplay/attack-experience.css">
+    <link rel="stylesheet" href="./freeplay/attack-compare.css">
+
+
+    <!-- =====================================================
+         CAPTURE TOOL (screenshot / recording shortcuts)
+         ===================================================== -->
+
+    <link rel="stylesheet" href="./capture/capture.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================================
+     BOOT SCREEN
+     ========================================================= -->
+
+    <div id="boot-screen">
+
+        <div class="boot-fx" aria-hidden="true">
+            <div class="boot-grid"></div>
+            <div class="boot-scanline"></div>
+        </div>
+
+        <div class="boot-container">
+
+            <div class="boot-logo">
+
+                <div class="boot-ring boot-ring-1"></div>
+                <div class="boot-ring boot-ring-2"></div>
+
+                <div class="boot-shield">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2.5l7.5 2.8v6.2c0 4.6-3.2 7.9-7.5 9.3-4.3-1.4-7.5-4.7-7.5-9.3V5.3L12 2.5z"/>
+                        <path d="M8.3 12.2l2.4 2.4 4.8-4.8"/>
+                    </svg>
+                </div>
+
+            </div>
+
+
+            <div class="boot-title">
+                SOC COMMAND CENTER
+            </div>
+
+
+            <div class="boot-subtitle">
+                NORTHSTAR SECURITY OPERATIONS
+            </div>
+
+
+            <div class="boot-log" id="boot-log">
+
+                <!--
+                    Populated by startBootSequence() in script.js —
+                    one line appended per boot step, most recent
+                    active line gets a "▸" marker, completed lines
+                    get a "✓". This span stays as a legacy fallback
+                    for anything that still looks for the old single
+                    -line status text.
+                -->
+                <span id="boot-status-text" class="boot-status-legacy"></span>
+
+            </div>
+
+
+            <div class="boot-progress-row">
+
+                <div class="boot-progress-container">
+
+                    <div id="boot-progress" class="boot-progress">
+                    </div>
+
+                </div>
+
+                <div class="boot-progress-percent" id="boot-progress-percent">
+                    0%
+                </div>
+
+            </div>
+
+
+            <div class="boot-version">
+                SECURE WORKSTATION // BUILD 2026.1
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================================================
+     NORTHSTAR MAIN MENU
+     ========================================================= -->
+
+    <div id="main-menu" class="main-menu hidden">
+
+        <div class="main-menu-fx" aria-hidden="true">
+            <div class="main-menu-grid"></div>
+            <div class="main-menu-glow"></div>
+            <div class="main-menu-scanline"></div>
+            <div class="main-menu-particles">
+                <span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span>
+            </div>
+        </div>
+
+
+        <div class="main-menu-shell">
+
+
+            <!-- =================================================
+             HEADER
+             ================================================= -->
+
+            <header class="main-menu-header">
+
+
+                <div class="main-menu-brand">
+
+                    <div class="main-menu-symbol">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2.5l7.5 2.8v6.2c0 4.6-3.2 7.9-7.5 9.3-4.3-1.4-7.5-4.7-7.5-9.3V5.3L12 2.5z"/>
+                            <path d="M8.3 12.2l2.4 2.4 4.8-4.8"/>
+                        </svg>
+                    </div>
+
+
+                    <div>
+
+                        <div class="main-menu-title">
+                            NORTHSTAR
+                        </div>
+
+
+                        <div class="main-menu-subtitle">
+                            SECURITY OPERATIONS SIMULATION
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="main-menu-status">
+
+                    <span class="menu-status-dot-wrap">
+                        <span class="menu-status-dot"></span>
+                        <span class="menu-status-ping"></span>
+                    </span>
+
+
+                    <div>
+
+                        <span class="menu-status-label">
+                            SYSTEM STATUS
+                        </span>
+
+
+                        <strong>
+                            OPERATIONAL
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- =================================================
+             MAIN MENU CONTENT
+             ================================================= -->
+
+            <section class="main-menu-content">
+
+
+                <!-- INTRO -->
+
+                <div class="main-menu-intro">
+
+                    <div class="intro-label">
+                        NORTHSTAR SOC
+                    </div>
+
+
+                    <h1>
+                        Security Operations<br>
+                        Command Center
+                    </h1>
+
+
+                    <p>
+                        Investigate incidents, analyze evidence,
+                        correlate threats, and contain simulated
+                        security operations.
+                    </p>
+
+
+                    <div class="intro-meta">
+
+                        <span>
+                            WORKSTATION: NS-SOC-01
+                        </span>
+
+
+                        <span>
+                            BUILD: 2026.1
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- MENU OPTIONS -->
+
+                <nav class="main-menu-options">
+
+
+                    <!-- START OPERATION -->
+
+                    <button class="main-menu-button primary" data-menu-action="scenarios">
+
+                        <span class="menu-button-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                                <path d="M7 4.2v15.6c0 .8.9 1.3 1.6.9l12.4-7.8c.7-.4.7-1.4 0-1.8L8.6 3.3C7.9 2.9 7 3.4 7 4.2z"/>
+                            </svg>
+                        </span>
+
+
+                        <span class="menu-button-text">
+
+                            <strong>
+                                START OPERATION
+                            </strong>
+
+
+                            <small>
+                                Select an incident scenario
+                            </small>
+
+                        </span>
+
+
+                        <span class="menu-button-arrow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- CONTINUE -->
+
+                    <button class="main-menu-button" data-menu-action="continue">
+
+                        <span class="menu-button-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 12a8 8 0 1 1-2.6-5.9"/>
+                                <path d="M20 3.5v5.5h-5.5"/>
+                            </svg>
+                        </span>
+
+
+                        <span class="menu-button-text">
+
+                            <strong>
+                                CONTINUE
+                            </strong>
+
+
+                            <small>
+                                Resume current operation
+                            </small>
+
+                        </span>
+
+
+                        <span class="menu-button-arrow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- EXPERIENCE OTHER ATTACKS -->
+
+                    <button class="main-menu-button" data-menu-action="free">
+
+                        <span class="menu-button-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="8.5"/>
+                                <circle cx="12" cy="12" r="4.5"/>
+                                <circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/>
+                                <path d="M12 12l5.5-5.5"/>
+                            </svg>
+                        </span>
+
+
+                        <span class="menu-button-text">
+
+                            <strong>
+                                EXPERIENCE OTHER ATTACKS
+                            </strong>
+
+
+                            <small>
+                                Watch 10 real attack techniques play out from both sides
+                            </small>
+
+                        </span>
+
+
+                        <span class="menu-button-arrow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- TRAINING -->
+
+                    <button class="main-menu-button" data-menu-action="training">
+
+                        <span class="menu-button-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 5.8c2.2-1.1 5.4-1.1 7.5 0v13.4c-2.1-1.1-5.3-1.1-7.5 0V5.8z"/>
+                                <path d="M20 5.8c-2.2-1.1-5.4-1.1-7.5 0v13.4c2.1-1.1 5.3-1.1 7.5 0V5.8z"/>
+                            </svg>
+                        </span>
+
+
+                        <span class="menu-button-text">
+
+                            <strong>
+                                TRAINING
+                            </strong>
+
+
+                            <small>
+                                Learn the NORTHSTAR environment
+                            </small>
+
+                        </span>
+
+
+                        <span class="menu-button-arrow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- SETTINGS -->
+
+                    <button class="main-menu-button" data-menu-action="settings">
+
+                        <span class="menu-button-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="4" y1="6.5" x2="12.3" y2="6.5"/><circle cx="14.5" cy="6.5" r="2"/><line x1="16.7" y1="6.5" x2="20" y2="6.5"/>
+                                <line x1="4" y1="12" x2="6.8" y2="12"/><circle cx="9" cy="12" r="2"/><line x1="11.2" y1="12" x2="20" y2="12"/>
+                                <line x1="4" y1="17.5" x2="13.8" y2="17.5"/><circle cx="16" cy="17.5" r="2"/><line x1="18.2" y1="17.5" x2="20" y2="17.5"/>
+                            </svg>
+                        </span>
+
+
+                        <span class="menu-button-text">
+
+                            <strong>
+                                SETTINGS
+                            </strong>
+
+
+                            <small>
+                                Simulation configuration
+                            </small>
+
+                        </span>
+
+
+                        <span class="menu-button-arrow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </span>
+
+                    </button>
+
+                </nav>
+
+            </section>
+
+            <div class="main-menu-quicklinks">
+
+                <button class="main-menu-button" data-menu-action="stats">
+
+                    <span class="menu-button-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="20" x2="5" y2="11"/>
+                            <line x1="12" y1="20" x2="12" y2="4"/>
+                            <line x1="19" y1="20" x2="19" y2="14.5"/>
+                        </svg>
+                    </span>
+
+                    <span class="menu-button-text">
+
+                        <strong>
+                            STATISTICS
+                        </strong>
+
+                        <small>
+                            Operations, attacks &amp; saved sessions
+                        </small>
+
+                    </span>
+
+                    <span class="menu-button-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </span>
+
+                </button>
+
+
+                <button class="main-menu-button" data-menu-action="about">
+
+                    <span class="menu-button-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="9"/>
+                            <line x1="12" y1="11" x2="12" y2="16.2"/>
+                            <circle cx="12" cy="7.6" r="1" fill="currentColor" stroke="none"/>
+                        </svg>
+                    </span>
+
+                    <span class="menu-button-text">
+
+                        <strong>
+                            ABOUT
+                        </strong>
+
+                        <small>
+                            What this is, how to play &amp; credits
+                        </small>
+
+                    </span>
+
+                    <span class="menu-button-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+             FOOTER
+             ================================================= -->
+
+            <footer class="main-menu-footer">
+
+                <span>
+                    NORTHSTAR SECURITY OPERATIONS
+                </span>
+
+
+                <span>
+                    SIMULATION ENVIRONMENT
+                </span>
+
+
+                <span>
+                    ● SECURE CONNECTION
+                </span>
+
+            </footer>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================================================
+     SCENARIO SELECT
+     ========================================================= -->
+
+    <section id="scenario-select" class="scenario-select hidden">
+
+
+        <div class="scenario-background"></div>
+
+
+
+        <!-- =====================================================
+         SCENARIO HEADER
+         ===================================================== -->
+
+        <header class="scenario-header">
+
+
+            <button id="scenario-back" class="scenario-back">
+                ← BACK
+            </button>
+
+
+
+            <div class="scenario-header-center">
+
+                <div class="scenario-eyebrow">
+                    NORTHSTAR SOC // OPERATIONS
+                </div>
+
+
+                <h1>
+                    SELECT OPERATION
+                </h1>
+
+
+                <p>
+                    Choose an incident scenario to begin your
+                    investigation.
+                </p>
+
+            </div>
+
+
+
+            <div class="scenario-classification">
+
+                <span class="classification-dot"></span>
+
+                CLASSIFIED
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =====================================================
+         SCENARIO CARDS
+         ===================================================== -->
+
+        <div class="scenario-grid">
+
+
+            <!-- =================================================
+             CREDENTIAL THEFT
+             ================================================= -->
+
+            <button class="scenario-card credential-card" data-scenario="credential-theft">
+
+
+                <div class="scenario-visual">
+
+                    <div class="scenario-logo" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="8" cy="12" r="4.2"></circle>
+                            <path d="M11.8 12h9.2M17 12v3M20 12v2.4"></path>
+                        </svg>
+                    </div>
+
+                    <div class="credential-glow"></div>
+
+
+                    <div class="terminal-window">
+
+                        <div class="terminal-top">
+
+                            <span></span>
+                            <span></span>
+                            <span></span>
+
+                        </div>
+
+
+                        <div class="terminal-lines">
+
+                            <div>
+                                &gt; AUTH SERVICE
+                            </div>
+
+                            <div>
+                                &gt; LOGIN ATTEMPT DETECTED
+                            </div>
+
+                            <div class="terminal-danger">
+                                &gt; CREDENTIAL ACCESS
+                            </div>
+
+                            <div>
+                                &gt; SESSION HIJACK
+                            </div>
+
+                            <div class="terminal-cursor">
+                                _
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="credential-lock">
+                        ⌁
+                    </div>
+
+
+                    <div class="floating-code code-1">
+                        AUTH_FAIL
+                    </div>
+
+
+                    <div class="floating-code code-2">
+                        SESSION_4821
+                    </div>
+
+
+                    <div class="floating-code code-3">
+                        TOKEN.EXFIL
+                    </div>
+
+                </div>
+
+
+
+                <div class="scenario-content">
+
+                    <div class="scenario-number">
+                        01
+                    </div>
+
+
+                    <div class="scenario-title-row">
+
+                        <h2>
+                            OPERATION NIGHTFALL<br>
+                            CREDENTIAL THEFT
+                        </h2>
+
+
+                        <span class="scenario-arrow">
+                            ↗
+                        </span>
+
+                    </div>
+
+
+                    <p>
+                        Investigate suspicious authentication activity,
+                        compromised accounts, and credential harvesting
+                        across the environment.
+                    </p>
+
+
+                    <div class="scenario-meta">
+
+                        <span>
+                            ● ACTIVE INCIDENT
+                        </span>
+
+
+                        <span>
+                            DIFFICULTY: ★★★
+                        </span>
+
+
+                        <span
+                            class="scenario-info-trigger"
+                            data-scenario-info="credential-theft"
+                            role="button"
+                            tabindex="0"
+                        >
+                            ⓘ REAL-WORLD EXAMPLE
+                        </span>
+
+                    </div>
+
+
+                    <div class="scenario-launch">
+
+                        <span>
+                            START MISSION
+                        </span>
+
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </button>
+
+
+
+            <!-- =================================================
+             RANSOMWARE
+             ================================================= -->
+
+            <button class="scenario-card ransomware-card scenario-locked" data-scenario="ransomware" aria-disabled="true">
+
+
+                <div class="scenario-lock-badge">
+                    <span class="scenario-lock-icon">🔒</span>
+                    COMING SOON
+                </div>
+
+
+                <div class="scenario-locked-overlay" aria-hidden="true">
+                    <div class="scenario-locked-ring">🔒</div>
+                </div>
+
+
+                <div class="scenario-visual">
+
+                    <div class="scenario-logo" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="6" y="11" width="12" height="9" rx="1.5"></rect>
+                            <path d="M9 11V8a3 3 0 0 1 6 0v3"></path>
+                            <circle cx="12" cy="15" r="1.1" fill="currentColor" stroke="none"></circle>
+                            <path d="M12 16.1V18"></path>
+                        </svg>
+                    </div>
+
+                    <div class="ransomware-grid"></div>
+
+
+                    <div class="money-symbol money-1">
+                        $
+                    </div>
+
+                    <div class="money-symbol money-2">
+                        $
+                    </div>
+
+                    <div class="money-symbol money-3">
+                        $
+                    </div>
+
+                    <div class="money-symbol money-4">
+                        $
+                    </div>
+
+
+                    <div class="ransom-note">
+
+                        <div class="ransom-warning">
+                            !
+                        </div>
+
+
+                        <div class="ransom-text">
+                            YOUR FILES<br>
+                            ARE LOCKED
+                        </div>
+
+
+                        <div class="ransom-price">
+                            0.842 BTC
+                        </div>
+
+                    </div>
+
+
+                    <div class="encrypted-files">
+
+                        <span>
+                            invoice.xlsx
+                        </span>
+
+                        <span>
+                            payroll.db
+                        </span>
+
+                        <span>
+                            clients.csv
+                        </span>
+
+                        <span>
+                            backup.zip
+                        </span>
+
+                    </div>
+
+
+                    <div class="ransom-scanline"></div>
+
+                </div>
+
+
+
+                <div class="scenario-content">
+
+                    <div class="scenario-number">
+                        02
+                    </div>
+
+
+                    <div class="scenario-title-row">
+
+                        <h2>
+                            RANSOMWARE<br>
+                            INCIDENT
+                        </h2>
+
+
+                        <span class="scenario-arrow">
+                            ↗
+                        </span>
+
+                    </div>
+
+
+                    <p>
+                        Trace a malicious intrusion from initial access
+                        to endpoint compromise and identify the systems
+                        at risk.
+                    </p>
+
+
+                    <div class="scenario-meta">
+
+                        <span>
+                            DIFFICULTY: ★★★★
+                        </span>
+
+
+                        <span
+                            class="scenario-info-trigger"
+                            data-scenario-info="ransomware"
+                            role="button"
+                            tabindex="0"
+                        >
+                            ⓘ REAL-WORLD EXAMPLE
+                        </span>
+
+                    </div>
+
+
+                    <div class="scenario-launch">
+
+                        <span>
+                            COMING SOON
+                        </span>
+
+
+                        <span>
+                            🔒
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </button>
+
+
+
+            <!-- =================================================
+             WORM OUTBREAK
+             ================================================= -->
+
+            <button class="scenario-card worm-card scenario-locked" data-scenario="worm-outbreak" aria-disabled="true">
+
+
+                <div class="scenario-lock-badge">
+                    <span class="scenario-lock-icon">🔒</span>
+                    COMING SOON
+                </div>
+
+
+                <div class="scenario-locked-overlay" aria-hidden="true">
+
+                    <svg class="scenario-locked-diagram" viewBox="0 0 240 190" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+
+                        <path class="scenario-locked-line" d="M120 95 L58 40"></path>
+                        <path class="scenario-locked-line" d="M120 95 L182 40"></path>
+                        <path class="scenario-locked-line" d="M120 95 L58 150"></path>
+                        <path class="scenario-locked-line" d="M120 95 L182 150"></path>
+
+                        <g transform="translate(58 40)">
+                            <g class="scenario-locked-node">
+                                <rect x="-11" y="-9" width="22" height="14" rx="1.6"></rect>
+                                <path d="M0 5v3M-6 8h12"></path>
+                            </g>
+                        </g>
+
+                        <g transform="translate(182 40)">
+                            <g class="scenario-locked-node scenario-locked-node--b">
+                                <rect x="-11" y="-9" width="22" height="14" rx="1.6"></rect>
+                                <path d="M0 5v3M-6 8h12"></path>
+                            </g>
+                        </g>
+
+                        <g transform="translate(58 150)">
+                            <g class="scenario-locked-node scenario-locked-node--c">
+                                <rect x="-11" y="-9" width="22" height="14" rx="1.6"></rect>
+                                <path d="M0 5v3M-6 8h12"></path>
+                            </g>
+                        </g>
+
+                        <g transform="translate(182 150)">
+                            <g class="scenario-locked-node scenario-locked-node--d">
+                                <rect x="-11" y="-9" width="22" height="14" rx="1.6"></rect>
+                                <path d="M0 5v3M-6 8h12"></path>
+                            </g>
+                        </g>
+
+                    </svg>
+
+                    <div class="scenario-locked-ring">🔒</div>
+
+                </div>
+
+
+                <div class="scenario-visual">
+
+                    <div class="scenario-logo" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <ellipse cx="12" cy="13.5" rx="4.3" ry="5.8"></ellipse>
+                            <path d="M12 7.7V4M9.3 9 6.3 6M14.7 9l3-3M8.1 12.5H3.3M15.9 12.5h4.8M8.4 17l-3 3M15.6 17l3 3"></path>
+                        </svg>
+                    </div>
+
+                    <div class="network-grid"></div>
+
+
+                    <div class="network-lines">
+
+                        <i class="line line-1"></i>
+                        <i class="line line-2"></i>
+                        <i class="line line-3"></i>
+                        <i class="line line-4"></i>
+                        <i class="line line-5"></i>
+
+                    </div>
+
+
+                    <div class="network-node node-main"></div>
+
+                    <div class="network-node node-1"></div>
+                    <div class="network-node node-2"></div>
+                    <div class="network-node node-3"></div>
+                    <div class="network-node node-4"></div>
+                    <div class="network-node node-5"></div>
+                    <div class="network-node node-6"></div>
+
+
+                    <div class="infection-pulse"></div>
+
+
+                    <div class="worm-label">
+
+                        <span>
+                            THREAT PROPAGATION
+                        </span>
+
+
+                        <strong>
+                            NETWORK BREACH
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="scenario-content">
+
+                    <div class="scenario-number">
+                        03
+                    </div>
+
+
+                    <div class="scenario-title-row">
+
+                        <h2>
+                            WORM<br>
+                            OUTBREAK
+                        </h2>
+
+
+                        <span class="scenario-arrow">
+                            ↗
+                        </span>
+
+                    </div>
+
+
+                    <p>
+                        Contain a rapidly spreading threat by identifying
+                        infected hosts and tracing lateral movement across
+                        the network.
+                    </p>
+
+
+                    <div class="scenario-meta">
+
+                        <span>
+                            DIFFICULTY: ★★★★★
+                        </span>
+
+
+                        <span
+                            class="scenario-info-trigger"
+                            data-scenario-info="worm-outbreak"
+                            role="button"
+                            tabindex="0"
+                        >
+                            ⓘ REAL-WORLD EXAMPLE
+                        </span>
+
+                    </div>
+
+
+                    <div class="scenario-launch">
+
+                        <span>
+                            COMING SOON
+                        </span>
+
+
+                        <span>
+                            🔒
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </button>
+
+        </div>
+
+
+
+        <!-- =====================================================
+         SCENARIO FOOTER
+         ===================================================== -->
+
+        <footer class="scenario-footer">
+
+            <span>
+                NORTHSTAR SECURITY OPERATIONS CENTER
+            </span>
+
+
+            <span>
+                SELECTED OPERATION WILL INITIALIZE A NEW INCIDENT
+            </span>
+
+        </footer>
+
+
+
+        <!-- =====================================================
+         REAL-WORLD EXAMPLE MODAL
+         ---------------------------------------------------
+         One shared overlay, populated per scenario by
+         ScenarioSelect.js when a card's "REAL-WORLD EXAMPLE"
+         trigger is clicked. Content (about/example/graph) lives
+         in ScenarioSelect.js's SCENARIO_INFO data, not here.
+         ===================================================== -->
+
+        <div id="scenario-info-modal" class="scenario-info-modal hidden">
+
+            <div class="scenario-info-box">
+
+                <button
+                    type="button"
+                    class="scenario-info-close"
+                    id="scenario-info-close"
+                    aria-label="Close"
+                >
+                    ×
+                </button>
+
+                <div class="scenario-info-header">
+
+                    <div
+                        class="scenario-info-icon"
+                        id="scenario-info-icon"
+                    ></div>
+
+                    <div>
+
+                        <div class="scenario-info-eyebrow">
+                            REAL-WORLD PARALLEL
+                        </div>
+
+                        <h2
+                            class="scenario-info-title"
+                            id="scenario-info-title"
+                        ></h2>
+
+                    </div>
+
+                </div>
+
+                <div class="scenario-info-section">
+
+                    <h3>
+                        What is this attack?
+                    </h3>
+
+                    <p id="scenario-info-about"></p>
+
+                </div>
+
+                <div class="scenario-info-section">
+
+                    <h3>
+                        Real-world example
+                    </h3>
+
+                    <p id="scenario-info-example"></p>
+
+                </div>
+
+                <div class="scenario-info-section scenario-info-graph-section">
+
+                    <h3 id="scenario-info-graph-title"></h3>
+
+                    <div
+                        class="scenario-info-graph"
+                        id="scenario-info-graph"
+                    ></div>
+
+                    <p
+                        class="scenario-info-graph-caption"
+                        id="scenario-info-graph-caption"
+                    ></p>
+
+                </div>
+
+                <p class="scenario-info-disclaimer">
+                    Simplified for illustration, based on public
+                    post-incident reporting — not exact company data.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+     NORTHSTAR SOC DESKTOP
+     ========================================================= -->
+
+    <main id="desktop">
+
+
+        <!-- =====================================================
+         DESKTOP WALLPAPER
+         ===================================================== -->
+
+        <div class="desktop-overlay"></div>
+
+
+
+        <!-- =====================================================
+         DESKTOP APPLICATION ICONS
+         ===================================================== -->
+
+        <section class="desktop-icons">
+
+
+            <button class="desktop-icon" data-app="siem">
+
+                <span class="icon-image siem-icon">
+                    ▤
+                </span>
+
+                <span class="icon-label">
+                    SIEM
+                </span>
+
+            </button>
+
+
+
+            <button class="desktop-icon" data-app="cracker">
+
+                <span class="icon-image cracker-icon">
+                    🔓
+                </span>
+
+                <span class="icon-label">
+                    Password Cracker
+                </span>
+
+            </button>
+
+
+
+            <button class="desktop-icon" data-app="playbook">
+
+                <span class="icon-image playbook-icon">
+                    📖
+                </span>
+
+                <span class="icon-label">
+                    IR Playbook
+                </span>
+
+            </button>
+
+
+
+            <button class="desktop-icon" data-app="alerts">
+
+                <span class="icon-image alert-icon">
+                    !
+                </span>
+
+                <span class="icon-label">
+                    Alerts
+                </span>
+
+            </button>
+
+
+
+            <button class="desktop-icon" data-app="network">
+
+                <span class="icon-image network-icon">
+                    ⌁
+                </span>
+
+                <span class="icon-label">
+                    Network
+                </span>
+
+            </button>
+
+
+
+            <button class="desktop-icon" data-app="map">
+
+                <span class="icon-image map-icon">
+                    ◎
+                </span>
+
+                <span class="icon-label">
+                    Attack Map
+                </span>
+
+            </button>
+
+
+
+            <button class="desktop-icon" data-app="email">
+
+                <span class="icon-image email-icon">
+                    ✉
+                </span>
+
+                <span class="icon-label">
+                    Mail
+                </span>
+
+            </button>
+
+
+
+            <button class="desktop-icon" data-app="hosts">
+
+                <span class="icon-image host-icon">
+                    ▣
+                </span>
+
+                <span class="icon-label">
+                    Endpoints
+                </span>
+
+            </button>
+
+
+
+            <button class="desktop-icon" data-app="vpn">
+
+                <span class="icon-image vpn-icon">
+                    🔒
+                </span>
+
+                <span class="icon-label">
+                    VPN
+                </span>
+
+            </button>
+
+
+
+            <button class="desktop-icon" data-app="files">
+
+                <span class="icon-image files-icon">
+                    📁
+                </span>
+
+                <span class="icon-label">
+                    File Explorer
+                </span>
+
+            </button>
+
+
+
+            <button class="desktop-icon" data-app="intel">
+
+                <span class="icon-image intel-icon">
+                    🔎
+                </span>
+
+                <span class="icon-label">
+                    Threat Intel
+                </span>
+
+            </button>
+
+
+
+            <button class="desktop-icon" data-app="iam">
+
+                <span class="icon-image iam-icon">
+                    ID
+                </span>
+
+                <span class="icon-label">
+                    IAM
+                </span>
+
+            </button>
+
+
+
+            <button class="desktop-icon" data-app="sandbox">
+
+                <span class="icon-image sandbox-icon">
+                    🧪
+                </span>
+
+                <span class="icon-label">
+                    Malware Sandbox
+                </span>
+
+            </button>
+
+        </section>
+
+
+
+        <!-- =====================================================
+         DESKTOP CENTER
+         ===================================================== -->
+
+        <section class="desktop-center">
+
+
+            <div class="system-brand">
+
+                <div class="brand-symbol">
+                    ⬢
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        NORTHSTAR
+                    </div>
+
+
+                    <div class="brand-subtitle">
+                        SECURITY OPERATIONS CENTER
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="system-status">
+
+                <div class="status-dot"></div>
+
+                <span>
+                    SYSTEM READY
+                </span>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+         TASKBAR
+         ===================================================== -->
+
+        <footer class="taskbar">
+
+
+            <!-- =================================================
+             START BUTTON
+             ================================================= -->
+
+            <button class="taskbar-button start-button" id="start-button" aria-label="Start">
+
+                <span class="start-logo">
+                    ⊞
+                </span>
+
+            </button>
+
+
+
+            <!-- =================================================
+             SEARCH
+             ================================================= -->
+
+            <div class="taskbar-search" id="taskbar-search">
+
+                <span class="search-symbol">
+                    ⌕
+                </span>
+
+
+                <input id="taskbar-search-input" type="text" placeholder="Search" autocomplete="off"
+                    aria-label="Search applications">
+
+            </div>
+
+
+
+            <!-- =================================================
+             SEARCH RESULTS
+             ================================================= -->
+
+            <div id="search-results" class="search-results hidden"></div>
+
+
+
+            <!-- =================================================
+             DYNAMIC PINNED APPLICATIONS
+             ================================================= -->
+
+            <div class="taskbar-apps" id="taskbar-apps"></div>
+
+
+
+            <!-- =================================================
+             SYSTEM TRAY
+             ================================================= -->
+
+            <div class="system-tray">
+
+
+                <div class="tray-status">
+
+                    <span class="tray-dot"></span>
+
+                    <span>
+                        SECURE
+                    </span>
+
+                </div>
+
+
+                <div class="tray-network">
+                    ◉
+                </div>
+
+
+                <div class="tray-volume">
+                    ◖
+                </div>
+
+
+                <div class="tray-time">
+
+                    <div id="clock-time">
+                        09:41 AM
+                    </div>
+
+
+                    <div id="clock-date">
+                        08/16/2026
+                    </div>
+
+                </div>
+
+            </div>
+
+        </footer>
+
+
+
+        <!-- =====================================================
+         START MENU
+         ===================================================== -->
+
+        <div id="start-menu" class="start-menu hidden">
+
+
+            <div class="start-header">
+
+
+                <div class="start-profile">
+
+                    <div class="profile-circle">
+                        NS
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            SOC Analyst
+                        </strong>
+
+
+                        <span>
+                            Northstar Security
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="start-section-title">
+                PINNED
+            </div>
+
+
+
+            <!-- Populated by DesktopFeatures.js's renderStartMenuPins()
+                 from the same pinned-apps state the taskbar uses, so
+                 pinning/unpinning an app anywhere keeps both in sync. -->
+            <div class="start-grid"></div>
+
+
+
+            <div class="start-footer">
+
+                <span>
+                    NORTHSTAR SOC
+                </span>
+
+
+                <span class="start-secure">
+                    ● SECURE
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================================
+         RIGHT-CLICK CONTEXT MENU
+         ===================================================== -->
+
+        <div id="context-menu" class="context-menu hidden">
+
+
+            <!-- =================================================
+             DESKTOP CONTEXT MENU
+             ================================================= -->
+
+            <div id="desktop-context-actions">
+
+
+                <button data-context-action="refresh">
+
+                    <span>
+                        ↻
+                    </span>
+
+                    Refresh
+
+                </button>
+
+
+                <button data-context-action="display">
+
+                    <span>
+                        ▣
+                    </span>
+
+                    Display settings
+
+                </button>
+
+
+                <button data-context-action="personalize">
+
+                    <span>
+                        ✦
+                    </span>
+
+                    Personalize
+
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+             APPLICATION CONTEXT MENU
+             ================================================= -->
+
+            <div id="app-context-actions" class="hidden">
+
+
+                <div class="context-app-title">
+
+                    <span id="context-app-icon">
+                        ▤
+                    </span>
+
+
+                    <span id="context-app-name">
+                        Application
+                    </span>
+
+                </div>
+
+
+
+                <button data-context-action="open">
+
+                    <span>
+                        ▶
+                    </span>
+
+                    Open
+
+                </button>
+
+
+
+                <button data-context-action="pin">
+
+                    <span>
+                        📌
+                    </span>
+
+
+                    <span id="context-pin-text">
+                        Pin to taskbar
+                    </span>
+
+                </button>
+
+
+
+                <button data-context-action="close">
+
+                    <span>
+                        ×
+                    </span>
+
+                    Close
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =========================================================
+     LEGACY / NETWORK SYSTEMS
+     ========================================================= -->
+
+    <script src="network/PacketParser.js"></script>
+    <script type="module" src="network/PacketEngine.js"></script>
+    <script src="network/NetworkStore.js"></script>
+    <script src="network/NetworkInvestigator.js"></script>
+    <script type="module" src="network/NetworkApp.js"></script>
+
+
+
+    <!-- =========================================================
+     APPLICATION DATA
+     ========================================================= -->
+
+    <script src="./threat-intel/ThreatIntelData.js"></script>
+    <script src="iam/IAMData.js"></script>
+    <script src="malware-sandbox/MalwareSandboxData.js"></script>
+    <script src="engine/ReportGrader.js"></script>
+    <script src="malware-sandbox/NightfallEnding.js"></script>
+    <script src="mail/ReportClearanceBriefing.js"></script>
+
+
+
+    <!-- =========================================================
+     MAIN MENU
+     ========================================================= -->
+
+    <script src="./main-menu/StatsTracker.js"></script>
+    <script src="./main-menu/SaveSlots.js"></script>
+    <script src="./main-menu/MainMenu.js"></script>
+
+
+
+    <!-- =========================================================
+     SCENARIO SELECT
+     ========================================================= -->
+
+    <script src="./main-menu/ScenarioSelect.js"></script>
+    <script src="./main-menu/ScenarioBriefing.js"></script>
+
+
+
+    <!-- =========================================================
+     TRAINING
+     Main Menu → TRAINING: one card per desktop app, with an
+     overview and a short hands-on practice scenario for each.
+     Runs entirely on invented sample data, not the live
+     simulation stores, so it's safe to open before any real
+     operation exists.
+     ========================================================= -->
+
+    <script src="./training/training-data.js"></script>
+    <script src="./training/TrainingApp.js"></script>
+
+
+
+    <!-- =========================================================
+     FREE PLAY → EXPERIENCE OTHER ATTACKS
+     Main Menu → FREE OPERATIONS now opens an educational feature:
+     the user picks one of 10 attack techniques and watches a real
+     animated, synchronized replay of it from both the Attacker
+     POV and the Victim/SOC POV (a cursor moves and clicks, fields
+     get typed into, hash tables sweep and reveal, diagrams animate)
+     — or picks the 11th "Compare Attacks" tile to see any two
+     techniques broken down side by side. Everything is a self-
+     contained NORTHSTAR simulation — fake data, fake systems, fake
+     credentials, fake network traffic — and none of it touches
+     or replaces the real NORTHSTAR SOC attack engines (EventEngine /
+     DetectionEngine / AlertManager / AttackEngine / NetworkStore,
+     etc.) or the real scenarios (Credential Theft, Ransomware,
+     Worm), which stay reachable from Scenario Select untouched.
+
+     Reusable framework, data-driven content:
+       attackExperienceData.js      — the 10 experiences: timeline[]
+                                       (the animation script) plus
+                                       compare{} (comparison metadata)
+       AttackExperienceEngine.js    — the animation action-sequencer (no DOM)
+       AttackExperienceRenderer.js  — the animated attacker/victim replay screen
+       AttackCompareApp.js          — the "Compare Attacks" screen
+       FreePlayApp.js               — the 11-tile selection screen
+     Adding an 11th experience means adding one object to
+     attackExperienceData.js — no other file changes.
+
+     Stylesheets (freeplay.css, attack-experience.css,
+     attack-compare.css) linked earlier. Independent of
+     training-data.js — load order relative to the Training
+     scripts doesn't matter.
+     ========================================================= -->
+
+    <script src="./freeplay/attackExperienceData.js"></script>
+    <script src="./freeplay/AttackExperienceEngine.js"></script>
+    <script src="./freeplay/AttackExperienceRenderer.js"></script>
+    <script src="./freeplay/AttackCompareApp.js"></script>
+    <script src="./freeplay/FreePlayApp.js"></script>
+
+
+
+    <!-- =========================================================
+     MISSION TIMER
+     Countdown HUD, top-right of the desktop — how long the
+     analyst has before the attacker finishes the job.
+     ========================================================= -->
+
+    <script src="./main-menu/MissionTimer.js"></script>
+
+
+
+    <!-- =========================================================
+     CAPTURE TOOL
+     Ctrl+Shift+S / 📷 button to snip a screenshot, Ctrl+Shift+R
+     / ⏺ button to start-stop recording the desktop — both save
+     as real files under Pictures/Videos, which Mail's Compose
+     "Upload" picker reads from File Explorer.
+     ========================================================= -->
+
+    <script src="./capture/vendor/html2canvas.min.js"></script>
+    <script src="./capture/CaptureTool.js"></script>
+
+
+
+    <!-- =========================================================
+     DESKTOP FEATURES
+     SEARCH / PINNING / CONTEXT MENUS
+     ========================================================= -->
+
+    <script src="./DesktopFeatures.js"></script>
+
+
+
+    <!-- =========================================================
+     SIMULATION ENGINE
+     ========================================================= -->
+
+    <script type="module" src="engine/SimulationBootstrap.js"></script>
+
+
+
+    <!-- =========================================================
+     MAIN NORTHSTAR SCRIPT
+     ========================================================= -->
+
+    <script type="module" src="script.js"></script>
+
+
+</body>
+
+</html>

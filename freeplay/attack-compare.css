@@ -1,0 +1,655 @@
+/* =========================================================
+   NORTHSTAR SOC — COMPARE ATTACKS SCREEN
+   ---------------------------------------------------------
+   Same dark-navy SOC aesthetic as freeplay.css / attack-
+   experience.css. This screen is intentionally static (no
+   animation engine) — it's a reference/breakdown view, not a
+   simulation.
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   Screen shell
+   --------------------------------------------------------- */
+
+.nsac-screen {
+    position: fixed;
+    inset: 0;
+
+    z-index: 100001;
+
+    overflow-y: auto;
+
+    background: #05090f;
+    color: #dce7f2;
+
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.nsac-screen.hidden {
+    display: none;
+}
+
+.nsac-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+
+    padding: 32px min(5vw, 60px) 60px;
+}
+
+
+/* ---------------------------------------------------------
+   Top bar
+   --------------------------------------------------------- */
+
+.nsac-topbar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+
+    padding-bottom: 16px;
+    margin-bottom: 10px;
+
+    border-bottom: 1px solid rgba(100, 150, 210, 0.16);
+}
+
+.nsac-back {
+    flex-shrink: 0;
+
+    padding: 9px 14px;
+
+    border: 1px solid rgba(100, 150, 210, 0.3);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    color: #b8c9d8;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+
+    cursor: pointer;
+
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.nsac-back:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(100, 150, 210, 0.5);
+}
+
+.nsac-eyebrow {
+    color: #9b7fe0;
+
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 2px;
+
+    margin-bottom: 4px;
+}
+
+.nsac-title-block h2 {
+    margin: 0;
+
+    color: #eef5fb;
+
+    font-size: clamp(20px, 2.2vw, 26px);
+    letter-spacing: 0.3px;
+}
+
+.nsac-intro {
+    max-width: 640px;
+    margin: 16px 0 22px;
+
+    color: #8195a8;
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+/* ---------------------------------------------------------
+   Selectors
+   --------------------------------------------------------- */
+
+.nsac-selectors {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    flex-wrap: wrap;
+
+    margin-bottom: 28px;
+}
+
+.nsac-selector {
+    flex: 1;
+    min-width: 220px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.nsac-selector label {
+    color: #6386a4;
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.nsac-selector select {
+    padding: 11px 14px;
+
+    background: #0b1424;
+    border: 1px solid rgba(100, 150, 210, 0.28);
+    border-radius: 8px;
+
+    color: #eef5fb;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.nsac-selector select:focus {
+    outline: none;
+    border-color: #9b7fe0;
+}
+
+.nsac-swap {
+    flex-shrink: 0;
+
+    width: 40px;
+    height: 40px;
+    margin-bottom: 2px;
+
+    border-radius: 50%;
+    border: 1px solid rgba(155, 127, 224, 0.35);
+    background: rgba(155, 127, 224, 0.08);
+    color: #c7b8f0;
+
+    font-size: 17px;
+    cursor: pointer;
+
+    transition: background 0.15s, transform 0.15s;
+}
+
+.nsac-swap:hover {
+    background: rgba(155, 127, 224, 0.18);
+    transform: rotate(180deg);
+}
+
+
+/* ---------------------------------------------------------
+   "Pick two different attacks" empty state
+   --------------------------------------------------------- */
+
+.nsac-same {
+    padding: 40px;
+    text-align: center;
+
+    color: #8195a8;
+    font-size: 13.5px;
+
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px dashed rgba(100, 150, 210, 0.25);
+    border-radius: 12px;
+}
+
+
+/* ---------------------------------------------------------
+   Head cards (the two attacks being compared)
+   --------------------------------------------------------- */
+
+.nsac-headcards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+
+    margin-bottom: 26px;
+}
+
+.nsac-headcard {
+    padding: 18px 20px;
+
+    background: #0b1424;
+    border: 1px solid rgba(100, 150, 210, 0.18);
+    border-radius: 12px;
+    border-top: 3px solid var(--nsac-accent, #6fb2e0);
+}
+
+.nsac-headcard-number {
+    color: var(--nsac-accent, #6fb2e0);
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+
+    margin-bottom: 4px;
+}
+
+.nsac-headcard-title {
+    color: #eef5fb;
+
+    font-size: 18px;
+    font-weight: 700;
+
+    margin-bottom: 8px;
+}
+
+.nsac-headcard-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+
+    margin-bottom: 10px;
+}
+
+.nsac-headcard-meta span {
+    padding: 3px 10px;
+
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(100, 150, 210, 0.2);
+    color: #a8bccf;
+
+    font-size: 10.5px;
+    font-weight: 600;
+}
+
+.nsac-mitre-tag {
+    font-family: "Cascadia Code", "Consolas", monospace;
+    font-weight: 700 !important;
+}
+
+.nsac-headcard-desc {
+    margin: 0 0 14px;
+
+    color: #8195a8;
+
+    font-size: 12.5px;
+    line-height: 1.55;
+
+    min-height: 38px;
+}
+
+.nsac-try-btn {
+    width: 100%;
+    padding: 9px 14px;
+
+    border: 1px solid var(--nsac-accent, #6fb2e0);
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--nsac-accent, #6fb2e0);
+
+    font-family: inherit;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+
+    cursor: pointer;
+
+    transition: background 0.15s;
+}
+
+.nsac-try-btn:hover {
+    background: var(--nsac-accent, #6fb2e0);
+    color: #06121f;
+}
+
+
+/* ---------------------------------------------------------
+   Content blocks
+   --------------------------------------------------------- */
+
+.nsac-block {
+    margin-bottom: 22px;
+
+    padding: 18px 20px;
+
+    background: #0b1424;
+    border: 1px solid rgba(100, 150, 210, 0.18);
+    border-radius: 12px;
+}
+
+.nsac-block-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    color: #6386a4;
+
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+
+    margin-bottom: 12px;
+}
+
+.nsac-similarity-list {
+    margin: 0;
+    padding-left: 18px;
+
+    color: #c3d3e2;
+
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.nsac-similarity-list li {
+    margin-bottom: 4px;
+}
+
+.nsac-similarity-list strong {
+    color: #eef5fb;
+}
+
+
+/* ---------------------------------------------------------
+   Comparison table
+   --------------------------------------------------------- */
+
+.nsac-table {
+    display: flex;
+    flex-direction: column;
+}
+
+.nsac-table-row {
+    display: grid;
+    grid-template-columns: 160px 1fr 1fr;
+    gap: 12px;
+
+    padding: 10px 4px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nsac-table-row:last-child {
+    border-bottom: none;
+}
+
+.nsac-table-head {
+    padding-bottom: 8px;
+
+    color: #eef5fb;
+
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+
+    border-bottom: 1px solid rgba(100, 150, 210, 0.22);
+}
+
+.nsac-table-label {
+    color: #6386a4;
+
+    font-size: 11.5px;
+    font-weight: 700;
+}
+
+.nsac-table-val {
+    color: #a8bccf;
+
+    font-size: 12.5px;
+    line-height: 1.5;
+}
+
+.nsac-table-row-diff .nsac-table-val {
+    color: #eef5fb;
+    font-weight: 600;
+}
+
+.nsac-table-row-diff {
+    background: rgba(155, 127, 224, 0.05);
+    border-radius: 6px;
+}
+
+
+/* ---------------------------------------------------------
+   "How to tell them apart" block
+   --------------------------------------------------------- */
+
+.nsac-block-distinguish p {
+    margin: 0;
+
+    color: #dce7f2;
+
+    font-size: 13.5px;
+    line-height: 1.65;
+}
+
+.nsac-block-curated {
+    border-color: rgba(155, 127, 224, 0.35);
+    background: rgba(155, 127, 224, 0.05);
+}
+
+.nsac-curated-badge {
+    padding: 2px 9px;
+
+    border-radius: 20px;
+    background: rgba(155, 127, 224, 0.18);
+    border: 1px solid rgba(155, 127, 224, 0.4);
+    color: #c7b8f0;
+
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+}
+
+
+/* ---------------------------------------------------------
+   The 11th "COMPARE ATTACKS" tile on the picker grid
+   (structural styling lives in freeplay.css alongside the
+   other .nsfp-attack-card rules; this handles its unique
+   accents only, kept here so this file is self-contained for
+   anything related to the compare feature.)
+   --------------------------------------------------------- */
+
+.nsfp-compare-card {
+    border-top-color: #9b7fe0;
+    background: linear-gradient(160deg, rgba(155, 127, 224, 0.07), #0b1424 60%);
+}
+
+.nsfp-compare-card .nsfp-attack-launch {
+    color: #c7b8f0;
+}
+
+.nsfp-compare-card .nsfp-attack-number {
+    color: #9b7fe0;
+}
+
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+
+@media (max-width: 780px) {
+
+    .nsac-headcards {
+        grid-template-columns: 1fr;
+    }
+
+    .nsac-table-head {
+        display: none;
+    }
+
+    .nsac-table-row:not(.nsac-table-head) {
+        grid-template-columns: 1fr;
+        gap: 2px;
+
+        padding: 12px 10px;
+
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 8px;
+        border-bottom: none;
+        margin-bottom: 8px;
+    }
+
+    .nsac-table-label {
+        margin-bottom: 2px;
+    }
+
+    .nsac-table-val::before {
+        content: attr(data-side) ": ";
+        color: #6386a4;
+        font-weight: 700;
+    }
+
+}
+
+@media (max-width: 560px) {
+
+    .nsac-inner {
+        padding: 24px 16px 40px;
+    }
+
+    .nsac-selectors {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .nsac-swap {
+        align-self: center;
+    }
+
+}
+
+
+/* =========================================================
+   LIGHT THEME
+   ========================================================= */
+
+[data-northstar-theme="light"] .nsac-screen {
+    background: #eef4fa;
+    color: #223447;
+}
+
+[data-northstar-theme="light"] .nsac-topbar {
+    border-bottom-color: rgba(70, 120, 180, 0.18);
+}
+
+[data-northstar-theme="light"] .nsac-back {
+    background: rgba(30, 60, 100, 0.04);
+    border-color: rgba(70, 120, 180, 0.28);
+    color: #45607a;
+}
+
+[data-northstar-theme="light"] .nsac-back:hover {
+    background: rgba(30, 60, 100, 0.08);
+}
+
+[data-northstar-theme="light"] .nsac-title-block h2 {
+    color: #142236;
+}
+
+[data-northstar-theme="light"] .nsac-intro {
+    color: #4f6072;
+}
+
+[data-northstar-theme="light"] .nsac-selector label {
+    color: #4a7096;
+}
+
+[data-northstar-theme="light"] .nsac-selector select {
+    background: #ffffff;
+    border-color: rgba(70, 120, 180, 0.28);
+    color: #142236;
+}
+
+[data-northstar-theme="light"] .nsac-same {
+    background: rgba(30, 60, 100, 0.03);
+    border-color: rgba(70, 120, 180, 0.25);
+    color: #4f6072;
+}
+
+[data-northstar-theme="light"] .nsac-headcard,
+[data-northstar-theme="light"] .nsac-block {
+    background: #ffffff;
+    border-color: rgba(70, 120, 180, 0.2);
+    box-shadow: 0 4px 18px rgba(30, 60, 100, 0.05);
+}
+
+[data-northstar-theme="light"] .nsac-headcard-title {
+    color: #142236;
+}
+
+[data-northstar-theme="light"] .nsac-headcard-meta span {
+    background: rgba(30, 60, 100, 0.05);
+    border-color: rgba(70, 120, 180, 0.2);
+    color: #3c526a;
+}
+
+[data-northstar-theme="light"] .nsac-headcard-desc {
+    color: #4f6072;
+}
+
+[data-northstar-theme="light"] .nsac-block-label {
+    color: #4a7096;
+}
+
+[data-northstar-theme="light"] .nsac-similarity-list {
+    color: #35506a;
+}
+
+[data-northstar-theme="light"] .nsac-similarity-list strong {
+    color: #142236;
+}
+
+[data-northstar-theme="light"] .nsac-table-head {
+    color: #142236;
+    border-bottom-color: rgba(70, 120, 180, 0.25);
+}
+
+[data-northstar-theme="light"] .nsac-table-label {
+    color: #4a7096;
+}
+
+[data-northstar-theme="light"] .nsac-table-val {
+    color: #3c526a;
+}
+
+[data-northstar-theme="light"] .nsac-table-row-diff {
+    background: rgba(120, 80, 200, 0.06);
+}
+
+[data-northstar-theme="light"] .nsac-table-row-diff .nsac-table-val {
+    color: #142236;
+}
+
+[data-northstar-theme="light"] .nsac-block-distinguish p {
+    color: #223447;
+}
+
+[data-northstar-theme="light"] .nsac-block-curated {
+    background: rgba(120, 80, 200, 0.05);
+    border-color: rgba(120, 80, 200, 0.3);
+}
+
+[data-northstar-theme="light"] .nsfp-compare-card {
+    background: linear-gradient(160deg, rgba(120, 80, 200, 0.05), #ffffff 60%);
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .nsac-swap {
+        transition: none;
+    }
+
+    .nsac-swap:hover {
+        transform: none;
+    }
+
+    .nsac-back,
+    .nsac-try-btn {
+        transition: none;
+    }
+
+}

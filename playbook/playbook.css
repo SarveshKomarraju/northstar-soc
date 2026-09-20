@@ -1,0 +1,587 @@
+/* =========================================================
+   NORTHSTAR SOC — INCIDENT RESPONSE PLAYBOOK
+   A reading experience, not a dashboard: dark chrome and
+   sidebar, but the page itself is warm parchment with serif
+   type — meant to feel like an actual bound manual.
+   ========================================================= */
+
+.northstar-playbook {
+    --pb-chrome: #15171b;
+    --pb-sidebar: #1a1d22;
+    --pb-chrome-border: rgba(255, 255, 255, 0.08);
+
+    --pb-page: #efe6d2;
+    --pb-page-edge: #e4d9c0;
+    --pb-ink: #2c2620;
+    --pb-ink-soft: #524a3e;
+    --pb-ink-faint: #85796a;
+
+    --pb-accent: #1f4d3a;
+    --pb-accent-soft: rgba(31, 77, 58, 0.1);
+    --pb-accent-line: rgba(31, 77, 58, 0.28);
+
+    --pb-chrome-text: #cfd3d8;
+    --pb-chrome-text-muted: #7b8189;
+
+    --pb-serif: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+    --pb-sans: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--pb-chrome);
+    font-family: var(--pb-sans);
+}
+
+.pb-shell {
+    display: grid;
+    grid-template-columns: 210px 1fr;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   TABLE OF CONTENTS
+   ========================================================= */
+
+.pb-toc {
+    background: var(--pb-sidebar);
+    border-right: 1px solid var(--pb-chrome-border);
+    padding: 18px 10px;
+    overflow-y: auto;
+}
+
+.pb-toc-heading {
+    padding: 4px 10px 10px;
+    color: var(--pb-chrome-text-muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+}
+
+.pb-toc-item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+
+    width: 100%;
+    padding: 9px 10px;
+    margin-bottom: 1px;
+
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--pb-chrome-text-muted);
+    font-size: 12px;
+    text-align: left;
+    line-height: 1.3;
+    cursor: pointer;
+}
+
+.pb-toc-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--pb-chrome-text);
+}
+
+.pb-toc-item.active {
+    background: var(--pb-accent-soft);
+    color: #8fd4b0;
+}
+
+.pb-toc-number {
+    flex-shrink: 0;
+    font-family: var(--pb-serif);
+    font-size: 11px;
+    opacity: 0.7;
+}
+
+
+/* =========================================================
+   READER
+   ========================================================= */
+
+.pb-reader {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding: 24px 24px 16px;
+    overflow: hidden;
+}
+
+.pb-page {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+
+    background: var(--pb-page);
+    border-radius: 6px;
+    box-shadow:
+        0 1px 0 var(--pb-page-edge) inset,
+        0 18px 40px rgba(0, 0, 0, 0.35);
+
+    padding: 48px 60px;
+    color: var(--pb-ink);
+    font-family: var(--pb-serif);
+}
+
+
+/* =========================================================
+   PAGE TURN BAR
+   ========================================================= */
+
+.pb-turn-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 14px;
+    flex-shrink: 0;
+}
+
+.pb-turn-button {
+    height: 32px;
+    padding: 0 16px;
+
+    border: 1px solid var(--pb-chrome-border);
+    border-radius: 999px;
+    background: var(--pb-sidebar);
+    color: var(--pb-chrome-text);
+    font-family: var(--pb-sans);
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.pb-turn-button:hover:not(:disabled) {
+    background: #21252b;
+}
+
+.pb-turn-button:disabled {
+    color: var(--pb-chrome-text-muted);
+    cursor: default;
+    opacity: 0.5;
+}
+
+.pb-page-indicator {
+    color: var(--pb-chrome-text-muted);
+    font-family: var(--pb-sans);
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   COVER PAGE
+   ========================================================= */
+
+.pb-cover {
+    max-width: 480px;
+    margin: 30px auto 0;
+    text-align: center;
+}
+
+.pb-cover-mark {
+    font-size: 34px;
+    margin-bottom: 18px;
+}
+
+.pb-cover-title {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.pb-cover-subtitle {
+    margin-top: 8px;
+    color: var(--pb-ink-faint);
+    font-family: var(--pb-sans);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.pb-cover-rule {
+    width: 60px;
+    height: 2px;
+    margin: 26px auto;
+    background: var(--pb-accent);
+}
+
+.pb-cover .pb-body-text {
+    text-align: left;
+}
+
+
+/* =========================================================
+   SECTION PAGES
+   ========================================================= */
+
+.pb-section {
+    max-width: 560px;
+}
+
+.pb-section-eyebrow {
+    color: var(--pb-accent);
+    font-family: var(--pb-sans);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.pb-section-title {
+    margin: 0 0 20px;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.25;
+}
+
+.pb-body-text {
+    margin: 0 0 14px;
+    color: var(--pb-ink-soft);
+    font-size: 15px;
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   TOOL LIST (Preparation page)
+   ========================================================= */
+
+.pb-tool-list {
+    margin-top: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.pb-tool-entry {
+    padding-left: 14px;
+    border-left: 2px solid var(--pb-accent-line);
+}
+
+.pb-tool-name {
+    font-family: var(--pb-sans);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+    color: var(--pb-accent);
+    margin-bottom: 3px;
+}
+
+.pb-tool-use {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--pb-ink-soft);
+}
+
+
+/* =========================================================
+   CHECKLIST
+   ========================================================= */
+
+.pb-checklist {
+    list-style: none;
+    margin: 20px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pb-checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.pb-checkbox {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1.5px solid var(--pb-ink-faint);
+    border-radius: 4px;
+
+    font-family: var(--pb-sans);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--pb-page);
+}
+
+.pb-checklist-item.checked .pb-checkbox {
+    background: var(--pb-accent);
+    border-color: var(--pb-accent);
+}
+
+.pb-checklist-text {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--pb-ink-soft);
+}
+
+.pb-checklist-item.checked .pb-checklist-text {
+    color: var(--pb-ink-faint);
+    text-decoration: line-through;
+    text-decoration-color: var(--pb-ink-faint);
+}
+
+
+/* =========================================================
+   REPORT PAGE
+   ========================================================= */
+
+.pb-incident-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 18px 0;
+}
+
+.pb-incident-chip {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    padding: 8px 12px;
+
+    border: 1px solid var(--pb-accent-line);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--pb-ink);
+    font-family: var(--pb-sans);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+}
+
+.pb-incident-chip:hover {
+    background: var(--pb-accent-soft);
+}
+
+.pb-incident-chip.active {
+    background: var(--pb-accent);
+    border-color: var(--pb-accent);
+    color: #fff;
+}
+
+.pb-incident-chip-sub {
+    font-weight: 400;
+    font-size: 10px;
+    opacity: 0.75;
+}
+
+.pb-report-empty {
+    padding: 14px 0;
+    color: var(--pb-ink-faint);
+    font-size: 13px;
+}
+
+.pb-nightfall-evidence {
+    margin: 4px 0 20px;
+    padding: 12px 14px;
+
+    border-radius: 8px;
+    border: 1px solid rgba(124, 58, 237, 0.3);
+
+    background: rgba(124, 58, 237, 0.06);
+}
+
+.pb-nightfall-evidence-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    font-family: var(--pb-sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    color: #6d28d9;
+}
+
+.pb-nightfall-evidence-count {
+    padding: 2px 8px;
+    border-radius: 20px;
+
+    background: rgba(124, 58, 237, 0.14);
+    color: #6d28d9;
+
+    font-size: 11px;
+}
+
+.pb-nightfall-evidence-note {
+    margin: 6px 0 10px;
+    font-size: 12px;
+}
+
+.pb-nightfall-evidence-subhead {
+    margin: 10px 0 4px;
+
+    font-family: var(--pb-sans);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    color: #8b5cf6;
+}
+
+.pb-nightfall-evidence-subhead:first-of-type {
+    margin-top: 2px;
+}
+
+.pb-nightfall-evidence-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+}
+
+.pb-nightfall-evidence-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    font-family: var(--pb-sans);
+    font-size: 11.5px;
+    color: var(--pb-ink-faint);
+}
+
+.pb-nightfall-evidence-item.done {
+    color: var(--pb-ink);
+}
+
+.pb-nightfall-evidence-mark {
+    width: 14px;
+    text-align: center;
+
+    color: #a855f7;
+    font-weight: 700;
+}
+
+.pb-nightfall-evidence-item.done .pb-nightfall-evidence-mark {
+    color: #16a34a;
+}
+
+
+/* =========================================================
+   "WHAT MARCUS NEEDS" — same blue used for his briefing on
+   Scenario Select (main-menu/scenario-briefing.css), so this
+   reads as the same voice rather than another evidence gate.
+   Reuses .pb-checklist/-item/-checkbox for the actual list —
+   just a differently-colored header box around it.
+   ========================================================= */
+
+.pb-requirements {
+    margin: 4px 0 20px;
+    padding: 12px 14px;
+
+    border-radius: 8px;
+    border: 1px solid rgba(29, 78, 216, 0.3);
+
+    background: rgba(29, 78, 216, 0.06);
+}
+
+.pb-requirements-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    font-family: var(--pb-sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    color: #1d4ed8;
+}
+
+.pb-requirements-note {
+    margin: 6px 0 2px;
+    font-size: 12px;
+}
+
+.pb-requirements .pb-checklist {
+    margin-top: 10px;
+}
+
+.pb-fact-sheet {
+    margin: 4px 0 22px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--pb-page-edge);
+}
+
+.pb-fact-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--pb-page-edge);
+    font-family: var(--pb-sans);
+    font-size: 12px;
+}
+
+.pb-fact-row:last-child {
+    border-bottom: 0;
+}
+
+.pb-fact-row>span:first-child {
+    color: var(--pb-ink-faint);
+}
+
+.pb-fact-row>span:last-child {
+    color: var(--pb-ink);
+    font-weight: 600;
+    text-align: right;
+}
+
+.pb-report-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.pb-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.pb-field-label {
+    font-family: var(--pb-sans);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--pb-accent);
+    letter-spacing: 0.3px;
+}
+
+.pb-field-input {
+    width: 100%;
+    padding: 10px 12px;
+    resize: vertical;
+
+    border: 1px solid var(--pb-page-edge);
+    border-radius: 6px;
+    background: #f8f2e4;
+    color: var(--pb-ink);
+    font-family: var(--pb-serif);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.pb-field-input:focus {
+    outline: none;
+    border-color: var(--pb-accent);
+}
+
+.pb-field-input::placeholder {
+    color: var(--pb-ink-faint);
+    font-family: var(--pb-sans);
+}

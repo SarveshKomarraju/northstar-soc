@@ -1,0 +1,1716 @@
+/* =========================================================
+   NORTHSTAR SOC — IAM
+   File: iam/iam.css
+   ========================================================= */
+
+
+.iam-app {
+
+    --iam-bg:
+        #07101c;
+
+    --iam-panel:
+        #0a1624;
+
+    --iam-panel-2:
+        #0c1929;
+
+    --iam-border:
+        #192b40;
+
+    --iam-border-light:
+        #263f58;
+
+    --iam-blue:
+        #79a9e8;
+
+    --iam-blue-soft:
+        #6d99c6;
+
+    --iam-text:
+        #d7e3ee;
+
+    --iam-muted:
+        #60758a;
+
+    --iam-green:
+        #69d99a;
+
+    --iam-red:
+        #df7375;
+
+    --iam-orange:
+        #dfa365;
+
+    --iam-yellow:
+        #d6c06b;
+
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    min-height:
+        0;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    overflow:
+        hidden;
+
+    background:
+        var(--iam-bg);
+
+    color:
+        var(--iam-text);
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+}
+
+
+.iam-app *,
+.iam-app *::before,
+.iam-app *::after {
+
+    box-sizing:
+        border-box;
+
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.iam-header {
+
+    min-height:
+        68px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    padding:
+        0 20px;
+
+    background:
+        #0a1625;
+
+    border-bottom:
+        1px solid var(--iam-border);
+
+}
+
+
+.iam-brand {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        12px;
+
+}
+
+
+.iam-brand-mark {
+
+    width:
+        40px;
+
+    height:
+        40px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border:
+        1px solid #355676;
+
+    background:
+        #0d2033;
+
+    color:
+        var(--iam-blue);
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size:
+        10px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        1px;
+
+}
+
+
+.iam-title {
+
+    font-size:
+        14px;
+
+    font-weight:
+        600;
+
+    letter-spacing:
+        1px;
+
+}
+
+
+.iam-subtitle {
+
+    margin-top:
+        4px;
+
+    color:
+        var(--iam-muted);
+
+    font-size:
+        8px;
+
+    letter-spacing:
+        1.4px;
+
+}
+
+
+.iam-header-status {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+
+    color:
+        var(--iam-muted);
+
+    font-size:
+        8px;
+
+    letter-spacing:
+        .9px;
+
+}
+
+
+.iam-status-dot {
+
+    width:
+        7px;
+
+    height:
+        7px;
+
+    border-radius:
+        50%;
+
+    background:
+        var(--iam-green);
+
+    box-shadow:
+        0 0 8px rgba(105,
+            217,
+            154,
+            .3);
+
+}
+
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.iam-summary {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap:
+        7px;
+
+    padding:
+        10px 20px;
+
+    border-bottom:
+        1px solid var(--iam-border);
+
+    background:
+        #081420;
+
+}
+
+
+.iam-summary-card {
+
+    min-height:
+        61px;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    justify-content:
+        center;
+
+    padding:
+        9px 11px;
+
+    border:
+        1px solid var(--iam-border);
+
+    background:
+        #0a1724;
+
+}
+
+
+.iam-summary-card span {
+
+    color:
+        #52677c;
+
+    font-size:
+        7px;
+
+    font-weight:
+        600;
+
+    letter-spacing:
+        .9px;
+
+}
+
+
+.iam-summary-card strong {
+
+    margin-top:
+        6px;
+
+    color:
+        #afc2d4;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size:
+        16px;
+
+    font-weight:
+        500;
+
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.iam-main {
+
+    flex:
+        1;
+
+    min-height:
+        0;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        minmax(0, 1fr) 285px;
+
+    gap:
+        10px;
+
+    padding:
+        10px 20px;
+
+    overflow:
+        hidden;
+
+}
+
+
+.iam-users-panel {
+
+    min-width:
+        0;
+
+    min-height:
+        0;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    border:
+        1px solid var(--iam-border);
+
+    background:
+        var(--iam-panel);
+
+    overflow:
+        hidden;
+
+}
+
+
+.iam-panel-header {
+
+    min-height:
+        70px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        12px;
+
+    padding:
+        0 14px;
+
+    border-bottom:
+        1px solid var(--iam-border);
+
+    background:
+        var(--iam-panel-2);
+
+}
+
+
+.iam-section-label {
+
+    color:
+        var(--iam-blue-soft);
+
+    font-size:
+        8px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        1.2px;
+
+}
+
+
+.iam-panel-description {
+
+    margin-top:
+        5px;
+
+    color:
+        var(--iam-muted);
+
+    font-size:
+        9px;
+
+}
+
+
+.iam-filter-group {
+
+    display:
+        flex;
+
+    gap:
+        4px;
+
+}
+
+
+.iam-filter {
+
+    height:
+        27px;
+
+    padding:
+        0 9px;
+
+    border:
+        1px solid #243b52;
+
+    background:
+        #0a1725;
+
+    color:
+        #60768c;
+
+    cursor:
+        pointer;
+
+    font-size:
+        7px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        .7px;
+
+}
+
+
+.iam-filter:hover {
+
+    border-color:
+        #3b5a76;
+
+    color:
+        #91a7bc;
+
+}
+
+
+.iam-filter-active {
+
+    border-color:
+        #426788;
+
+    background:
+        #10253a;
+
+    color:
+        #9bbce0;
+
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.iam-table-wrap {
+
+    flex:
+        1;
+
+    min-height:
+        0;
+
+    overflow:
+        auto;
+
+    position:
+        relative;
+
+}
+
+
+.iam-table {
+
+    width:
+        100%;
+
+    border-collapse:
+        collapse;
+
+}
+
+
+.iam-table thead {
+
+    position:
+        sticky;
+
+    top:
+        0;
+
+    z-index:
+        2;
+
+    background:
+        #0b1826;
+
+}
+
+
+.iam-table th {
+
+    height:
+        36px;
+
+    padding:
+        0 11px;
+
+    border-bottom:
+        1px solid var(--iam-border);
+
+    color:
+        #536a80;
+
+    font-size:
+        7px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        .8px;
+
+    text-align:
+        left;
+
+}
+
+
+.iam-table td {
+
+    height:
+        55px;
+
+    padding:
+        7px 11px;
+
+    border-bottom:
+        1px solid rgba(25,
+            43,
+            64,
+            .75);
+
+    color:
+        #879bad;
+
+    font-size:
+        9px;
+
+}
+
+
+.iam-table tbody tr {
+
+    cursor:
+        pointer;
+
+    transition:
+        background .12s ease;
+
+}
+
+
+.iam-table tbody tr:hover {
+
+    background:
+        rgba(121,
+            169,
+            232,
+            .035);
+
+}
+
+
+.iam-row-selected {
+
+    background:
+        rgba(121,
+            169,
+            232,
+            .07) !important;
+
+}
+
+
+.iam-user-cell {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        9px;
+
+}
+
+
+.iam-avatar {
+
+    width:
+        28px;
+
+    height:
+        28px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border:
+        1px solid #29455f;
+
+    background:
+        #0b1c2c;
+
+    color:
+        #7899b9;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size:
+        8px;
+
+    font-weight:
+        700;
+
+}
+
+
+.iam-user-cell strong {
+
+    display:
+        block;
+
+    color:
+        #aabccc;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size:
+        9px;
+
+}
+
+
+.iam-user-cell small {
+
+    display:
+        block;
+
+    margin-top:
+        3px;
+
+    color:
+        #42566b;
+
+    font-size:
+        6px;
+
+    letter-spacing:
+        .7px;
+
+}
+
+
+.iam-type {
+
+    color:
+        #71879d;
+
+    font-size:
+        7px;
+
+    letter-spacing:
+        .7px;
+
+}
+
+
+.iam-privilege-cell {
+
+    display:
+        flex;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        4px;
+
+}
+
+
+.iam-privilege {
+
+    display:
+        inline-block;
+
+    padding:
+        4px 6px;
+
+    border:
+        1px solid #263e56;
+
+    background:
+        #0b1928;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size:
+        7px;
+
+}
+
+
+.iam-privilege-standard {
+
+    color:
+        #75899c;
+
+}
+
+
+.iam-privilege-analyst {
+
+    color:
+        #84a9cc;
+
+    border-color:
+        #2c4a67;
+
+}
+
+
+.iam-privilege-elevated {
+
+    color:
+        var(--iam-orange);
+
+    border-color:
+        #57452f;
+
+}
+
+
+.iam-privilege-admin {
+
+    color:
+        var(--iam-red);
+
+    border-color:
+        #593436;
+
+}
+
+
+.iam-account-status,
+.iam-risk,
+.iam-review-status {
+
+    font-size:
+        7px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        .4px;
+
+}
+
+
+.iam-status-active {
+
+    color:
+        var(--iam-green);
+
+}
+
+
+.iam-status-dormant {
+
+    color:
+        var(--iam-orange);
+
+}
+
+
+.iam-status-service {
+
+    color:
+        var(--iam-blue);
+
+}
+
+
+.iam-risk-high {
+
+    color:
+        var(--iam-red);
+
+}
+
+
+.iam-risk-medium {
+
+    color:
+        var(--iam-orange);
+
+}
+
+
+.iam-risk-low {
+
+    color:
+        var(--iam-green);
+
+}
+
+
+.iam-risk-unknown {
+
+    color:
+        #61758a;
+
+}
+
+
+.iam-review-status {
+
+    color:
+        #657a8e;
+
+}
+
+
+.iam-table-empty {
+
+    display:
+        none;
+
+    position:
+        absolute;
+
+    inset:
+        36px 0 0;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    color:
+        #4b6075;
+
+    font-size:
+        9px;
+
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.iam-sidebar {
+
+    min-width:
+        0;
+
+    min-height:
+        0;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        10px;
+
+    overflow:
+        auto;
+
+}
+
+
+.iam-side-card {
+
+    border:
+        1px solid var(--iam-border);
+
+    background:
+        var(--iam-panel);
+
+    padding:
+        11px;
+
+}
+
+
+.iam-selected-card {
+
+    min-height:
+        230px;
+
+}
+
+
+.iam-side-heading {
+
+    padding-bottom:
+        8px;
+
+    margin-bottom:
+        9px;
+
+    border-bottom:
+        1px solid var(--iam-border);
+
+    color:
+        var(--iam-blue-soft);
+
+    font-size:
+        7px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        1px;
+
+}
+
+
+.iam-selected-empty {
+
+    padding:
+        24px 8px;
+
+    color:
+        #4f6377;
+
+    font-size:
+        9px;
+
+    line-height:
+        1.6;
+
+    text-align:
+        center;
+
+}
+
+
+.iam-selected-content {
+
+    display:
+        none;
+
+}
+
+
+.iam-selected-name {
+
+    color:
+        #b8c9d8;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size:
+        14px;
+
+    font-weight:
+        600;
+
+}
+
+
+.iam-selected-role {
+
+    margin-top:
+        5px;
+
+    color:
+        #6f8aa3;
+
+    font-size:
+        8px;
+
+}
+
+
+.iam-account-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:
+        6px;
+
+    margin-top:
+        12px;
+
+}
+
+
+.iam-account-grid>div {
+
+    padding:
+        8px;
+
+    border:
+        1px solid var(--iam-border);
+
+    background:
+        #091724;
+
+}
+
+
+.iam-account-grid span {
+
+    display:
+        block;
+
+    color:
+        #465c71;
+
+    font-size:
+        6px;
+
+    letter-spacing:
+        .6px;
+
+}
+
+
+.iam-account-grid strong {
+
+    display:
+        block;
+
+    margin-top:
+        5px;
+
+    color:
+        #91a6ba;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size:
+        8px;
+
+}
+
+
+.iam-access-block {
+
+    margin-top:
+        13px;
+
+}
+
+
+.iam-detail-heading {
+
+    margin-bottom:
+        7px;
+
+    color:
+        #5e758b;
+
+    font-size:
+        7px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        .7px;
+
+}
+
+
+.iam-privilege-list {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        4px;
+
+}
+
+
+.iam-selected-privilege {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    padding:
+        7px;
+
+    border:
+        1px solid #21384e;
+
+    background:
+        #091825;
+
+}
+
+
+.iam-selected-privilege span {
+
+    color:
+        #8da3b7;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size:
+        8px;
+
+}
+
+
+.iam-selected-privilege small {
+
+    color:
+        #455a70;
+
+    font-size:
+        6px;
+
+}
+
+
+.iam-review-date {
+
+    color:
+        #8298ad;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size:
+        8px;
+
+}
+
+
+/* =========================================================
+   PRIVILEGE CHANGES
+   ========================================================= */
+
+.iam-change-card {
+
+    min-height:
+        180px;
+
+}
+
+
+.iam-change-list {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        5px;
+
+}
+
+
+.iam-change {
+
+    width:
+        100%;
+
+    padding:
+        8px;
+
+    border:
+        1px solid #21384e;
+
+    background:
+        #091724;
+
+    color:
+        #8298ad;
+
+    cursor:
+        pointer;
+
+    text-align:
+        left;
+
+}
+
+
+.iam-change:hover {
+
+    border-color:
+        #385772;
+
+    background:
+        #0b1b2b;
+
+}
+
+
+.iam-change-top {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    gap:
+        6px;
+
+}
+
+
+.iam-change-top strong {
+
+    color:
+        #9eb1c3;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size:
+        8px;
+
+}
+
+
+.iam-change-top span {
+
+    font-size:
+        6px;
+
+    font-weight:
+        700;
+
+}
+
+
+.iam-approved {
+
+    color:
+        var(--iam-green);
+
+}
+
+
+.iam-review-required {
+
+    color:
+        var(--iam-orange);
+
+}
+
+
+.iam-change-transition {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        6px;
+
+    margin-top:
+        7px;
+
+    color:
+        #72879b;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size:
+        7px;
+
+}
+
+
+.iam-change-transition b {
+
+    color:
+        #4d6379;
+
+}
+
+
+.iam-change small {
+
+    display:
+        block;
+
+    margin-top:
+        6px;
+
+    color:
+        #42566b;
+
+    font-size:
+        6px;
+
+}
+
+
+.iam-change-empty {
+
+    padding:
+        16px 5px;
+
+    color:
+        #465a6f;
+
+    font-size:
+        8px;
+
+    text-align:
+        center;
+
+}
+
+
+/* =========================================================
+   REVIEW SIGNALS
+   ========================================================= */
+
+.iam-signal {
+
+    display:
+        flex;
+
+    gap:
+        9px;
+
+    padding:
+        8px 0;
+
+    border-bottom:
+        1px solid rgba(25,
+            43,
+            64,
+            .6);
+
+}
+
+
+.iam-signal:last-child {
+
+    border-bottom:
+        0;
+
+}
+
+
+.iam-signal-number {
+
+    color:
+        #48647e;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size:
+        7px;
+
+}
+
+
+.iam-signal strong {
+
+    display:
+        block;
+
+    color:
+        #8298ac;
+
+    font-size:
+        7px;
+
+    letter-spacing:
+        .4px;
+
+}
+
+
+.iam-signal small {
+
+    display:
+        block;
+
+    margin-top:
+        4px;
+
+    color:
+        #4d6277;
+
+    font-size:
+        7px;
+
+    line-height:
+        1.45;
+
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.iam-footer {
+
+    min-height:
+        26px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    padding:
+        0 20px;
+
+    border-top:
+        1px solid var(--iam-border);
+
+    background:
+        #08131f;
+
+    color:
+        #3e5368;
+
+    font-size:
+        6px;
+
+    letter-spacing:
+        .8px;
+
+}
+
+
+/* =========================================================
+   SCROLLBARS
+   ========================================================= */
+
+.iam-app ::-webkit-scrollbar {
+
+    width:
+        6px;
+
+    height:
+        6px;
+
+}
+
+
+.iam-app ::-webkit-scrollbar-track {
+
+    background:
+        #07111c;
+
+}
+
+
+.iam-app ::-webkit-scrollbar-thumb {
+
+    background:
+        #1b3045;
+
+}
+
+
+.iam-app ::-webkit-scrollbar-thumb:hover {
+
+    background:
+        #29445d;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .iam-main {
+
+        grid-template-columns:
+            1fr;
+
+        overflow:
+            auto;
+
+    }
+
+
+    .iam-sidebar {
+
+        display:
+            grid;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        overflow:
+            visible;
+
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .iam-summary {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .iam-panel-header {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+        padding:
+            12px;
+
+    }
+
+
+    .iam-filter-group {
+
+        flex-wrap:
+            wrap;
+
+    }
+
+
+    .iam-sidebar {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+/* =========================================================
+   LIVE COMPROMISE STATUS
+   ---------------------------------------------------------
+   Only shown inside a specific identity's detail panel, when
+   that user's assigned host is genuinely compromised right
+   now in the live simulation — distinct from the static
+   review flags above it.
+   ========================================================= */
+
+.iam-live-status {
+    border-left: 2px solid var(--iam-red);
+    padding-left: 12px;
+}
+
+.iam-live-status-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.iam-live-status-line {
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--iam-text);
+}
+
+.iam-live-status-alert {
+    color: var(--iam-red);
+    font-weight: 700;
+}
