@@ -7300,6 +7300,96 @@ function initializeDesktopAppButtons() {
 
 
 /* =========================================================
+   DESKTOP ICON SCROLL HINT
+   -----------------------------------------------------
+   BUGFIX: the desktop icon rail is now tall enough (13 apps)
+   to exceed the viewport on common screen sizes, so it's a
+   scrollable column (see .desktop-icons in style.css) rather
+   than a column that silently ran off the bottom of the
+   screen with no way back. This adds a small fade + chevron
+   hint at the bottom of the rail whenever there are more app
+   icons below the fold, so players notice they can scroll for
+   more apps instead of assuming that's the whole list.
+   ========================================================= */
+
+function initializeDesktopIconScrollHint() {
+
+    const iconRail =
+        document.querySelector(
+            ".desktop-icons"
+        );
+
+
+    if (
+        !iconRail ||
+        !iconRail.parentElement
+    ) {
+
+        return;
+
+    }
+
+
+    const hint =
+        document.createElement(
+            "div"
+        );
+
+
+    hint.className =
+        "desktop-icons-more";
+
+
+    hint.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+
+    hint.textContent =
+        "⌄";
+
+
+    iconRail.parentElement.appendChild(
+        hint
+    );
+
+
+    function updateHint() {
+
+        const hasMoreBelow =
+            iconRail.scrollHeight -
+            iconRail.scrollTop -
+            iconRail.clientHeight >
+            4;
+
+
+        hint.classList.toggle(
+            "visible",
+            hasMoreBelow
+        );
+
+    }
+
+
+    iconRail.addEventListener(
+        "scroll",
+        updateHint
+    );
+
+
+    window.addEventListener(
+        "resize",
+        updateHint
+    );
+
+
+    updateHint();
+
+}
+
+
+/* =========================================================
    START MENU APP BUTTONS
    ========================================================= */
 
@@ -8003,6 +8093,8 @@ function initializeSOC() {
     initializeStartButton();
 
     initializeDesktopAppButtons();
+
+    initializeDesktopIconScrollHint();
 
     initializeStartMenuButtons();
 

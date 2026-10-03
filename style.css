@@ -473,6 +473,26 @@ body {
 
     left: 25px;
 
+    /*
+     * BUGFIX: this column used to size itself to its content
+     * (top only, no bottom/height/overflow), so once enough
+     * apps existed (13, as of this pass) the bottom few icons
+     * rendered below the visible viewport with no way to reach
+     * them — html/body are overflow:hidden, so the page itself
+     * never scrolls. Pinning `bottom` to clear the taskbar and
+     * adding a scrollbar here keeps every icon reachable at any
+     * screen height / taskbar size, instead of silently cutting
+     * off whichever apps happen to be last in the list.
+     *
+     * +70px (not just the taskbar) because the capture toolbar
+     * (.ns-capture-toolbar, capture/capture.css) permanently
+     * floats bottom-left just above the taskbar too — this
+     * clears it so neither the last scrolled-to icon nor the
+     * scroll hint below ever sits underneath it.
+     */
+
+    bottom: calc(var(--northstar-taskbar-height, 58px) + 70px);
+
     display: flex;
 
     flex-direction: column;
@@ -480,6 +500,92 @@ body {
     gap: 8px;
 
     width: 90px;
+
+    overflow-y: auto;
+
+    overflow-x: hidden;
+
+    padding-right: 6px;
+
+    scrollbar-width: thin;
+
+    scrollbar-color: rgba(100, 150, 210, 0.45) transparent;
+}
+
+.desktop-icons::-webkit-scrollbar {
+
+    width: 6px;
+}
+
+.desktop-icons::-webkit-scrollbar-track {
+
+    background: transparent;
+}
+
+.desktop-icons::-webkit-scrollbar-thumb {
+
+    background: rgba(100, 150, 210, 0.45);
+
+    border-radius: 3px;
+}
+
+.desktop-icons::-webkit-scrollbar-thumb:hover {
+
+    background: rgba(100, 150, 210, 0.7);
+}
+
+/*
+ * Fade + chevron hint shown at the bottom of the icon rail
+ * only while there are more app icons scrolled out of view
+ * below it — see initializeDesktopIconScrollHint() in
+ * script.js. Purely informational: it never intercepts
+ * clicks, so it can safely sit over the edge of the last
+ * visible icon.
+ */
+
+.desktop-icons-more {
+
+    position: absolute;
+
+    left: 25px;
+
+    bottom: calc(var(--northstar-taskbar-height, 58px) + 70px);
+
+    width: 90px;
+
+    height: 26px;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: center;
+
+    padding-bottom: 1px;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    transition: opacity 0.2s ease;
+
+    background:
+        linear-gradient(to bottom,
+            transparent,
+            rgba(8, 14, 26, 0.92) 75%);
+
+    color: rgba(190, 210, 235, 0.95);
+
+    font-size: 13px;
+
+    line-height: 1;
+
+    z-index: 2;
+}
+
+.desktop-icons-more.visible {
+
+    opacity: 1;
 }
 
 .desktop-icon {
@@ -3663,7 +3769,8 @@ body {
    HIDE DESKTOP ICONS
    ========================================================= */
 
-#desktop.northstar-hide-desktop-icons .desktop-icons {
+#desktop.northstar-hide-desktop-icons .desktop-icons,
+#desktop.northstar-hide-desktop-icons .desktop-icons-more {
 
     display: none !important;
 
